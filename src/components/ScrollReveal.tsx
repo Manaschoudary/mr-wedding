@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
 interface ScrollRevealProps {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-  direction?: "up" | "down" | "left" | "right";
+  readonly children: ReactNode;
+  readonly className?: string;
+  readonly delay?: number;
+  readonly direction?: "up" | "down" | "left" | "right";
 }
 
 const directionOffset = {

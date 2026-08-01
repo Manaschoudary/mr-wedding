@@ -1,44 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg-primary: #0c0a09;
-  --color-bg-secondary: #1c1917;
-  --color-bg-card: #1a1614;
-  --color-gold: #c9a84c;
-  --color-gold-light: #d4b96a;
-  --color-gold-dark: #a88a3a;
-  --color-cream: #f5f0e8;
-  --color-cream-muted: #d4cfc7;
-  --color-burgundy: #8b1a2b;
-  --color-burgundy-light: #a62d40;
-  --color-burgundy-dark: #6b1420;
-  --color-text-primary: #f5f0e8;
-  --color-text-secondary: #b8b0a4;
-  --color-text-muted: #8a8278;
+  --bg-burgundy: #47181a;
+  --bg-burgundy-deep: rgba(40, 15, 18, 0.8);
+  --olive: #5a6b35;
+  --olive-strong: #4d5d2d;
+  --linen: #f5ebe0;
+  --linen-soft: #faf5eb;
+  --gold-dark: #9a7b4f;
+  --ink: #2f2324;
+  --kolam: #6f2d2e;
 }
 
 @theme inline {
-  --color-bg-primary: var(--color-bg-primary);
-  --color-bg-secondary: var(--color-bg-secondary);
-  --color-bg-card: var(--color-bg-card);
-  --color-gold: var(--color-gold);
-  --color-gold-light: var(--color-gold-light);
-  --color-gold-dark: var(--color-gold-dark);
-  --color-cream: var(--color-cream);
-  --color-cream-muted: var(--color-cream-muted);
-  --color-burgundy: var(--color-burgundy);
-  --color-burgundy-light: var(--color-burgundy-light);
-  --color-burgundy-dark: var(--color-burgundy-dark);
-  --color-text-primary: var(--color-text-primary);
-  --color-text-secondary: var(--color-text-secondary);
-  --color-text-muted: var(--color-text-muted);
-  --font-serif: var(--font-playfair);
-  --font-sans: var(--font-lato);
+  --color-burgundy: var(--bg-burgundy);
+  --color-burgundy-deep: var(--bg-burgundy-deep);
+  --color-olive: var(--olive);
+  --color-olive-strong: var(--olive-strong);
+  --color-linen: var(--linen);
+  --color-linen-soft: var(--linen-soft);
+  --color-gold-dark: var(--gold-dark);
+  --color-ink: var(--ink);
+  --color-kolam: var(--kolam);
+  --font-josefin: var(--font-josefin);
+  --font-cormorant: var(--font-cormorant);
+  --font-cinzel: var(--font-cinzel);
+  --font-script: var(--font-great-vibes);
+  --font-script-alt: var(--font-pinyon);
 }
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
@@ -47,174 +38,168 @@ html {
 }
 
 body {
-  background-color: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  font-family: var(--font-sans, "Lato", sans-serif);
-  min-height: 100vh;
-  overflow-x: hidden;
+  margin: 0;
+  color: var(--linen);
+  background: var(--bg-burgundy);
 }
 
-/* Kolam SVG divider pattern */
-.kolam-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 2rem 0;
-  opacity: 0.7;
-}
-
-.kolam-divider svg {
-  flex-shrink: 0;
-}
-
-/* Flip card */
-.flip-card {
-  perspective: 1000px;
-  cursor: pointer;
-}
-
-.flip-card-inner {
+.wedding-bg {
   position: relative;
+  background-color: var(--bg-burgundy);
+}
+
+.wedding-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.13;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23f5ebe0' stroke-width='0.8'%3E%3Cpath d='M60 0 120 60 60 120 0 60Z'/%3E%3Cpath d='M60 20 100 60 60 100 20 60Z'/%3E%3Cpath d='M0 60h120M60 0v120'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+.wedding-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 20% 15%, rgba(154, 123, 79, 0.14), transparent 38%),
+    radial-gradient(circle at 80% 10%, rgba(90, 107, 53, 0.16), transparent 42%),
+    radial-gradient(circle at 50% 95%, rgba(154, 123, 79, 0.1), transparent 40%);
+}
+
+.container-main {
   width: 100%;
-  height: 100%;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
 }
 
-.flip-card.flipped .flip-card-inner {
-  transform: rotateY(180deg);
+.section-tight {
+  max-width: 48rem;
+  margin-inline: auto;
+  padding: 3.5rem 1.5rem;
 }
 
-.flip-card-front,
-.flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 1rem;
-  overflow: hidden;
+.section-wide {
+  max-width: 64rem;
+  margin-inline: auto;
+  padding: 2.5rem 1.5rem;
 }
 
-.flip-card-back {
-  transform: rotateY(180deg);
-}
-
-/* Event cards swipe */
-.events-scroll {
-  display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding: 1rem 0;
-}
-
-.events-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-.event-card {
-  scroll-snap-align: center;
-  flex-shrink: 0;
-}
-
-/* Gold gradient text */
-.text-gold-gradient {
-  background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 50%, var(--color-gold-dark) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Decorative line */
-.ornament-line {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--color-gold) 20%,
-    var(--color-gold) 80%,
-    transparent
-  );
-}
-
-/* RSVP radio buttons */
-.rsvp-option input[type="radio"] {
-  display: none;
-}
-
-.rsvp-option label {
-  cursor: pointer;
-  padding: 0.5rem 1.25rem;
-  border: 1px solid var(--color-gold-dark);
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-  transition: all 0.3s ease;
-}
-
-.rsvp-option input[type="radio"]:checked + label {
-  background-color: var(--color-gold);
-  color: var(--color-bg-primary);
-  border-color: var(--color-gold);
-  font-weight: 600;
-}
-
-/* Countdown number styling */
-.countdown-number {
-  font-family: var(--font-serif, "Playfair Display", serif);
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--color-gold);
-  line-height: 1;
-}
-
-.countdown-label {
-  font-size: 0.75rem;
+.caps-label {
+  font-family: var(--font-josefin), sans-serif;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-text-muted);
-  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  color: color-mix(in oklab, var(--linen) 80%, black);
 }
 
-/* Section spacing */
-.section-padding {
-  padding: 5rem 1.5rem;
+.script-title {
+  font-family: var(--font-great-vibes), cursive;
+  line-height: 1;
+  color: var(--linen);
+}
+
+.cinzel-title {
+  font-family: var(--font-cinzel), serif;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.serif-invite {
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+}
+
+.olive-card {
+  background-color: color-mix(in oklab, var(--olive) 92%, black);
+  border: 1px dashed color-mix(in oklab, var(--linen) 50%, transparent);
+  border-radius: 1rem;
+}
+
+.burgundy-panel {
+  background-color: var(--bg-burgundy-deep);
+  border: 1px solid color-mix(in oklab, var(--linen) 22%, transparent);
+  border-radius: 1rem;
+}
+
+.kolam-divider {
+  display: grid;
+  place-items: center;
+  padding: 1.75rem 0;
+  opacity: 0.9;
+}
+
+.drawer-overlay {
+  background-color: rgb(0 0 0 / 50%);
+  backdrop-filter: blur(4px);
+}
+
+.rsvp-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in oklab, var(--ink) 24%, var(--linen));
+  background: var(--linen-soft);
+  color: var(--ink);
+  padding: 0.8rem 1rem;
+  font-family: var(--font-josefin), sans-serif;
+}
+
+.rsvp-input::placeholder {
+  color: color-mix(in oklab, var(--ink) 60%, white);
+}
+
+.rsvp-pill {
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--ink) 34%, var(--linen));
+  background: var(--linen-soft);
+  color: var(--ink);
+  font-family: var(--font-josefin), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.66rem;
+  padding: 0.45rem 0.85rem;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.rsvp-pill[data-active="true"] {
+  background: color-mix(in oklab, var(--olive) 88%, white);
+  color: var(--linen);
+  border-color: var(--olive);
+}
+
+.event-stack-perspective {
+  perspective: 1200px;
+}
+
+.event-card-shell {
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px dashed color-mix(in oklab, var(--linen) 58%, transparent);
+  background: color-mix(in oklab, var(--bg-burgundy-deep) 84%, black);
+}
+
+@keyframes bounceY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+
+.scroll-cue {
+  animation: bounceY 1.8s infinite ease-in-out;
 }
 
 @media (min-width: 768px) {
-  .section-padding {
-    padding: 6rem 2rem;
+  .section-tight {
+    padding: 4.2rem 1.5rem;
   }
-}
 
-/* Subtle animations */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+  .section-wide {
+    padding: 3rem 1.5rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse-gold {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.animate-pulse-gold {
-  animation: pulse-gold 2s ease-in-out infinite;
 }

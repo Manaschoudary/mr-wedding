@@ -2,37 +2,41 @@ interface KolamDividerProps {
   className?: string;
 }
 
-function KolamMotif({ size = 40 }: { size?: number }) {
+function KolamMotif({ size = 40 }: { readonly size?: number }) {
   return (
     <svg
       width={size}
-      height={size}
-      viewBox="0 0 80 80"
+      height={Math.round(size * 0.55)}
+      viewBox="0 0 160 88"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="text-gold/60"
+      className="text-kolam"
+      aria-hidden
     >
-      {/* Traditional kolam-inspired dot pattern */}
-      <circle cx="40" cy="40" r="3" fill="currentColor" />
-      <circle cx="40" cy="20" r="2" fill="currentColor" />
-      <circle cx="40" cy="60" r="2" fill="currentColor" />
-      <circle cx="20" cy="40" r="2" fill="currentColor" />
-      <circle cx="60" cy="40" r="2" fill="currentColor" />
-      <circle cx="28" cy="28" r="1.5" fill="currentColor" />
-      <circle cx="52" cy="28" r="1.5" fill="currentColor" />
-      <circle cx="28" cy="52" r="1.5" fill="currentColor" />
-      <circle cx="52" cy="52" r="1.5" fill="currentColor" />
-      {/* Connecting curves — kolam style */}
+      <circle cx="22" cy="44" r="2.3" fill="currentColor" />
+      <circle cx="40" cy="44" r="2.3" fill="currentColor" />
+      <circle cx="58" cy="44" r="2.3" fill="currentColor" />
+      <circle cx="76" cy="44" r="2.3" fill="currentColor" />
+      <circle cx="94" cy="44" r="2.3" fill="currentColor" />
+      <circle cx="112" cy="44" r="2.3" fill="currentColor" />
+      <circle cx="130" cy="44" r="2.3" fill="currentColor" />
       <path
-        d="M20 40 Q30 30, 40 20 Q50 30, 60 40 Q50 50, 40 60 Q30 50, 20 40Z"
+        d="M22 44c7-12 11-18 18-18s11 6 18 18 11 18 18 18 11-6 18-18 11-18 18-18 11 6 18 18"
         stroke="currentColor"
-        strokeWidth="1"
+        strokeWidth="1.2"
         fill="none"
       />
       <path
-        d="M28 28 Q40 34, 52 28 Q46 40, 52 52 Q40 46, 28 52 Q34 40, 28 28Z"
+        d="M22 44c7 12 11 18 18 18s11-6 18-18 11-18 18-18 11 6 18 18 11 18 18 18 11-6 18-18"
         stroke="currentColor"
-        strokeWidth="0.75"
+        strokeWidth="1.2"
+        fill="none"
+      />
+      <path
+        d="M12 44h136"
+        stroke="currentColor"
+        strokeOpacity="0.35"
+        strokeWidth="0.9"
         fill="none"
       />
     </svg>
@@ -41,20 +45,18 @@ function KolamMotif({ size = 40 }: { size?: number }) {
 
 function OrnamentLine() {
   return (
-    <div className="flex-1 max-w-32 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
+    <div className="h-px w-20 bg-gradient-to-r from-transparent via-kolam/70 to-transparent md:w-32" />
   );
 }
 
 export function KolamDivider({ className = "" }: KolamDividerProps) {
   return (
-    <div
-      className={`flex items-center justify-center gap-4 py-8 px-4 ${className}`}
-    >
-      <OrnamentLine />
-      <KolamMotif size={36} />
-      <KolamMotif size={28} />
-      <KolamMotif size={36} />
-      <OrnamentLine />
+    <div className={`kolam-divider ${className}`}>
+      <div className="flex items-center justify-center gap-2.5 px-4">
+        <OrnamentLine />
+        <KolamMotif size={86} />
+        <OrnamentLine />
+      </div>
     </div>
   );
 }

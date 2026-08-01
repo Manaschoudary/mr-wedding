@@ -1,55 +1,28 @@
-import { VENUES } from "@/lib/data";
 import { KolamDivider } from "@/components/KolamDivider";
-import { ScrollReveal } from "@/components/ScrollReveal";
+import { VENUES } from "@/lib/data";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Venue | Manas & Rupa #MR Wedding",
-  description: "Venue details for the #MR Wedding celebrations.",
+  description: "Venue details for the Manas & Rupa wedding celebrations.",
 };
 
 export default function VenuePage() {
   return (
-    <div className="min-h-screen pt-20">
+    <div className="pb-10 pt-24">
       <KolamDivider />
-
-      <section className="section-padding text-center max-w-4xl mx-auto">
-        <ScrollReveal>
-          <p className="text-text-muted text-xs tracking-[0.3em] uppercase mb-4">
-            Venue
-          </p>
-          <h2 className="font-serif text-3xl sm:text-4xl text-gold mb-12">
-            Where We&apos;ll Celebrate
-          </h2>
-        </ScrollReveal>
-
-        <div className="grid gap-8 md:grid-cols-2">
-          {VENUES.map((venue, i) => (
-            <ScrollReveal key={venue.name} delay={i * 0.15}>
-              <div className="bg-bg-secondary/60 rounded-2xl p-8 border border-gold/10 hover:border-gold/25 transition-all duration-300">
-                <h3 className="font-serif text-2xl text-cream mb-3">
-                  {venue.name}
-                </h3>
-                <p className="text-text-muted text-sm mb-4">
-                  {venue.description}
-                </p>
-                <a
-                  href={venue.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block text-text-secondary text-sm hover:text-gold transition-colors"
-                >
-                  {venue.address}
-                  <span className="block text-gold/70 text-xs mt-1">
-                    Open in Maps →
-                  </span>
-                </a>
-              </div>
-            </ScrollReveal>
+      <section className="section-wide text-center">
+        <p className="font-script text-6xl leading-none text-linen">Where We&apos;ll Celebrate</p>
+        <div className="mx-auto mt-8 grid max-w-5xl gap-4 md:grid-cols-2">
+          {VENUES.map((venue) => (
+            <article key={venue.id} className="rounded-2xl border border-dashed border-linen/45 bg-linen-soft p-6 text-left text-ink">
+              <h2 className="font-cormorant text-[1.9rem] italic leading-none">{venue.name}</h2>
+              <p className="mt-3 font-josefin text-sm">{venue.address}</p>
+              <p className="mt-4 font-josefin text-[0.68rem] uppercase tracking-[0.18em] text-ink/72">{venue.note}</p>
+            </article>
           ))}
         </div>
       </section>
-
       <KolamDivider />
     </div>
   );

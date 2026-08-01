@@ -5,255 +5,262 @@ import { motion } from "framer-motion";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { KolamDivider } from "@/components/KolamDivider";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import type { WEDDING as WeddingType, VENUES as VenuesType, HOTEL as HotelType } from "@/lib/data";
+import { EVENTS, HOTEL, VENUES, WEDDING } from "@/lib/data";
 
-interface HomeClientProps {
-  wedding: typeof WeddingType;
-  venues: typeof VenuesType;
-  hotel: typeof HotelType;
+function Hero() {
+  return (
+    <section className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pb-14 pt-28 text-center">
+      <motion.div
+        aria-hidden
+        className="absolute -left-8 top-24 h-20 w-20 rounded-full bg-olive/25 blur-2xl"
+        animate={{ y: [0, -12, 0], x: [0, 4, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        aria-hidden
+        className="absolute right-8 top-44 h-16 w-16 rounded-full bg-gold-dark/20 blur-xl"
+        animate={{ y: [0, 10, 0], x: [0, -5, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.p
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        className="font-cinzel text-[2.2rem] leading-none text-linen sm:text-[2.8rem]"
+      >
+        {WEDDING.couple.monogram}
+      </motion.p>
+
+      <motion.h1
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.85 }}
+        className="mt-6 font-script text-[4rem] leading-[0.95] text-linen sm:text-[5.8rem] md:text-[6.6rem]"
+      >
+        {WEDDING.couple.short}
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.35, duration: 0.8 }}
+        className="mt-5 font-josefin text-[0.72rem] uppercase tracking-[0.32em] text-linen/82 sm:text-[0.8rem]"
+      >
+        {WEDDING.line}
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.7 }}
+        className="absolute bottom-8"
+      >
+        <a href="#countdown" className="inline-flex flex-col items-center gap-2 text-linen/85">
+          <span className="font-josefin text-[0.64rem] uppercase tracking-[0.28em]">Scroll Down</span>
+          <svg className="scroll-cue h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="m6 10 6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+        </a>
+      </motion.div>
+    </section>
+  );
 }
 
-export function HomeClient({ wedding, venues, hotel }: HomeClientProps) {
-  const weddingDate = new Date(wedding.dates.weddingDate);
+function InvitationEmblem() {
+  return (
+    <section className="section-tight text-center">
+      <ScrollReveal>
+        <Link href="/invitation" className="inline-flex flex-col items-center gap-4">
+          <span className="grid h-56 w-56 place-items-center rounded-full border border-linen/45 bg-burgundy-deep sm:h-60 sm:w-60">
+            <span className="grid h-[88%] w-[88%] place-items-center rounded-full border border-linen/25">
+              <span>
+                <span className="block font-script text-5xl leading-none text-linen">
+                  {WEDDING.couple.short}
+                </span>
+                <span className="mt-2 block font-josefin text-[0.64rem] uppercase tracking-[0.3em] text-linen/82">
+                  {WEDDING.hashtag}
+                </span>
+              </span>
+            </span>
+          </span>
+          <span className="font-josefin text-[0.66rem] uppercase tracking-[0.28em] text-linen/86">
+            Tap to open
+          </span>
+        </Link>
+      </ScrollReveal>
+    </section>
+  );
+}
+
+function InvitationPreview() {
+  return (
+    <section className="section-tight">
+      <ScrollReveal>
+        <div className="rounded-2xl border border-linen/20 bg-burgundy-deep p-4 sm:p-6">
+          <div className="olive-card p-6 text-center sm:p-8">
+            <p className="caps-label">{WEDDING.invitationTagline}</p>
+            <p className="mt-4 serif-invite text-xl text-linen/95">{WEDDING.invitationText}</p>
+            <div className="mt-8 grid grid-cols-[1fr_auto_1fr] items-end gap-3">
+              <div>
+                <p className="font-script text-5xl leading-none text-linen">{WEDDING.couple.bride.firstName}</p>
+                <p className="mt-2 font-josefin text-[0.66rem] uppercase tracking-[0.22em] text-linen/82">Bride</p>
+              </div>
+              <p className="pb-1 font-script-alt text-4xl leading-none text-gold-dark">and</p>
+              <div>
+                <p className="font-script text-5xl leading-none text-linen">{WEDDING.couple.groom.firstName}</p>
+                <p className="mt-2 font-josefin text-[0.66rem] uppercase tracking-[0.22em] text-linen/82">Groom</p>
+              </div>
+            </div>
+            <div className="mt-7 border-t border-dashed border-linen/40 pt-5">
+              <p className="cinzel-title text-[0.72rem] text-linen/86">Sumuhurtham</p>
+              <p className="mt-2 font-script text-[2rem] leading-none text-linen">September 5, 2026</p>
+              <p className="font-script-alt text-3xl leading-none text-gold-dark">10:59 AM</p>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+    </section>
+  );
+}
+
+function EventsTeaser() {
+  const showcase = EVENTS.slice(0, 3);
 
   return (
-    <>
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 pt-16">
-        {/* Decorative top kolam */}
-        <KolamDivider className="mb-4" />
-
-        <motion.p
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-text-muted text-xs tracking-[0.4em] uppercase mb-6"
-        >
-          {wedding.hashtag}
-        </motion.p>
-
-        <motion.h1
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="font-serif text-5xl sm:text-7xl md:text-8xl text-gold leading-tight"
-        >
-          {wedding.couple.groom.firstName}
-          <span className="block text-2xl sm:text-3xl text-text-muted font-sans font-light my-2">
-            &amp;
-          </span>
-          {wedding.couple.bride.firstName}
-        </motion.h1>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-8 space-y-2"
-        >
-          <p className="text-text-secondary text-sm tracking-widest uppercase">
-            We&apos;re getting married
-          </p>
-          <p className="text-cream text-lg font-serif">
-            {wedding.dates.day1} &amp; {wedding.dates.day2.replace("September ", "")}
-          </p>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-8"
-        >
-          <Link
-            href="#countdown"
-            className="flex flex-col items-center gap-2 text-text-muted hover:text-gold transition-colors"
-          >
-            <span className="text-xs tracking-widest uppercase">Scroll Down</span>
-            <motion.svg
-              animate={{ y: [0, 8, 0] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </motion.svg>
-          </Link>
-        </motion.div>
-      </section>
-
-      {/* Countdown Section */}
-      <section id="countdown" className="section-padding text-center">
-        <ScrollReveal>
-          <CountdownTimer targetDate={weddingDate} />
-        </ScrollReveal>
-      </section>
-
-      <KolamDivider />
-
-      {/* Invitation Teaser */}
-      <section className="section-padding text-center max-w-3xl mx-auto">
-        <ScrollReveal>
-          <p className="text-text-muted text-xs tracking-[0.3em] uppercase mb-4">
-            Tap the emblem to open our invitation
-          </p>
-          <Link
-            href="/invitation"
-            className="inline-block group"
-          >
-            <div className="w-48 h-48 sm:w-56 sm:h-56 mx-auto rounded-full border-2 border-gold/30 flex items-center justify-center group-hover:border-gold/60 transition-colors duration-500 bg-bg-secondary/50">
-              <div className="text-center">
-                <p className="font-serif text-3xl text-gold">
-                  {wedding.couple.groom.firstName[0]}&amp;{wedding.couple.bride.firstName[0]}
-                </p>
-                <p className="text-text-muted text-[10px] tracking-[0.3em] uppercase mt-2">
-                  Tap to open
-                </p>
-              </div>
-            </div>
-          </Link>
-        </ScrollReveal>
-      </section>
-
-      <KolamDivider />
-
-      {/* About Section */}
-      <section className="section-padding text-center max-w-3xl mx-auto">
-        <ScrollReveal>
-          <p className="text-text-muted text-xs tracking-[0.3em] uppercase mb-6">
-            {wedding.tagline}
-          </p>
-          <p className="text-text-secondary leading-relaxed mb-8">
-            {wedding.invitationText}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16">
-            <div>
-              <h3 className="font-serif text-3xl text-gold mb-1">
-                {wedding.couple.bride.firstName}
-              </h3>
-              <p className="text-text-muted text-sm">
-                {wedding.couple.bride.fullName}
-              </p>
-            </div>
-            <span className="text-gold text-2xl font-serif hidden sm:block">&amp;</span>
-            <span className="text-gold text-lg font-serif sm:hidden">and</span>
-            <div>
-              <h3 className="font-serif text-3xl text-gold mb-1">
-                {wedding.couple.groom.firstName}
-              </h3>
-              <p className="text-text-muted text-sm">
-                {wedding.couple.groom.fullName}
-              </p>
-            </div>
-          </div>
-        </ScrollReveal>
-      </section>
-
-      <KolamDivider />
-
-      {/* Sumuhurtham */}
-      <section className="section-padding text-center">
-        <ScrollReveal>
-          <p className="text-text-muted text-xs tracking-[0.3em] uppercase mb-4">
-            Sumuhurtham
-          </p>
-          <p className="font-serif text-2xl sm:text-3xl text-cream mb-2">
-            Saturday, September 5, 2026
-          </p>
-          <p className="text-gold text-xl font-serif">10:59 AM</p>
-        </ScrollReveal>
-      </section>
-
-      <KolamDivider />
-
-      {/* Venue Preview */}
-      <section className="section-padding text-center max-w-4xl mx-auto">
-        <ScrollReveal>
-          <p className="text-text-muted text-xs tracking-[0.3em] uppercase mb-4">
-            Venue
-          </p>
-          <h2 className="font-serif text-3xl sm:text-4xl text-gold mb-10">
-            Where We&apos;ll Celebrate
-          </h2>
-          <div className="grid sm:grid-cols-2 gap-8">
-            {venues.map((venue, i) => (
-              <div
-                key={venue.name}
-                className="bg-bg-secondary/50 rounded-xl p-6 border border-gold/10 hover:border-gold/25 transition-colors"
+    <section className="section-wide text-center">
+      <ScrollReveal>
+        <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Wedding Functions</p>
+      </ScrollReveal>
+      <div className="event-stack-perspective mx-auto mt-8 max-w-4xl">
+        <div className="relative mx-auto h-[20rem] w-full max-w-[18rem] sm:max-w-[20rem]">
+          {showcase.map((event, index) => {
+            const offset = index - 1;
+            return (
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.12 }}
+                className="event-card-shell absolute inset-0"
+                style={{
+                  transform: `translateX(${offset * 28}px) translateY(${Math.abs(offset) * 10}px) scale(${1 - Math.abs(offset) * 0.08})`,
+                  zIndex: 10 - Math.abs(offset),
+                  filter: offset === 0 ? "none" : "brightness(0.72)",
+                }}
               >
-                <h3 className="font-serif text-xl text-cream mb-2">
-                  {venue.name}
-                </h3>
-                <p className="text-text-muted text-sm">{venue.address}</p>
-              </div>
+                <div className={`h-[62%] bg-gradient-to-br ${event.accent}`} />
+                <div className="flex h-[38%] flex-col items-center justify-center bg-burgundy px-4 text-center">
+                  <p className="font-script text-4xl leading-none text-linen">{event.name}</p>
+                  <p className="mt-3 font-josefin text-[0.62rem] uppercase tracking-[0.26em] text-linen/78">Tap for details</p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+      <div className="mt-8">
+        <Link href="/events" className="rounded-full border border-linen/35 px-7 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.24em] text-linen transition hover:bg-olive hover:border-olive">
+          Explore Events
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function VenueSection() {
+  return (
+    <section className="section-wide text-center">
+      <ScrollReveal>
+        <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Where We&apos;ll Celebrate</p>
+      </ScrollReveal>
+      <div className="mt-8 grid gap-4 md:grid-cols-2">
+        {VENUES.map((venue) => (
+          <ScrollReveal key={venue.id}>
+            <article className="rounded-2xl border border-dashed border-linen/42 bg-linen-soft p-5 text-left text-ink">
+              <h3 className="font-cormorant text-[1.75rem] leading-none italic">{venue.name}</h3>
+              <p className="mt-2 font-josefin text-sm">{venue.address}</p>
+              <p className="mt-3 font-josefin text-[0.7rem] uppercase tracking-[0.18em] text-ink/75">{venue.note}</p>
+            </article>
+          </ScrollReveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function HotelSection() {
+  return (
+    <section className="section-tight text-center">
+      <ScrollReveal>
+        <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Nearby Hotel</p>
+      </ScrollReveal>
+      <ScrollReveal className="mt-6">
+        <article className="rounded-2xl border border-linen/25 bg-burgundy-deep p-6">
+          <p className="font-cormorant text-[2rem] italic text-linen">{HOTEL.name}</p>
+          <p className="mt-2 font-josefin text-sm text-linen/84">{HOTEL.address}</p>
+          <ul className="mt-5 space-y-2">
+            {HOTEL.details.map((detail) => (
+              <li key={detail} className="font-josefin text-sm text-linen/88">{detail}</li>
             ))}
-          </div>
-          <Link
-            href="/venue"
-            className="inline-block mt-8 text-gold text-sm tracking-widest uppercase hover:text-gold-light transition-colors"
-          >
-            View Details →
+          </ul>
+          <Link href="/hotel" className="mt-6 inline-flex rounded-full bg-olive px-6 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.24em] text-linen transition hover:bg-olive-strong">
+            View Hotel Details
           </Link>
-        </ScrollReveal>
-      </section>
+        </article>
+      </ScrollReveal>
+    </section>
+  );
+}
 
-      <KolamDivider />
+function RSVPSection() {
+  return (
+    <section className="section-tight text-center">
+      <ScrollReveal>
+        <p className="caps-label">Kindly Respond</p>
+        <p className="mt-3 font-script text-6xl leading-none text-linen">RSVP</p>
+        <p className="mt-4 font-josefin text-[0.7rem] uppercase tracking-[0.26em] text-linen/82">
+          We look forward to celebrating with you
+        </p>
+        <Link href="/rsvp" className="mt-7 inline-flex w-full max-w-sm justify-center rounded-xl bg-olive px-6 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.24em] text-linen transition hover:bg-olive-strong">
+          Send RSVP
+        </Link>
+      </ScrollReveal>
+    </section>
+  );
+}
 
-      {/* Hotel Preview */}
-      <section className="section-padding text-center max-w-3xl mx-auto">
+export function HomeClient() {
+  return (
+    <>
+      <Hero />
+      <InvitationEmblem />
+      <section id="countdown" className="section-tight text-center">
         <ScrollReveal>
-          <p className="text-text-muted text-xs tracking-[0.3em] uppercase mb-4">
-            Where to Stay
-          </p>
-          <h2 className="font-serif text-3xl sm:text-4xl text-gold mb-6">
-            Nearby Hotel
-          </h2>
-          <div className="bg-bg-secondary/50 rounded-xl p-6 border border-gold/10">
-            <h3 className="font-serif text-xl text-cream mb-2">{hotel.name}</h3>
-            <p className="text-text-muted text-sm mb-4">{hotel.address}</p>
-            <ul className="text-text-secondary text-sm space-y-1">
-              {hotel.details.map((detail) => (
-                <li key={detail}>◈ {detail}</li>
-              ))}
-            </ul>
-          </div>
-          <Link
-            href="/hotel"
-            className="inline-block mt-8 text-gold text-sm tracking-widest uppercase hover:text-gold-light transition-colors"
-          >
-            View Details →
-          </Link>
+          <CountdownTimer targetDate={WEDDING.dates.weddingDate} />
         </ScrollReveal>
       </section>
-
       <KolamDivider />
-
-      {/* RSVP CTA */}
-      <section className="section-padding text-center">
+      <InvitationPreview />
+      <KolamDivider />
+      <EventsTeaser />
+      <KolamDivider />
+      <section className="section-tight text-center">
         <ScrollReveal>
-          <p className="text-text-muted text-xs tracking-[0.3em] uppercase mb-4">
-            Kindly Respond
-          </p>
-          <h2 className="font-serif text-4xl text-gold mb-6">RSVP</h2>
-          <p className="text-text-secondary mb-8">
-            We look forward to celebrating with you
-          </p>
-          <Link
-            href="/rsvp"
-            className="inline-block px-10 py-3 border border-gold text-gold text-sm tracking-widest uppercase rounded-full hover:bg-gold hover:text-bg-primary transition-all duration-300"
-          >
-            Respond Now
-          </Link>
+          <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2">
+            <div className="grid h-[20rem] place-items-center rounded-xl border border-dashed border-linen/40 bg-burgundy-deep">
+              <p className="font-cormorant text-3xl italic text-linen/86">Couple portrait placeholder</p>
+            </div>
+          </div>
         </ScrollReveal>
       </section>
+      <KolamDivider />
+      <VenueSection />
+      <KolamDivider />
+      <HotelSection />
+      <KolamDivider />
+      <RSVPSection />
     </>
   );
 }

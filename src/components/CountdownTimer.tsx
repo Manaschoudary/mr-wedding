@@ -23,7 +23,7 @@ function calculateTimeLeft(targetDate: Date): TimeLeft {
 }
 
 interface CountdownTimerProps {
-  targetDate: Date;
+  readonly targetDate: Date;
 }
 
 export function CountdownTimer({ targetDate }: CountdownTimerProps) {
@@ -50,11 +50,13 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
 
   if (!mounted) {
     return (
-      <div className="flex items-center justify-center gap-6 sm:gap-10">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {blocks.map((block) => (
-          <div key={block.label} className="flex flex-col items-center">
-            <span className="countdown-number">--</span>
-            <span className="countdown-label">{block.label}</span>
+          <div key={block.label} className="rounded-xl border border-olive/35 bg-linen-soft p-4 text-center">
+            <p className="font-cinzel text-3xl text-ink">--</p>
+            <p className="mt-1 font-josefin text-[0.62rem] uppercase tracking-[0.25em] text-ink/75">
+              {block.label}
+            </p>
           </div>
         ))}
       </div>
@@ -62,11 +64,18 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
   }
 
   return (
-    <div className="flex items-center justify-center gap-6 sm:gap-10">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
       {blocks.map((block) => (
-        <div key={block.label} className="flex flex-col items-center">
-          <span className="countdown-number">{block.value}</span>
-          <span className="countdown-label">{block.label}</span>
+        <div
+          key={block.label}
+          className="rounded-xl border border-olive/40 bg-linen-soft p-4 text-center shadow-[0_10px_20px_rgba(0,0,0,0.16)]"
+        >
+          <p className="font-cinzel text-3xl text-ink sm:text-[2.15rem]">
+            {String(block.value).padStart(2, "0")}
+          </p>
+          <p className="mt-1 font-josefin text-[0.62rem] uppercase tracking-[0.25em] text-ink/75">
+            {block.label}
+          </p>
         </div>
       ))}
     </div>

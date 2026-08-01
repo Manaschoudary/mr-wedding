@@ -2,55 +2,78 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 
 interface RSVPEventResponse {
-  eventId: string;
-  status: "attending" | "tentative" | "decline";
+  readonly eventId: string;
+  readonly status: "attending" | "tentative" | "decline";
 }
 
 interface RSVPRequest {
-  name: string;
-  email?: string;
-  phone?: string;
-  events: RSVPEventResponse[];
+  readonly name: string;
+  readonly email?: string;
+  readonly phone?: string;
+  readonly note?: string;
+  readonly events: readonly RSVPEventResponse[];
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function parseRequest(value: unknown): RSVPRequest | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const name = value.name;
+  const email = value.email;
+  const phone = value.phone;
+  const note = value.note;
+  const events = value.events;
+
+  if (typeof name !== "string" || name.trim().length === 0 || !Array.isArray(events) || events.length === 0) {
+    return null;
+  }
+
+  const validStatuses = new Set(["attending", "tentative", "decline"] as const);
+  const parsedEvents: RSVPEventResponse[] = [];
+
+  for (const item of events) {
+    if (!isRecord(item)) {
+      return null;
+    }
+    const eventId = item.eventId;
+    const status = item.status;
+    if (typeof eventId !== "string" || typeof status !== "string" || !validStatuses.has(status as RSVPEventResponse["status"])) {
+      return null;
+    }
+    parsedEvents.push({ eventId, status: status as RSVPEventResponse["status"] });
+  }
+
+  return {
+    name,
+    email: typeof email === "string" ? email : undefined,
+    phone: typeof phone === "string" ? phone : undefined,
+    note: typeof note === "string" ? note : undefined,
+    events: parsedEvents,
+  };
 }
 
 export async function POST(request: Request) {
   try {
-    const body: RSVPRequest = await request.json();
+    const parsed = parseRequest(await request.json());
 
-    // Validate required fields
-    if (!body.name || typeof body.name !== "string" || !body.name.trim()) {
-      return NextResponse.json(
-        { error: "Name is required" },
-        { status: 400 }
-      );
-    }
-
-    if (!Array.isArray(body.events) || body.events.length === 0) {
-      return NextResponse.json(
-        { error: "At least one event response is required" },
-        { status: 400 }
-      );
-    }
-
-    // Validate event responses
-    const validStatuses = new Set(["attending", "tentative", "decline"]);
-    for (const event of body.events) {
-      if (!event.eventId || !validStatuses.has(event.status)) {
-        return NextResponse.json(
-          { error: "Invalid event response format" },
-          { status: 400 }
-        );
-      }
+    if (parsed === null) {
+      return NextResponse.json({ error: "Invalid RSVP payload" }, { status: 400 });
     }
 
     const db = await getDb();
     const collection = db.collection("rsvps");
 
     const rsvpDoc = {
-      name: body.name.trim(),
-      email: body.email?.trim() || null,
-      phone: body.phone?.trim() || null,
-      events: body.events.map((e) => ({
+      name: parsed.name.trim(),
+      email: parsed.email?.trim() || null,
+      phone: parsed.phone?.trim() || null,
+      note: parsed.note?.trim() || null,
+      events: parsed.events.map((e) => ({
         eventId: e.eventId,
         status: e.status,
       })),
@@ -58,7 +81,6 @@ export async function POST(request: Request) {
       updatedAt: new Date(),
     };
 
-    // Upsert by name (allows guests to update their RSVP)
     await collection.updateOne(
       { name: rsvpDoc.name },
       {
@@ -73,15 +95,9 @@ export async function POST(request: Request) {
       { upsert: true }
     );
 
-    return NextResponse.json(
-      { message: "RSVP submitted successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "RSVP submitted successfully" }, { status: 200 });
   } catch (error) {
     console.error("RSVP submission error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

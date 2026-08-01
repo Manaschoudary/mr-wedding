@@ -1,21 +1,49 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Lato } from "next/font/google";
+import {
+  Cinzel,
+  Cormorant_Garamond,
+  Great_Vibes,
+  Josefin_Sans,
+  Pinyon_Script,
+} from "next/font/google";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const josefin = Josefin_Sans({
+  variable: "--font-josefin",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
+
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
 
-const lato = Lato({
-  variable: "--font-lato",
+const greatVibes = Great_Vibes({
+  variable: "--font-great-vibes",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "700"],
+  weight: ["400"],
+});
+
+const pinyon = Pinyon_Script({
+  variable: "--font-pinyon",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -38,9 +66,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${lato.variable} antialiased`}
+      className={`${josefin.variable} ${cormorant.variable} ${cinzel.variable} ${greatVibes.variable} ${pinyon.variable} antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-bg-primary text-text-primary">
+      <body className="min-h-[100dvh] flex flex-col wedding-bg text-linen font-josefin">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

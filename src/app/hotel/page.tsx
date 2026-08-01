@@ -1,67 +1,44 @@
-import { HOTEL } from "@/lib/data";
 import { KolamDivider } from "@/components/KolamDivider";
-import { ScrollReveal } from "@/components/ScrollReveal";
+import { HOTEL } from "@/lib/data";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Hotel | Manas & Rupa #MR Wedding",
-  description: "Recommended hotel and travel information for the #MR Wedding.",
+  description: "Nearby hotel and airport guidance for the wedding celebration.",
 };
 
 export default function HotelPage() {
   return (
-    <div className="min-h-screen pt-20">
+    <div className="pb-10 pt-24">
       <KolamDivider />
+      <section className="section-tight text-center">
+        <p className="font-script text-6xl leading-none text-linen">Nearby Hotel</p>
+        <article className="mx-auto mt-7 max-w-3xl rounded-2xl border border-linen/30 bg-burgundy-deep p-7">
+          <p className="font-cormorant text-4xl italic text-linen">{HOTEL.name}</p>
+          <p className="mt-2 font-josefin text-sm text-linen/86">{HOTEL.address}</p>
+          <ul className="mt-5 space-y-2">
+            {HOTEL.details.map((line) => (
+              <li key={line} className="font-josefin text-sm text-linen/9">
+                {line}
+              </li>
+            ))}
+          </ul>
+          <a
+            href={HOTEL.bookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-flex rounded-xl bg-olive px-6 py-3 font-josefin text-[0.7rem] uppercase tracking-[0.24em] text-linen transition hover:bg-olive-strong"
+          >
+            Reserve Stay
+          </a>
+        </article>
 
-      <section className="section-padding text-center max-w-3xl mx-auto">
-        <ScrollReveal>
-          <p className="text-text-muted text-xs tracking-[0.3em] uppercase mb-4">
-            Where to Stay
-          </p>
-          <h2 className="font-serif text-3xl sm:text-4xl text-gold mb-12">
-            Nearby Hotel
-          </h2>
-        </ScrollReveal>
-
-        <ScrollReveal delay={0.15}>
-          <div className="bg-bg-secondary/60 rounded-2xl p-8 border border-gold/10 mb-8">
-            <h3 className="font-serif text-2xl text-cream mb-3">
-              {HOTEL.name}
-            </h3>
-            <p className="text-text-secondary text-sm mb-6">{HOTEL.address}</p>
-
-            <ul className="text-text-secondary text-sm space-y-2 mb-8">
-              {HOTEL.details.map((detail) => (
-                <li key={detail} className="flex items-center justify-center gap-2">
-                  <span className="text-gold text-xs">◈</span>
-                  {detail}
-                </li>
-              ))}
-            </ul>
-
-            <a
-              href={HOTEL.bookingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-8 py-3 border border-gold text-gold text-sm tracking-widest uppercase rounded-full hover:bg-gold hover:text-bg-primary transition-all duration-300"
-            >
-              Book your room
-            </a>
-          </div>
-        </ScrollReveal>
-
-        <ScrollReveal delay={0.3}>
-          <div className="bg-bg-secondary/40 rounded-xl p-6 border border-gold/5">
-            <p className="text-text-muted text-xs tracking-[0.2em] uppercase mb-2">
-              Nearest Airport
-            </p>
-            <p className="text-cream font-serif text-lg">
-              {HOTEL.airport.name}
-            </p>
-          </div>
-        </ScrollReveal>
+        <article className="mx-auto mt-5 max-w-3xl rounded-2xl border border-dashed border-linen/45 bg-linen-soft p-6 text-ink">
+          <p className="font-josefin text-[0.66rem] uppercase tracking-[0.22em]">Airport Info</p>
+          <p className="mt-2 font-cormorant text-3xl italic">{HOTEL.airport.name}</p>
+          <p className="mt-2 font-josefin text-sm">{HOTEL.airport.note}</p>
+        </article>
       </section>
-
       <KolamDivider />
     </div>
   );
