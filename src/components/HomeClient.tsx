@@ -1,10 +1,12 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { KolamDivider } from "@/components/KolamDivider";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
 import { EVENTS, HOTEL, VENUES, WEDDING } from "@/lib/data";
 
 function Hero() {
@@ -232,35 +234,51 @@ function RSVPSection() {
 }
 
 export function HomeClient() {
+  const [introComplete, setIntroComplete] = useState(false);
+  const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
+
   return (
     <>
-      <Hero />
-      <InvitationEmblem />
-      <section id="countdown" className="section-tight text-center">
-        <ScrollReveal>
-          <CountdownTimer targetDate={WEDDING.dates.weddingDate} />
-        </ScrollReveal>
-      </section>
-      <KolamDivider />
-      <InvitationPreview />
-      <KolamDivider />
-      <EventsTeaser />
-      <KolamDivider />
-      <section className="section-tight text-center">
-        <ScrollReveal>
-          <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2">
-            <div className="grid h-[20rem] place-items-center rounded-xl border border-dashed border-linen/40 bg-burgundy-deep">
-              <p className="font-cormorant text-3xl italic text-linen/86">Couple portrait placeholder</p>
+      {/* Door opening intro animation */}
+      <DoorIntro onComplete={handleIntroComplete} />
+
+      {/* Falling petals (appear after doors open) */}
+      {introComplete && <FallingPetals />}
+
+      {/* Main content - hero animations delayed until doors open */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={introComplete ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.8, delay: 0.1 }}
+      >
+        <Hero />
+        <InvitationEmblem />
+        <section id="countdown" className="section-tight text-center">
+          <ScrollReveal>
+            <CountdownTimer targetDate={WEDDING.dates.weddingDate} />
+          </ScrollReveal>
+        </section>
+        <KolamDivider />
+        <InvitationPreview />
+        <KolamDivider />
+        <EventsTeaser />
+        <KolamDivider />
+        <section className="section-tight text-center">
+          <ScrollReveal>
+            <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2">
+              <div className="grid h-[20rem] place-items-center rounded-xl border border-dashed border-linen/40 bg-burgundy-deep">
+                <p className="font-cormorant text-3xl italic text-linen/86">Couple portrait placeholder</p>
+              </div>
             </div>
-          </div>
-        </ScrollReveal>
-      </section>
-      <KolamDivider />
-      <VenueSection />
-      <KolamDivider />
-      <HotelSection />
-      <KolamDivider />
-      <RSVPSection />
+          </ScrollReveal>
+        </section>
+        <KolamDivider />
+        <VenueSection />
+        <KolamDivider />
+        <HotelSection />
+        <KolamDivider />
+        <RSVPSection />
+      </motion.div>
     </>
   );
 }
