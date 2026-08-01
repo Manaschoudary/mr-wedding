@@ -152,7 +152,10 @@ function EventsTeaser() {
                   filter: offset === 0 ? "none" : "brightness(0.72)",
                 }}
               >
-                <div className={`h-[62%] bg-gradient-to-br ${event.accent}`} />
+                <div className="relative h-[62%] overflow-hidden rounded-t-2xl">
+                  <img src={event.image} alt={event.name} className="h-full w-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2a0f11]/60 to-transparent" />
+                </div>
                 <div className="flex h-[38%] flex-col items-center justify-center bg-burgundy px-4 text-center">
                   <p className="font-script text-4xl leading-none text-linen">{event.name}</p>
                   <p className="mt-3 font-josefin text-[0.62rem] uppercase tracking-[0.26em] text-linen/78">Tap for details</p>
@@ -266,9 +269,11 @@ export function HomeClient() {
         <section className="section-tight text-center">
           <ScrollReveal>
             <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2">
-              <div className="grid h-[20rem] place-items-center rounded-xl border border-dashed border-linen/40 bg-burgundy-deep">
-                <p className="font-cormorant text-3xl italic text-linen/86">Couple portrait placeholder</p>
-              </div>
+              <img
+                src="/couple.jpg"
+                alt="Manas and Rupa"
+                className="h-auto w-full rounded-xl object-cover"
+              />
             </div>
           </ScrollReveal>
         </section>

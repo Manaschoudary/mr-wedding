@@ -11,6 +11,7 @@ export interface WeddingEvent {
   readonly dressCode?: string;
   readonly meal: string;
   readonly accent: string;
+  readonly image: string;
 }
 
 export interface Venue {
@@ -94,6 +95,7 @@ export const EVENTS = [
     dressCode: "Yellow Indian Attire",
     meal: "Breakfast will be served",
     accent: "from-[#8f5f2a] to-[#5a6b35]",
+    image: "/events/pasupu-jathara.jpg",
   },
   {
     id: "pelli-alankarana",
@@ -105,6 +107,7 @@ export const EVENTS = [
     mapsUrl: "https://maps.google.com",
     meal: "Lunch will be served",
     accent: "from-[#9a7b4f] to-[#6b3a27]",
+    image: "/events/pelli-alankarana.jpg",
   },
   {
     id: "gorintaku-sandadi",
@@ -116,6 +119,7 @@ export const EVENTS = [
     mapsUrl: "https://maps.google.com",
     meal: "Dinner will be served",
     accent: "from-[#5a6b35] to-[#3f4a23]",
+    image: "/events/gorintaku-sandadi.jpg",
   },
   {
     id: "kalyana-mahotsavam",
@@ -128,6 +132,7 @@ export const EVENTS = [
     dressCode: "Traditional Indian Attire",
     meal: "Lunch will be served",
     accent: "from-[#9a7b4f] to-[#5a6b35]",
+    image: "/events/kalyana-mahotsavam.jpg",
   },
   {
     id: "mr-night",
@@ -140,6 +145,7 @@ export const EVENTS = [
     dressCode: "Elegant evening attire",
     meal: "Dinner and refreshments will be served",
     accent: "from-[#754329] to-[#5a6b35]",
+    image: "/events/mr-night.jpg",
   },
 ] satisfies readonly WeddingEvent[];
 

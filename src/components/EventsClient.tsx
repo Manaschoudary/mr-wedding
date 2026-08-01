@@ -73,7 +73,14 @@ export function EventsClient() {
                   transition={{ type: "spring", stiffness: 180, damping: 24 }}
                   aria-label={`Open ${event.name} details`}
                 >
-                  <div className={`h-[62%] bg-gradient-to-br ${event.accent}`} />
+                  <div className="relative h-[62%] overflow-hidden rounded-t-2xl">
+                  <img
+                    src={event.image}
+                    alt={event.name}
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2a0f11]/60 to-transparent" />
+                </div>
                   <div className="flex h-[38%] flex-col items-center justify-center bg-burgundy px-4 text-center">
                     <p className="font-script text-[2.1rem] leading-none text-linen">{event.name}</p>
                     <p className="mt-3 font-josefin text-[0.62rem] uppercase tracking-[0.26em] text-linen/76">Tap for details</p>
