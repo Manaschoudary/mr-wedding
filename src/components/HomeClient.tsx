@@ -7,6 +7,7 @@ import { KolamDivider } from "@/components/KolamDivider";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
 import { RSVPClient } from "@/components/RSVPClient";
+import { EventsClient } from "@/components/EventsClient";
 import { EVENTS, HOTEL, VENUES, WEDDING } from "@/lib/data";
 
 function Hero() {
@@ -127,51 +128,7 @@ function InvitationPreview() {
 }
 
 function EventsTeaser() {
-  const showcase = EVENTS.slice(0, 3);
-
-  return (
-    <section className="section-wide text-center">
-      <ScrollReveal>
-        <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Wedding Functions</p>
-      </ScrollReveal>
-      <div className="event-stack-perspective mx-auto mt-8 max-w-4xl px-1">
-        <div className="relative mx-auto h-[20rem] w-full max-w-[16.5rem] sm:max-w-[20rem]">
-          {showcase.map((event, index) => {
-            const offset = index - 1;
-            return (
-              <motion.div
-                key={event.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.12 }}
-                className="event-card-shell absolute inset-0"
-                style={{
-                  transform: `translateX(${offset * 55}px) translateY(${Math.abs(offset) * 10}px) scale(${1 - Math.abs(offset) * 0.06})`,
-                  zIndex: 10 - Math.abs(offset),
-                  filter: offset === 0 ? "none" : "brightness(0.55)",
-                }}
-              >
-                <div className="relative h-[62%] overflow-hidden rounded-t-2xl">
-                  <img src={event.image} alt={event.name} className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#2a0f11]/60 to-transparent" />
-                </div>
-                <div className="flex h-[38%] flex-col items-center justify-center bg-burgundy px-4 text-center">
-                  <p className="font-script text-4xl leading-none text-linen">{event.name}</p>
-                  <p className="mt-3 font-josefin text-[0.62rem] uppercase tracking-[0.26em] text-linen/78">Tap for details</p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="mt-8">
-        <Link href="/events" className="rounded-full border border-linen/35 px-7 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.24em] text-linen transition hover:bg-olive hover:border-olive">
-          Explore Events
-        </Link>
-      </div>
-    </section>
-  );
+  return <EventsClient />;
 }
 
 function VenueSection() {
