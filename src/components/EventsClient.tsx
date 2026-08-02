@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 import { EVENTS } from "@/lib/data";
 import { KolamDivider } from "@/components/KolamDivider";
 
@@ -18,6 +18,15 @@ function clampIndex(next: number, length: number): number {
 export function EventsClient() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showDetails, setShowDetails] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 639px)");
+    const updateScreenState = () => setIsMobile(mediaQuery.matches);
+    updateScreenState();
+    mediaQuery.addEventListener("change", updateScreenState);
+    return () => mediaQuery.removeEventListener("change", updateScreenState);
+  }, []);
 
   const cards = useMemo(() => {
     const total = EVENTS.length;
@@ -30,6 +39,23 @@ export function EventsClient() {
 
   const activeEvent = EVENTS[activeIndex];
 
+  function onCardDragEnd(offsetX: number) {
+    if (!isMobile) {
+      return;
+    }
+
+    if (offsetX <= -42) {
+      setShowDetails(false);
+      setActiveIndex((current) => clampIndex(current + 1, EVENTS.length));
+      return;
+    }
+
+    if (offsetX >= 42) {
+      setShowDetails(false);
+      setActiveIndex((current) => clampIndex(current - 1, EVENTS.length));
+    }
+  }
+
   return (
     <div className="pb-10 pt-24">
       <KolamDivider />
@@ -37,15 +63,15 @@ export function EventsClient() {
         <div className="mx-auto max-w-5xl rounded-2xl border border-dashed border-linen/45 bg-burgundy-deep p-4 sm:p-6">
           <div className="olive-card p-6 text-center sm:p-8">
             <p className="font-josefin text-[0.68rem] uppercase tracking-[0.28em] text-linen/85">EVENT NAVIGATOR</p>
-            <p className="mt-2 font-script text-6xl leading-none text-linen">Wedding Functions</p>
+            <p className="mt-2 font-script text-4xl leading-none text-linen sm:text-6xl">Wedding Functions</p>
             <p className="mx-auto mt-4 max-w-xl font-cormorant text-xl italic text-linen/92">
               Tap an event card to open details for date, time, venue, dress code, and meal.
             </p>
           </div>
         </div>
 
-        <div className="event-stack-perspective mx-auto mt-9 max-w-4xl">
-          <div className="relative mx-auto h-[26rem] w-full max-w-[19rem] sm:h-[28rem] sm:max-w-[22rem]">
+        <div className="event-stack-perspective mx-auto mt-9 max-w-4xl overflow-hidden px-1">
+          <div className="relative mx-auto h-[22rem] w-full max-w-[17rem] overflow-hidden sm:h-[26rem] sm:max-w-[22rem]">
             {cards.map(({ event, index, offset }) => {
               const distance = Math.abs(offset);
               const isCenter = offset === 0;
@@ -62,10 +88,16 @@ export function EventsClient() {
                     zIndex: 20 - distance,
                     pointerEvents: distance > 1 ? "none" : "auto",
                   }}
+                  drag={isMobile && isCenter ? "x" : false}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.18}
+                  onDragEnd={(_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) =>
+                    onCardDragEnd(info.offset.x)
+                  }
                   animate={{
-                    x: offset * 94,
-                    y: distance * 18,
-                    scale: isCenter ? 1 : 0.86 - distance * 0.06,
+                    x: offset * (isMobile ? 40 : 94),
+                    y: distance * (isMobile ? 12 : 18),
+                    scale: isCenter ? 1 : isMobile ? 0.92 - distance * 0.04 : 0.86 - distance * 0.06,
                     rotateY: offset * -15,
                     filter: isCenter ? "brightness(1)" : "brightness(0.55)",
                     opacity: distance > 2 ? 0 : 1,

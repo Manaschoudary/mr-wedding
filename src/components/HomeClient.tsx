@@ -134,8 +134,8 @@ function EventsTeaser() {
       <ScrollReveal>
         <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Wedding Functions</p>
       </ScrollReveal>
-      <div className="event-stack-perspective mx-auto mt-8 max-w-4xl">
-        <div className="relative mx-auto h-[20rem] w-full max-w-[18rem] sm:max-w-[20rem]">
+      <div className="event-stack-perspective mx-auto mt-8 max-w-4xl overflow-hidden px-1">
+        <div className="relative mx-auto h-[20rem] w-full max-w-[16.5rem] overflow-hidden sm:max-w-[20rem]">
           {showcase.map((event, index) => {
             const offset = index - 1;
             return (
@@ -147,7 +147,7 @@ function EventsTeaser() {
                 transition={{ delay: index * 0.12 }}
                 className="event-card-shell absolute inset-0"
                 style={{
-                  transform: `translateX(${offset * 28}px) translateY(${Math.abs(offset) * 10}px) scale(${1 - Math.abs(offset) * 0.08})`,
+                  transform: `translateX(${offset * 22}px) translateY(${Math.abs(offset) * 10}px) scale(${1 - Math.abs(offset) * 0.06})`,
                   zIndex: 10 - Math.abs(offset),
                   filter: offset === 0 ? "none" : "brightness(0.72)",
                 }}

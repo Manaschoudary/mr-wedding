@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type FormEventHandler } from "react";
+import { useMemo, useState, type ComponentProps } from "react";
 import { motion } from "framer-motion";
 import { EVENTS, type AttendanceStatus } from "@/lib/data";
 import { KolamDivider } from "@/components/KolamDivider";
@@ -32,7 +32,7 @@ export function RSVPClient() {
     setResponses((current) => current.map((entry) => (entry.eventId === eventId ? { ...entry, status } : entry)));
   }
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+  const handleSubmit: NonNullable<ComponentProps<"form">["onSubmit"]> = async (event) => {
     event.preventDefault();
     setError("");
 
@@ -123,15 +123,19 @@ export function RSVPClient() {
                 <p className="font-script text-[2.1rem] leading-none">{eventItem.name}</p>
                 <p className="mt-2 font-josefin text-[0.66rem] uppercase tracking-[0.22em]">{eventItem.date}</p>
                 <p className="mt-1 font-cormorant text-xl italic">{eventItem.time}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {STATUS_OPTIONS.map((statusValue) => {
+                <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
+                  {STATUS_OPTIONS.map((statusValue, index) => {
                     const active = byId.get(eventItem.id) === statusValue;
+                    const mobileLayoutClass =
+                      index < 2
+                        ? "basis-[calc(50%-0.25rem)] grow sm:basis-auto sm:grow-0"
+                        : "basis-full sm:basis-auto";
                     return (
                       <button
                         key={statusValue}
                         type="button"
                         data-active={active}
-                        className="rsvp-pill"
+                        className={`rsvp-pill min-w-[8.75rem] text-center ${mobileLayoutClass}`}
                         onClick={() => updateStatus(eventItem.id, statusValue)}
                       >
                         {statusValue}

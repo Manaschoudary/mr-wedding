@@ -11,7 +11,7 @@ export function InvitationClient() {
       <section className="section-tight">
         <ScrollReveal>
           <div className="rounded-2xl border border-dashed border-linen/50 bg-burgundy-deep p-4 sm:p-6">
-            <div className="olive-card p-6 sm:p-9">
+            <div className="olive-card p-5 sm:p-9">
               <p className="text-center font-josefin text-[0.66rem] uppercase tracking-[0.32em] text-linen/86">
                 {WEDDING.invitationTagline}
               </p>
@@ -20,7 +20,7 @@ export function InvitationClient() {
                 {WEDDING.invitationText}
               </p>
 
-              <div className="mt-8 grid gap-7 md:grid-cols-[1fr_auto_1fr] md:items-end">
+              <div className="mt-7 grid grid-cols-1 gap-5 sm:mt-8 sm:gap-7 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
                 <div className="text-center md:text-left">
                   <p className="font-script text-6xl leading-none text-linen sm:text-7xl">{WEDDING.couple.bride.firstName}</p>
                   <p className="mt-2 font-josefin text-[0.7rem] uppercase tracking-[0.2em] text-linen/88">
