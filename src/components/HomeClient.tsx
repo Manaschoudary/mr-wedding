@@ -6,6 +6,7 @@ import { CountdownTimer } from "@/components/CountdownTimer";
 import { KolamDivider } from "@/components/KolamDivider";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
+import { RSVPClient } from "@/components/RSVPClient";
 import { EVENTS, HOTEL, VENUES, WEDDING } from "@/lib/data";
 
 function Hero() {
@@ -220,17 +221,8 @@ function HotelSection() {
 
 function RSVPSection() {
   return (
-    <section className="section-tight text-center">
-      <ScrollReveal>
-        <p className="caps-label">Kindly Respond</p>
-        <p className="mt-3 font-script text-6xl leading-none text-linen">RSVP</p>
-        <p className="mt-4 font-josefin text-[0.7rem] uppercase tracking-[0.26em] text-linen/82">
-          We look forward to celebrating with you
-        </p>
-        <Link href="/rsvp" className="mt-7 inline-flex w-full max-w-sm justify-center rounded-xl bg-olive px-6 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.24em] text-linen transition hover:bg-olive-strong">
-          Send RSVP
-        </Link>
-      </ScrollReveal>
+    <section className="section-tight">
+      <RSVPClient />
     </section>
   );
 }
