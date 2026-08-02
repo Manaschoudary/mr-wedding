@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CountdownTimer } from "@/components/CountdownTimer";
@@ -134,8 +133,8 @@ function EventsTeaser() {
       <ScrollReveal>
         <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Wedding Functions</p>
       </ScrollReveal>
-      <div className="event-stack-perspective mx-auto mt-8 max-w-4xl overflow-hidden px-1">
-        <div className="relative mx-auto h-[20rem] w-full max-w-[16.5rem] overflow-hidden sm:max-w-[20rem]">
+      <div className="event-stack-perspective mx-auto mt-8 max-w-4xl px-1">
+        <div className="relative mx-auto h-[20rem] w-full max-w-[16.5rem] sm:max-w-[20rem]">
           {showcase.map((event, index) => {
             const offset = index - 1;
             return (
@@ -147,9 +146,9 @@ function EventsTeaser() {
                 transition={{ delay: index * 0.12 }}
                 className="event-card-shell absolute inset-0"
                 style={{
-                  transform: `translateX(${offset * 22}px) translateY(${Math.abs(offset) * 10}px) scale(${1 - Math.abs(offset) * 0.06})`,
+                  transform: `translateX(${offset * 55}px) translateY(${Math.abs(offset) * 10}px) scale(${1 - Math.abs(offset) * 0.06})`,
                   zIndex: 10 - Math.abs(offset),
-                  filter: offset === 0 ? "none" : "brightness(0.72)",
+                  filter: offset === 0 ? "none" : "brightness(0.55)",
                 }}
               >
                 <div className="relative h-[62%] overflow-hidden rounded-t-2xl">
@@ -237,53 +236,42 @@ function RSVPSection() {
 }
 
 export function HomeClient() {
-  const [introComplete, setIntroComplete] = useState(false);
-  const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
-
   return (
     <>
       {/* Door opening intro animation */}
-      <DoorIntro onComplete={handleIntroComplete} />
+      <DoorIntro />
 
-      {/* Falling petals (appear after doors open) */}
-      {introComplete && <FallingPetals />}
+      <FallingPetals />
 
-      {/* Main content - hero animations delayed until doors open */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={introComplete ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.8, delay: 0.1 }}
-      >
-        <Hero />
-        <InvitationEmblem />
-        <section id="countdown" className="section-tight text-center">
-          <ScrollReveal>
-            <CountdownTimer targetDate={WEDDING.dates.weddingDate} />
-          </ScrollReveal>
-        </section>
-        <KolamDivider />
-        <InvitationPreview />
-        <KolamDivider />
-        <EventsTeaser />
-        <KolamDivider />
-        <section className="section-tight text-center">
-          <ScrollReveal>
-            <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2">
-              <img
-                src="/couple.jpg"
-                alt="Manas and Rupa"
-                className="h-auto w-full rounded-xl object-cover"
-              />
-            </div>
-          </ScrollReveal>
-        </section>
-        <KolamDivider />
-        <VenueSection />
-        <KolamDivider />
-        <HotelSection />
-        <KolamDivider />
-        <RSVPSection />
-      </motion.div>
+      <Hero />
+      <InvitationEmblem />
+      <section id="countdown" className="section-tight text-center">
+        <ScrollReveal>
+          <CountdownTimer targetDate={WEDDING.dates.weddingDate} />
+        </ScrollReveal>
+      </section>
+      <KolamDivider />
+      <InvitationPreview />
+      <KolamDivider />
+      <EventsTeaser />
+      <KolamDivider />
+      <section className="section-tight text-center">
+        <ScrollReveal>
+          <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2">
+            <img
+              src="/couple.jpg"
+              alt="Manas and Rupa"
+              className="h-auto w-full rounded-xl object-cover"
+            />
+          </div>
+        </ScrollReveal>
+      </section>
+      <KolamDivider />
+      <VenueSection />
+      <KolamDivider />
+      <HotelSection />
+      <KolamDivider />
+      <RSVPSection />
     </>
   );
 }

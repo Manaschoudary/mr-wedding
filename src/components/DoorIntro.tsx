@@ -3,6 +3,28 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+type PetalSpec = {
+  readonly delay: number;
+  readonly startX: number;
+  readonly duration: number;
+  readonly size: number;
+};
+
+const PETALS: readonly PetalSpec[] = [
+  { delay: 0, startX: 12, duration: 6.6, size: 20 },
+  { delay: 0.3, startX: 20, duration: 6.9, size: 24 },
+  { delay: 0.7, startX: 28, duration: 6.3, size: 22 },
+  { delay: 1.1, startX: 36, duration: 7.1, size: 28 },
+  { delay: 1.4, startX: 44, duration: 6.7, size: 26 },
+  { delay: 1.8, startX: 52, duration: 7.4, size: 30 },
+  { delay: 2.2, startX: 60, duration: 6.5, size: 24 },
+  { delay: 2.5, startX: 68, duration: 7.2, size: 32 },
+  { delay: 2.9, startX: 76, duration: 6.8, size: 25 },
+  { delay: 3.3, startX: 84, duration: 7, size: 29 },
+  { delay: 3.6, startX: 90, duration: 6.4, size: 23 },
+  { delay: 4, startX: 95, duration: 7.3, size: 27 },
+] as const;
+
 function DiyaPattern() {
   return (
     <svg
@@ -94,34 +116,35 @@ function DoorPanel({ side }: { side: "left" | "right" }) {
   );
 }
 
-function FallingPetal({ delay, startX, duration }: { delay: number; startX: number; duration: number }) {
+function FallingPetal({ delay, startX, duration, size }: PetalSpec) {
   return (
     <motion.div
       className="absolute pointer-events-none"
-      initial={{ opacity: 0, x: startX, y: -40, rotate: 0 }}
+      style={{ width: `${size}px`, height: `${size + 4}px` }}
+      initial={{ opacity: 0, x: `${startX}vw`, y: "-12vh", rotate: 0 }}
       animate={{
-        opacity: [0, 0.85, 0.85, 0],
-        x: [startX, startX + 30, startX - 20, startX + 10],
-        y: [-40, window?.innerHeight ? window.innerHeight * 0.4 : 350, window?.innerHeight ? window.innerHeight * 0.7 : 600, window?.innerHeight ? window.innerHeight + 40 : 950],
+        opacity: [0, 0.95, 0.9, 0],
+        x: [`${startX}vw`, `${startX + 4}vw`, `${startX - 3}vw`, `${startX + 2}vw`],
+        y: ["-12vh", "38vh", "74vh", "112vh"],
         rotate: [0, 45, -30, 90],
       }}
       transition={{
         duration,
-        delay,
+        delay: 3.5 + delay,
         ease: "easeInOut",
         repeat: Infinity,
-        repeatDelay: Math.random() * 3 + 1,
+        repeatDelay: 1.2,
       }}
     >
-      <svg width="16" height="18" viewBox="0 0 16 18" fill="none">
-        <ellipse cx="8" cy="9" rx="6" ry="8" fill="#e8b4c0" opacity="0.8" />
-        <ellipse cx="7" cy="8" rx="4" ry="5.5" fill="#f0c8d4" opacity="0.6" />
+      <svg width="100%" height="100%" viewBox="0 0 24 28" fill="none">
+        <ellipse cx="12" cy="14" rx="9" ry="12" fill="#e8b4c0" opacity="0.9" />
+        <ellipse cx="11" cy="12" rx="6.5" ry="8" fill="#f3d1db" opacity="0.72" />
       </svg>
     </motion.div>
   );
 }
 
-export function DoorIntro({ onComplete }: { onComplete: () => void }) {
+export function DoorIntro() {
   const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
 
   useEffect(() => {
@@ -130,14 +153,13 @@ export function DoorIntro({ onComplete }: { onComplete: () => void }) {
     // Complete after doors fully open
     const doneTimer = setTimeout(() => {
       setPhase("done");
-      onComplete();
     }, 3200);
 
     return () => {
       clearTimeout(openTimer);
       clearTimeout(doneTimer);
     };
-  }, [onComplete]);
+  }, []);
 
   return (
     <AnimatePresence>
@@ -193,23 +215,9 @@ export function DoorIntro({ onComplete }: { onComplete: () => void }) {
 }
 
 export function FallingPetals() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
-  const petals = Array.from({ length: 8 }).map((_, i) => ({
-    delay: i * 0.7 + 2.5,
-    startX: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000) * 0.7 + (typeof window !== "undefined" ? window.innerWidth : 1000) * 0.15,
-    duration: 5 + Math.random() * 3,
-  }));
-
   return (
-    <div className="pointer-events-none fixed inset-0 z-[60] overflow-hidden" aria-hidden>
-      {petals.map((petal, i) => (
+    <div className="pointer-events-none fixed inset-0 z-[40] overflow-hidden" aria-hidden>
+      {PETALS.map((petal, i) => (
         <FallingPetal key={i} {...petal} />
       ))}
     </div>

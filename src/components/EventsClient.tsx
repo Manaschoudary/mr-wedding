@@ -70,8 +70,8 @@ export function EventsClient() {
           </div>
         </div>
 
-        <div className="event-stack-perspective mx-auto mt-9 max-w-4xl overflow-hidden px-1">
-          <div className="relative mx-auto h-[22rem] w-full max-w-[17rem] overflow-hidden sm:h-[26rem] sm:max-w-[22rem]">
+        <div className="event-stack-perspective mx-auto mt-9 max-w-4xl px-1">
+          <div className="relative mx-auto h-[22rem] w-full max-w-[17rem] sm:h-[26rem] sm:max-w-[22rem]">
             {cards.map(({ event, index, offset }) => {
               const distance = Math.abs(offset);
               const isCenter = offset === 0;
@@ -95,7 +95,7 @@ export function EventsClient() {
                     onCardDragEnd(info.offset.x)
                   }
                   animate={{
-                    x: offset * (isMobile ? 40 : 94),
+                    x: offset * (isMobile ? 55 : 94),
                     y: distance * (isMobile ? 12 : 18),
                     scale: isCenter ? 1 : isMobile ? 0.92 - distance * 0.04 : 0.86 - distance * 0.06,
                     rotateY: offset * -15,
