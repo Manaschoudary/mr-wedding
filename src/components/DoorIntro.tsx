@@ -191,9 +191,6 @@ export function DoorIntro() {
             <DoorPanel side="right" />
           </motion.div>
 
-          {/* Center seam detail */}
-          <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-[2px] bg-[#1a0a0b]" />
-
           {/* Scroll down text visible during closed state */}
           <motion.div
             className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
