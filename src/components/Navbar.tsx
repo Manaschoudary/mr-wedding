@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS, WEDDING } from "@/lib/data";
@@ -17,8 +15,11 @@ function HamburgerIcon() {
 }
 
 export function Navbar() {
-  const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleNavClick = () => {
+    setDrawerOpen(false);
+  };
 
   return (
     <>
@@ -72,20 +73,16 @@ export function Navbar() {
 
               <div className="space-y-2">
                 {NAV_LINKS.map((link) => {
-                  const active = pathname === link.href;
+                  const href = link.href === "/" ? "#hero" : `#${link.href.slice(1)}`;
                   return (
-                    <Link
+                    <a
                       key={link.href}
-                      href={link.href}
-                      onClick={() => setDrawerOpen(false)}
-                      className={`block rounded-xl border px-4 py-3 font-cormorant text-[1.35rem] italic tracking-wide transition ${
-                        active
-                          ? "border-linen/70 bg-[#6a7b40] text-linen"
-                          : "border-transparent bg-[#4f5f2f] text-linen/90 hover:border-linen/40"
-                      }`}
+                      href={href}
+                      onClick={handleNavClick}
+                      className="block rounded-xl border px-4 py-3 font-cormorant text-[1.35rem] italic tracking-wide transition border-transparent bg-[#4f5f2f] text-linen/90 hover:border-linen/40"
                     >
                       {link.label}
-                    </Link>
+                    </a>
                   );
                 })}
               </div>

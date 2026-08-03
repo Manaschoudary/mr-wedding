@@ -12,7 +12,7 @@ import { EVENTS, HOTEL, VENUES, WEDDING } from "@/lib/data";
 
 function Hero() {
   return (
-    <section className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pb-14 pt-28 text-center">
+    <section id="hero" className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pb-14 pt-28 text-center">
       <motion.div
         aria-hidden
         className="absolute -left-8 top-24 h-20 w-20 rounded-full bg-olive/25 blur-2xl"
@@ -72,7 +72,7 @@ function Hero() {
 
 function InvitationEmblem() {
   return (
-    <section className="section-tight text-center">
+    <section id="invitation" className="section-tight text-center">
       <ScrollReveal>
         <Link href="/invitation" className="inline-flex flex-col items-center gap-4">
           <span className="grid h-56 w-56 place-items-center rounded-full border border-linen/45 bg-burgundy-deep sm:h-60 sm:w-60">
@@ -133,7 +133,7 @@ function EventsTeaser() {
 
 function VenueSection() {
   return (
-    <section className="section-wide text-center">
+    <section id="venue" className="section-wide text-center">
       <ScrollReveal>
         <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Where We&apos;ll Celebrate</p>
       </ScrollReveal>
@@ -154,7 +154,7 @@ function VenueSection() {
 
 function HotelSection() {
   return (
-    <section className="section-tight text-center">
+    <section id="hotel" className="section-tight text-center">
       <ScrollReveal>
         <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Nearby Hotel</p>
       </ScrollReveal>
@@ -178,7 +178,7 @@ function HotelSection() {
 
 function RSVPSection() {
   return (
-    <section className="section-tight">
+    <section id="rsvp" className="section-tight">
       <RSVPClient />
     </section>
   );
@@ -202,7 +202,9 @@ export function HomeClient() {
       <KolamDivider />
       <InvitationPreview />
       <KolamDivider />
-      <EventsTeaser />
+      <section id="events">
+        <EventsTeaser />
+      </section>
       <KolamDivider />
       <section className="section-tight text-center">
         <ScrollReveal>

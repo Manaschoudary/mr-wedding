@@ -38,6 +38,10 @@ html {
   overflow-x: hidden;
 }
 
+[id] {
+  scroll-margin-top: 4.5rem;
+}
+
 body {
   margin: 0;
   color: var(--linen);
