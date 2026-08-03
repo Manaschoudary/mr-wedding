@@ -169,7 +169,7 @@ export function EventsClient() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.22 }}
-                className="fixed inset-0 z-50 grid place-items-center bg-[#130708]/70 px-4"
+                className="fixed inset-0 z-[200] grid place-items-center bg-[#130708]/70 px-4"
                 onClick={() => setShowDetails(false)}
               >
                 <motion.article
