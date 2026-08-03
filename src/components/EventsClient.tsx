@@ -2,9 +2,52 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion, type PanInfo } from "framer-motion";
-import { EVENTS } from "@/lib/data";
+import { motion, type PanInfo } from "framer-motion";
+import { EVENTS, type WeddingEvent } from "@/lib/data";
 import { KolamDivider } from "@/components/KolamDivider";
+
+function EventModal({ event, onClose }: { event: WeddingEvent; onClose: () => void }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[9999] grid place-items-center bg-[#130708]/70 px-4"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-2xl rounded-2xl border border-dashed border-linen/45 bg-linen-soft p-6 text-ink shadow-2xl animate-[fadeScaleIn_0.25s_ease-out]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full border border-ink/20 bg-linen text-lg leading-none text-ink transition hover:bg-[#efe6cf]"
+          aria-label="Close event details"
+        >
+          ×
+        </button>
+        <p className="pr-10 font-script text-5xl leading-none">{event.name}</p>
+        <p className="mt-3 font-josefin text-[0.68rem] uppercase tracking-[0.22em]">{event.date}</p>
+        <p className="mt-1 font-cormorant text-2xl italic">{event.time}</p>
+        <p className="mt-4 font-josefin text-sm">{event.venue}</p>
+        <p className="mt-1 font-josefin text-sm">{event.address}</p>
+        {event.dressCode ? <p className="mt-4 font-josefin text-sm">Dress Code: {event.dressCode}</p> : null}
+        <p className="mt-2 font-josefin text-sm">Meal: {event.meal}</p>
+      </div>
+    </div>,
+    document.body
+  );
+}
 
 function clampIndex(next: number, length: number): number {
   if (next < 0) {
@@ -162,47 +205,9 @@ export function EventsClient() {
             </button>
           </div>
 
-          <AnimatePresence>
-            {showDetails && typeof document !== "undefined"
-              ? createPortal(
-                  <motion.div
-                    key={activeEvent.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.22 }}
-                    className="fixed inset-0 z-[9999] grid place-items-center bg-[#130708]/70 px-4"
-                    onClick={() => setShowDetails(false)}
-                  >
-                    <motion.article
-                      initial={{ opacity: 0, y: 18, scale: 0.97 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
-                      className="relative w-full max-w-2xl rounded-2xl border border-dashed border-linen/45 bg-linen-soft p-6 text-ink shadow-2xl"
-                      onClick={(event) => event.stopPropagation()}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setShowDetails(false)}
-                        className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full border border-ink/20 bg-linen text-lg leading-none text-ink transition hover:bg-[#efe6cf]"
-                        aria-label="Close event details"
-                      >
-                        ×
-                      </button>
-                      <p className="pr-10 font-script text-5xl leading-none">{activeEvent.name}</p>
-                      <p className="mt-3 font-josefin text-[0.68rem] uppercase tracking-[0.22em]">{activeEvent.date}</p>
-                      <p className="mt-1 font-cormorant text-2xl italic">{activeEvent.time}</p>
-                      <p className="mt-4 font-josefin text-sm">{activeEvent.venue}</p>
-                      <p className="mt-1 font-josefin text-sm">{activeEvent.address}</p>
-                      {activeEvent.dressCode ? <p className="mt-4 font-josefin text-sm">Dress Code: {activeEvent.dressCode}</p> : null}
-                      <p className="mt-2 font-josefin text-sm">Meal: {activeEvent.meal}</p>
-                    </motion.article>
-                  </motion.div>,
-                  document.body
-                )
-              : null}
-          </AnimatePresence>
+          {showDetails && (
+            <EventModal event={activeEvent} onClose={() => setShowDetails(false)} />
+          )}
         </div>
       </section>
       <KolamDivider />
