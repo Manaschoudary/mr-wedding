@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type PetalSpec = {
@@ -8,22 +8,36 @@ type PetalSpec = {
   readonly startX: number;
   readonly duration: number;
   readonly size: number;
+  readonly rotationStart: number;
+  readonly rotationMid: number;
+  readonly rotationEnd: number;
+  readonly driftA: number;
+  readonly driftB: number;
+  readonly repeatDelay: number;
 };
 
-const PETALS: readonly PetalSpec[] = [
-  { delay: 0, startX: 12, duration: 6.6, size: 20 },
-  { delay: 0.3, startX: 20, duration: 6.9, size: 24 },
-  { delay: 0.7, startX: 28, duration: 6.3, size: 22 },
-  { delay: 1.1, startX: 36, duration: 7.1, size: 28 },
-  { delay: 1.4, startX: 44, duration: 6.7, size: 26 },
-  { delay: 1.8, startX: 52, duration: 7.4, size: 30 },
-  { delay: 2.2, startX: 60, duration: 6.5, size: 24 },
-  { delay: 2.5, startX: 68, duration: 7.2, size: 32 },
-  { delay: 2.9, startX: 76, duration: 6.8, size: 25 },
-  { delay: 3.3, startX: 84, duration: 7, size: 29 },
-  { delay: 3.6, startX: 90, duration: 6.4, size: 23 },
-  { delay: 4, startX: 95, duration: 7.3, size: 27 },
-] as const;
+function randomFromRange(min: number, max: number): number {
+  return Math.random() * (max - min) + min;
+}
+
+function createRandomPetals(count: number): readonly PetalSpec[] {
+  return Array.from({ length: count }, () => {
+    const rotationStart = randomFromRange(-150, 150);
+    const rotationMid = randomFromRange(-300, 300);
+    return {
+      delay: randomFromRange(0, 5.4),
+      startX: randomFromRange(4, 96),
+      duration: randomFromRange(4.8, 8.9),
+      size: randomFromRange(14, 36),
+      rotationStart,
+      rotationMid,
+      rotationEnd: randomFromRange(rotationMid - 110, rotationMid + 130),
+      driftA: randomFromRange(-7, 8),
+      driftB: randomFromRange(-8, 8),
+      repeatDelay: randomFromRange(0.1, 2.4),
+    };
+  });
+}
 
 function DiyaPattern() {
   return (
@@ -116,24 +130,29 @@ function DoorPanel({ side }: { side: "left" | "right" }) {
   );
 }
 
-function FallingPetal({ delay, startX, duration, size }: PetalSpec) {
+function RandomizedFallingPetal({ petal }: { petal: PetalSpec }) {
   return (
     <motion.div
       className="absolute pointer-events-none"
-      style={{ width: `${size}px`, height: `${size + 4}px` }}
-      initial={{ opacity: 0, x: `${startX}vw`, y: "-12vh", rotate: 0 }}
+      style={{ width: `${petal.size}px`, height: `${petal.size + 4}px` }}
+      initial={{ opacity: 0, x: `${petal.startX}vw`, y: "-16vh", rotate: petal.rotationStart }}
       animate={{
-        opacity: [0, 0.95, 0.9, 0],
-        x: [`${startX}vw`, `${startX + 4}vw`, `${startX - 3}vw`, `${startX + 2}vw`],
-        y: ["-12vh", "38vh", "74vh", "112vh"],
-        rotate: [0, 45, -30, 90],
+        opacity: [0, 0.92, 0.88, 0],
+        x: [
+          `${petal.startX}vw`,
+          `${petal.startX + petal.driftA}vw`,
+          `${petal.startX + petal.driftB}vw`,
+          `${petal.startX + petal.driftA * 0.35}vw`,
+        ],
+        y: ["-16vh", "35vh", "76vh", "114vh"],
+        rotate: [petal.rotationStart, petal.rotationMid, petal.rotationEnd, petal.rotationEnd + petal.driftB * 10],
       }}
       transition={{
-        duration,
-        delay: 3.5 + delay,
+        duration: petal.duration,
+        delay: 3.5 + petal.delay,
         ease: "easeInOut",
         repeat: Infinity,
-        repeatDelay: 1.2,
+        repeatDelay: petal.repeatDelay,
       }}
     >
       <svg width="100%" height="100%" viewBox="0 0 24 28" fill="none">
@@ -212,10 +231,16 @@ export function DoorIntro() {
 }
 
 export function FallingPetals() {
+  const [petals, setPetals] = useState<readonly PetalSpec[]>([]);
+
+  useEffect(() => {
+    setPetals(createRandomPetals(14));
+  }, []);
+
   return (
     <div className="pointer-events-none fixed inset-0 z-[40] overflow-hidden" aria-hidden>
-      {PETALS.map((petal, i) => (
-        <FallingPetal key={i} {...petal} />
+      {petals.map((petal, index) => (
+        <RandomizedFallingPetal key={`${petal.startX}-${petal.delay}-${index}`} petal={petal} />
       ))}
     </div>
   );
