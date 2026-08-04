@@ -181,18 +181,15 @@ export function HomeClient() {
       <KolamDivider />
       <InvitationPreview />
       <KolamDivider />
-      <section className="section-tight text-center">
-        <ScrollReveal>
-          <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2">
-            <img
-              src="/couple.jpg"
-              alt="Manas and Rupa"
-              className="h-auto w-full rounded-xl object-cover"
-            />
-          </div>
-        </ScrollReveal>
+      <section className="py-6 text-center">
+        <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2 px-4 sm:px-6">
+          <img
+            src="/couple.jpg"
+            alt="Manas and Rupa"
+            className="h-auto w-full rounded-xl object-cover"
+          />
+        </div>
       </section>
-      <KolamDivider />
       <RSVPSection />
     </>
   );
