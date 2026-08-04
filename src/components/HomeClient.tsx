@@ -8,7 +8,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
 import { RSVPClient } from "@/components/RSVPClient";
 import { Timeline } from "@/components/Timeline";
-import { EVENTS, FAMILY, HOTEL, VENUES, WEDDING } from "@/lib/data";
+import { EVENTS, FAMILY, VENUES, WEDDING } from "@/lib/data";
 
 function Hero() {
   return (
@@ -88,37 +88,37 @@ function InvitationPreview() {
   return (
     <section className="section-tight">
       <ScrollReveal>
-        <div className="rounded-2xl border border-linen/20 bg-burgundy-deep p-4 sm:p-6">
-          <div className="olive-card p-6 text-center sm:p-8">
-            <p className="caps-label">{WEDDING.invitationTagline}</p>
-            <p className="mt-4 serif-invite text-xl text-linen/95">{WEDDING.invitationText}</p>
-            <div className="mt-8 grid grid-cols-[1fr_auto_1fr] items-end gap-3">
+        <div className="rounded-2xl border border-linen/20 bg-burgundy-deep p-3 sm:p-6">
+          <div className="olive-card p-4 text-center sm:p-8">
+            <p className="caps-label text-[0.58rem] sm:text-[0.66rem]">{WEDDING.invitationTagline}</p>
+            <p className="mt-3 serif-invite text-base leading-relaxed text-linen/95 sm:mt-4 sm:text-xl">{WEDDING.invitationText}</p>
+            <div className="mt-6 grid grid-cols-1 items-end gap-4 sm:mt-8 sm:grid-cols-[1fr_auto_1fr] sm:gap-3">
               <div>
-                <p className="font-script text-5xl leading-none text-linen">{WEDDING.couple.bride.firstName}</p>
-                <p className="mt-2 font-josefin text-[0.66rem] uppercase tracking-[0.22em] text-linen/82">Bride</p>
+                <p className="font-script text-4xl leading-none text-linen sm:text-5xl">{WEDDING.couple.bride.firstName}</p>
+                <p className="mt-2 font-josefin text-[0.6rem] uppercase tracking-[0.2em] text-linen/82 sm:text-[0.66rem]">Bride</p>
                 {FAMILY.bride.map((member) => (
-                  <p key={`${member.role}-${member.name}`} className="mt-2 font-cormorant text-base italic text-linen/94">
-                    <span className="font-josefin text-[0.62rem] uppercase tracking-[0.18em] text-linen/75">{member.role}</span>{" "}
+                  <p key={`${member.role}-${member.name}`} className="mt-1.5 font-cormorant text-sm italic leading-snug text-linen/94 sm:text-base">
+                    <span className="font-josefin text-[0.56rem] uppercase tracking-[0.15em] text-linen/75 sm:text-[0.62rem]">{member.role}</span>{" "}
                     {member.name} {member.relation}
                   </p>
                 ))}
               </div>
-              <p className="pb-1 font-script-alt text-4xl leading-none text-gold-dark">and</p>
+              <p className="pb-1 font-script-alt text-3xl leading-none text-gold-dark sm:text-4xl">and</p>
               <div>
-                <p className="font-script text-5xl leading-none text-linen">{WEDDING.couple.groom.firstName}</p>
-                <p className="mt-2 font-josefin text-[0.66rem] uppercase tracking-[0.22em] text-linen/82">Groom</p>
+                <p className="font-script text-4xl leading-none text-linen sm:text-5xl">{WEDDING.couple.groom.firstName}</p>
+                <p className="mt-2 font-josefin text-[0.6rem] uppercase tracking-[0.2em] text-linen/82 sm:text-[0.66rem]">Groom</p>
                 {FAMILY.groom.map((member) => (
-                  <p key={`${member.role}-${member.name}`} className="mt-2 font-cormorant text-base italic text-linen/94">
-                    <span className="font-josefin text-[0.62rem] uppercase tracking-[0.18em] text-linen/75">{member.role}</span>{" "}
+                  <p key={`${member.role}-${member.name}`} className="mt-1.5 font-cormorant text-sm italic leading-snug text-linen/94 sm:text-base">
+                    <span className="font-josefin text-[0.56rem] uppercase tracking-[0.15em] text-linen/75 sm:text-[0.62rem]">{member.role}</span>{" "}
                     {member.name} {member.relation}
                   </p>
                 ))}
               </div>
             </div>
-            <div className="mt-7 border-t border-dashed border-linen/40 pt-5">
-              <p className="cinzel-title text-[0.72rem] text-linen/86">Sumuhurtham</p>
-              <p className="mt-2 font-script text-[2rem] leading-none text-linen">September 5, 2026</p>
-              <p className="font-script-alt text-3xl leading-none text-gold-dark">9:30 PM</p>
+            <div className="mt-6 border-t border-dashed border-linen/40 pt-4 sm:mt-7 sm:pt-5">
+              <p className="cinzel-title text-[0.64rem] text-linen/86 sm:text-[0.72rem]">Sumuhurtham</p>
+              <p className="mt-2 font-script text-[1.6rem] leading-none text-linen sm:text-[2rem]">September 5, 2026</p>
+              <p className="font-script-alt text-2xl leading-none text-gold-dark sm:text-3xl">9:30 PM</p>
             </div>
           </div>
         </div>
@@ -149,27 +149,7 @@ function VenueSection() {
 }
 
 function HotelSection() {
-  return (
-    <section id="hotel" className="section-tight text-center">
-      <ScrollReveal>
-        <p className="font-script text-5xl leading-none text-linen sm:text-6xl">Nearby Hotel</p>
-      </ScrollReveal>
-      <ScrollReveal className="mt-6">
-        <article className="rounded-2xl border border-linen/25 bg-burgundy-deep p-6">
-          <p className="font-cormorant text-[2rem] italic text-linen">{HOTEL.name}</p>
-          <p className="mt-2 font-josefin text-sm text-linen/84">{HOTEL.address}</p>
-          <ul className="mt-5 space-y-2">
-            {HOTEL.details.map((detail) => (
-              <li key={detail} className="font-josefin text-sm text-linen/88">{detail}</li>
-            ))}
-          </ul>
-          <Link href="/hotel" className="mt-6 inline-flex rounded-full bg-olive px-6 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.24em] text-linen transition hover:bg-olive-strong">
-            View Hotel Details
-          </Link>
-        </article>
-      </ScrollReveal>
-    </section>
-  );
+  return null;
 }
 
 function RSVPSection() {
@@ -196,11 +176,11 @@ export function HomeClient() {
         </ScrollReveal>
       </section>
       <KolamDivider />
-      <InvitationPreview />
-      <KolamDivider />
       <section id="events">
         <Timeline events={EVENTS} />
       </section>
+      <KolamDivider />
+      <InvitationPreview />
       <KolamDivider />
       <section className="section-tight text-center">
         <ScrollReveal>
@@ -215,8 +195,6 @@ export function HomeClient() {
       </section>
       <KolamDivider />
       <VenueSection />
-      <KolamDivider />
-      <HotelSection />
       <KolamDivider />
       <RSVPSection />
     </>
