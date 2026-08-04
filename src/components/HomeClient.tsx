@@ -184,7 +184,7 @@ export function HomeClient() {
       <section className="py-6 text-center">
         <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2 px-4 sm:px-6">
           <img
-            src="/couple.jpg"
+            src="/couple-mr.jpg"
             alt="Manas and Rupa"
             className="h-auto w-full rounded-xl object-cover"
           />
