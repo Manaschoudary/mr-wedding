@@ -95,7 +95,7 @@ export const EVENTS = [
     dressCode: "Yellow Indian Attire",
     meal: "Breakfast",
     accent: "from-[#8f5f2a] to-[#5a6b35]",
-    image: "/events/pasupu-jathara.jpg",
+    image: "/events/pasupu-jathara.png",
   },
   {
     id: "pelli-alankarana",
@@ -157,7 +157,7 @@ export const EVENTS = [
     mapsUrl: "https://maps.google.com/?q=2845+Hale+Rd+Celina+TX+75009",
     meal: "Breakfast",
     accent: "from-[#754329] to-[#5a6b35]",
-    image: "/events/mr-night.jpg",
+    image: "/events/vratham.jpg",
   },
 ] satisfies readonly WeddingEvent[];
 
