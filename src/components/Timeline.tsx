@@ -68,6 +68,9 @@ export function Timeline({ events }: TimelineProps) {
                   onClick={() => setSelectedEvent(event)}
                   aria-label={`View details for ${event.name}`}
                 >
+                  {event.image && (
+                    <img src={event.image} alt={event.name} className="timeline-event__image" />
+                  )}
                   <p className="timeline-event__time">{event.time}</p>
                   <p className="timeline-event__name">{event.name}</p>
                   <p className="timeline-event__venue">{event.venue}</p>

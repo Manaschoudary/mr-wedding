@@ -169,7 +169,6 @@ export function HomeClient() {
       <FallingPetals />
 
       <Hero />
-      <InvitationEmblem />
       <section id="countdown" className="section-tight text-center">
         <ScrollReveal>
           <CountdownTimer targetDate={WEDDING.dates.weddingDate} />
