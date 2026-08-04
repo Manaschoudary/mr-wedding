@@ -64,22 +64,24 @@ export function Timeline({ events }: TimelineProps) {
                 <button
                   key={event.id}
                   type="button"
-                  className="timeline-event"
+                  className="timeline-event timeline-event--has-image"
                   onClick={() => setSelectedEvent(event)}
                   aria-label={`View details for ${event.name}`}
                 >
+                  <div className="timeline-event__text">
+                    <p className="timeline-event__time">{event.time}</p>
+                    <p className="timeline-event__name">{event.name}</p>
+                    <p className="timeline-event__venue">{event.venue}</p>
+                    <p className="timeline-event__tap">
+                      <span>View details</span>
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden>
+                        <path d="M7 4.5 12.5 10 7 15.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </p>
+                  </div>
                   {event.image && (
-                    <img src={event.image} alt={event.name} className="timeline-event__image" />
+                    <img src={event.image} alt={event.name} className="timeline-event__thumb" />
                   )}
-                  <p className="timeline-event__time">{event.time}</p>
-                  <p className="timeline-event__name">{event.name}</p>
-                  <p className="timeline-event__venue">{event.venue}</p>
-                  <p className="timeline-event__tap">
-                    <span>View details</span>
-                    <svg viewBox="0 0 20 20" fill="none" aria-hidden>
-                      <path d="M7 4.5 12.5 10 7 15.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </p>
                 </button>
               ))}
             </div>
