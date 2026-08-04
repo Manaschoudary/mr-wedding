@@ -72,6 +72,18 @@ export function Timeline({ events }: TimelineProps) {
                     <p className="timeline-event__time">{event.time}</p>
                     <p className="timeline-event__name">{event.name}</p>
                     <p className="timeline-event__venue">{event.venue}</p>
+                    <a
+                      href={event.mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="timeline-event__address"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden>
+                        <path d="M10 2a5.5 5.5 0 0 0-5.5 5.5C4.5 12 10 18 10 18s5.5-6 5.5-10.5A5.5 5.5 0 0 0 10 2Zm0 7.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span>{event.address}</span>
+                    </a>
                     <p className="timeline-event__tap">
                       <span>View details</span>
                       <svg viewBox="0 0 20 20" fill="none" aria-hidden>
