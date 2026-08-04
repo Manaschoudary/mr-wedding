@@ -6,7 +6,12 @@ import { motion, type PanInfo } from "framer-motion";
 import { EVENTS, type WeddingEvent } from "@/lib/data";
 import { KolamDivider } from "@/components/KolamDivider";
 
-function EventModal({ event, onClose }: { event: WeddingEvent; onClose: () => void }) {
+interface EventModalProps {
+  readonly event: WeddingEvent;
+  readonly onClose: () => void;
+}
+
+export function EventModal({ event, onClose }: EventModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

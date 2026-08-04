@@ -7,26 +7,17 @@ import { KolamDivider } from "@/components/KolamDivider";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
 import { RSVPClient } from "@/components/RSVPClient";
-import { EventsClient } from "@/components/EventsClient";
+import { Timeline } from "@/components/Timeline";
 import { EVENTS, FAMILY, HOTEL, VENUES, WEDDING } from "@/lib/data";
 
 function Hero() {
   return (
     <section id="hero" className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-6 pb-14 pt-28 text-center">
-      <motion.p
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        className="relative z-10 font-cinzel text-[2.2rem] leading-none text-linen sm:text-[2.8rem]"
-      >
-        {WEDDING.couple.monogram}
-      </motion.p>
-
       <motion.h1
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, duration: 0.85 }}
-        className="relative z-10 mt-6 font-script text-[4rem] leading-[0.95] text-linen sm:text-[5.8rem] md:text-[6.6rem]"
+        transition={{ delay: 0.05, duration: 0.85 }}
+        className="relative z-10 font-script text-[4rem] leading-[0.95] text-linen sm:text-[5.8rem] md:text-[6.6rem]"
       >
         {WEDDING.couple.short}
       </motion.h1>
@@ -39,6 +30,16 @@ function Hero() {
       >
         {WEDDING.line}
       </motion.p>
+
+      <motion.a
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.7 }}
+        href="#rsvp"
+        className="relative z-10 mt-8 rounded-full border border-linen/50 px-8 py-3 font-josefin text-[0.7rem] uppercase tracking-[0.28em] text-linen transition hover:border-olive hover:bg-olive"
+      >
+        RSVP
+      </motion.a>
 
       <motion.div
         initial={{ opacity: 0 }}
@@ -126,10 +127,6 @@ function InvitationPreview() {
   );
 }
 
-function EventsTeaser() {
-  return <EventsClient />;
-}
-
 function VenueSection() {
   return (
     <section id="venue" className="section-wide text-center">
@@ -202,7 +199,7 @@ export function HomeClient() {
       <InvitationPreview />
       <KolamDivider />
       <section id="events">
-        <EventsTeaser />
+        <Timeline events={EVENTS} />
       </section>
       <KolamDivider />
       <section className="section-tight text-center">

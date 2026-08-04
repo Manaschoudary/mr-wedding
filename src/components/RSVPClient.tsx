@@ -13,7 +13,7 @@ interface EventResponse {
 const STATUS_OPTIONS: readonly AttendanceStatus[] = ["attending", "tentative", "decline"];
 
 function createInitialResponses(): readonly EventResponse[] {
-  return EVENTS.map((event) => ({ eventId: event.id, status: "tentative" }));
+  return EVENTS.map((event) => ({ eventId: event.id, status: "attending" }));
 }
 
 export function RSVPClient() {
