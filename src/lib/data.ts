@@ -95,7 +95,7 @@ export const EVENTS = [
     dressCode: "Yellow Indian Attire",
     meal: "Breakfast",
     accent: "from-[#8f5f2a] to-[#5a6b35]",
-    image: "/events/pasupu-jathara.png",
+    image: "/events/pasupu-jathara.jpg",
   },
   {
     id: "pelli-alankarana",

@@ -193,8 +193,6 @@ export function HomeClient() {
         </ScrollReveal>
       </section>
       <KolamDivider />
-      <VenueSection />
-      <KolamDivider />
       <RSVPSection />
     </>
   );
