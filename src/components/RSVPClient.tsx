@@ -117,25 +117,21 @@ export function RSVPClient() {
             />
           </div>
 
-          <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {EVENTS.map((eventItem) => (
-              <article key={eventItem.id} className="rounded-2xl border border-linen/40 bg-linen-soft p-5 text-ink">
-                <p className="font-script text-[2.1rem] leading-none">{eventItem.name}</p>
-                <p className="mt-2 font-josefin text-[0.66rem] uppercase tracking-[0.22em]">{eventItem.date}</p>
-                <p className="mt-1 font-cormorant text-xl italic">{eventItem.time}</p>
-                <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
-                  {STATUS_OPTIONS.map((statusValue, index) => {
+              <article key={eventItem.id} className="rounded-2xl border border-linen/40 bg-linen-soft p-4 text-ink">
+                <p className="font-script text-[1.6rem] leading-none">{eventItem.name}</p>
+                <p className="mt-1.5 font-josefin text-[0.58rem] uppercase tracking-[0.18em]">{eventItem.date}</p>
+                <p className="mt-0.5 font-cormorant text-base italic">{eventItem.time}</p>
+                <div className="mt-3 flex flex-wrap justify-center gap-1.5">
+                  {STATUS_OPTIONS.map((statusValue) => {
                     const active = byId.get(eventItem.id) === statusValue;
-                    const mobileLayoutClass =
-                      index < 2
-                        ? "basis-[calc(50%-0.25rem)] grow sm:basis-auto sm:grow-0"
-                        : "basis-full sm:basis-auto";
                     return (
                       <button
                         key={statusValue}
                         type="button"
                         data-active={active}
-                        className={`rsvp-pill min-w-[8.75rem] text-center ${mobileLayoutClass}`}
+                        className="rsvp-pill min-w-[5.5rem] text-center text-[0.6rem]"
                         onClick={() => updateStatus(eventItem.id, statusValue)}
                       >
                         {statusValue}

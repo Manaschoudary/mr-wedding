@@ -69,7 +69,6 @@ export default function RootLayout({
       className={`${josefin.variable} ${cormorant.variable} ${cinzel.variable} ${greatVibes.variable} ${pinyon.variable} antialiased`}
     >
       <body className="min-h-[100dvh] flex flex-col overflow-x-hidden wedding-bg text-linen font-josefin">
-        <Navbar />
         <main className="flex-1 overflow-x-hidden">{children}</main>
         <Footer />
       </body>
