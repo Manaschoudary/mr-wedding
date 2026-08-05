@@ -1,15 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { CalendarPlus, ChevronRight, Clock, MapPin, Shirt, Utensils } from "lucide-react";
+import { CalendarPlus, Clock, MapPin, Shirt, Utensils } from "lucide-react";
 import { motion } from "framer-motion";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { KolamDivider } from "@/components/KolamDivider";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
 import { Timeline } from "@/components/Timeline";
-import { EventModal } from "@/components/EventsClient";
 import { addGoogleCalendarInvite, downloadCalendarInvite, getGoogleCalendarUrl } from "@/lib/calendar";
 import { FAMILY, getInvitationConfig, type InvitationMode, WEDDING, WEDDING_EVENT } from "@/lib/data";
 import { useVisitAnalytics } from "@/lib/analytics";
@@ -20,6 +18,7 @@ interface HomeClientProps {
 
 function Hero({ invitationMode }: HomeClientProps) {
   const invitation = getInvitationConfig(invitationMode);
+  const detailsHref = invitation.showAllEvents ? "#events" : "#wedding-venue";
 
   return (
     <section
@@ -67,7 +66,7 @@ function Hero({ invitationMode }: HomeClientProps) {
           RSVP
         </Link>
         <a
-          href="#countdown"
+          href={detailsHref}
           className="action-button action-button--ghost"
         >
           Details
@@ -81,43 +80,43 @@ function InvitationPreview() {
   return (
     <section className="section-tight" data-analytics-section="Invitation Preview">
       <ScrollReveal>
-        <div className="rounded-2xl border border-dashed border-linen/50 bg-burgundy-deep p-4 sm:p-6">
-          <div className="olive-card p-5 sm:p-9">
-            <p className="text-center font-josefin text-[0.66rem] font-semibold uppercase tracking-[0.32em] text-linen/92">
+        <div className="mx-auto max-w-[40rem] rounded-2xl border border-dashed border-linen/50 bg-burgundy-deep p-3 sm:p-5">
+          <div className="olive-card p-4 sm:p-7">
+            <p className="text-center font-josefin text-[0.6rem] font-semibold uppercase tracking-[0.3em] text-linen/92 sm:text-[0.64rem]">
               {WEDDING.invitationTagline}
             </p>
 
-            <p className="mt-6 text-center font-cormorant text-2xl italic leading-relaxed text-linen/96 sm:text-[1.75rem]">
+            <p className="mt-5 text-center font-cormorant text-xl italic leading-relaxed text-linen/96 sm:text-[1.45rem]">
               {WEDDING.invitationText}
             </p>
 
-            <div className="mt-7 grid grid-cols-1 gap-5 sm:mt-8 sm:gap-7 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:mt-7 sm:gap-6 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
               <div className="text-center md:text-left">
-                <p className="font-script text-6xl leading-none text-linen sm:text-7xl">{WEDDING.couple.bride.firstName}</p>
-                <p className="mt-2 font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-linen/92">
+                <p className="font-script text-5xl leading-none text-linen sm:text-6xl">{WEDDING.couple.bride.firstName}</p>
+                <p className="mt-2 font-josefin text-[0.64rem] font-semibold uppercase tracking-[0.2em] text-linen/92">
                   {WEDDING.couple.bride.fullName}
                 </p>
-                <div className="mt-4 space-y-1.5 font-cormorant text-lg italic text-linen/95">
+                <div className="mt-3 space-y-1.5 font-cormorant text-base italic text-linen/95 sm:text-[1.05rem]">
                   {FAMILY.bride.map((line) => (
                     <p key={`${line.role}-${line.name}`}>
-                      <span className="font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-linen/88">{line.role}</span>{" "}
+                      <span className="font-josefin text-[0.64rem] font-semibold uppercase tracking-[0.15em] text-linen/88">{line.role}</span>{" "}
                       {line.name} {line.relation}
                     </p>
                   ))}
                 </div>
               </div>
 
-              <p className="text-center font-script-alt text-5xl leading-none text-gold-dark">and</p>
+              <p className="text-center font-script-alt text-4xl leading-none text-gold-dark sm:text-5xl">and</p>
 
               <div className="text-center md:text-right">
-                <p className="font-script text-6xl leading-none text-linen sm:text-7xl">{WEDDING.couple.groom.firstName}</p>
-                <p className="mt-2 font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-linen/92">
+                <p className="font-script text-5xl leading-none text-linen sm:text-6xl">{WEDDING.couple.groom.firstName}</p>
+                <p className="mt-2 font-josefin text-[0.64rem] font-semibold uppercase tracking-[0.2em] text-linen/92">
                   {WEDDING.couple.groom.fullName}
                 </p>
-                <div className="mt-4 space-y-1.5 font-cormorant text-lg italic text-linen/95">
+                <div className="mt-3 space-y-1.5 font-cormorant text-base italic text-linen/95 sm:text-[1.05rem]">
                   {FAMILY.groom.map((line) => (
                     <p key={`${line.role}-${line.name}`}>
-                      <span className="font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-linen/88">{line.role}</span>{" "}
+                      <span className="font-josefin text-[0.64rem] font-semibold uppercase tracking-[0.15em] text-linen/88">{line.role}</span>{" "}
                       {line.name} {line.relation}
                     </p>
                   ))}
@@ -125,13 +124,13 @@ function InvitationPreview() {
               </div>
             </div>
 
-            <div className="mt-8 border-t border-dashed border-linen/45 pt-6 text-center">
-              <p className="cinzel-title text-[0.75rem] text-linen/90">SUMUHURTHAM</p>
-              <p className="mt-3 font-script text-[2.4rem] leading-none text-linen">September 5, 2026</p>
-              <p className="font-script-alt text-[2rem] leading-none text-gold-dark">9:31 PM</p>
+            <div className="mt-6 border-t border-dashed border-linen/45 pt-5 text-center">
+              <p className="cinzel-title text-[0.68rem] text-linen/90">SUMUHURTHAM</p>
+              <p className="mt-2 font-script text-[2rem] leading-none text-linen sm:text-[2.2rem]">September 5, 2026</p>
+              <p className="font-script-alt text-[1.65rem] leading-none text-gold-dark sm:text-[1.85rem]">9:31 PM</p>
             </div>
 
-            <p className="mt-7 text-center font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-linen/92">
+            <p className="mt-6 text-center font-josefin text-[0.66rem] font-semibold uppercase tracking-[0.32em] text-linen/92">
               {WEDDING.hashtag}
             </p>
           </div>
@@ -195,8 +194,6 @@ function CalendarActions({ invitationMode }: HomeClientProps) {
 }
 
 function WeddingOnlyDetails() {
-  const [selectedEvent, setSelectedEvent] = useState(false);
-
   return (
     <>
       <KolamDivider />
@@ -213,11 +210,8 @@ function WeddingOnlyDetails() {
 
         <ScrollReveal>
           <div className="wedding-spotlight-card">
-            <button
-              type="button"
+            <article
               className="timeline-event timeline-event--has-image wedding-ceremony-card"
-              onClick={() => setSelectedEvent(true)}
-              aria-label={`View details for ${WEDDING_EVENT.name}`}
             >
               <div className="timeline-event__text">
                 <p className="timeline-event__time">{WEDDING_EVENT.time}</p>
@@ -238,19 +232,13 @@ function WeddingOnlyDetails() {
                   <span><Utensils className="h-3.5 w-3.5" /> {WEDDING_EVENT.meal}</span>
                   <span><Shirt className="h-3.5 w-3.5" /> {WEDDING_EVENT.dressCode}</span>
                 </div>
-                <p className="timeline-event__tap">
-                  <span>View full details</span>
-                  <ChevronRight className="h-4 w-4" />
-                </p>
               </div>
               {WEDDING_EVENT.image ? (
                 <img src={WEDDING_EVENT.image} alt={WEDDING_EVENT.name} className="timeline-event__thumb" />
               ) : null}
-            </button>
+            </article>
           </div>
         </ScrollReveal>
-
-        {selectedEvent ? <EventModal event={WEDDING_EVENT} onClose={() => setSelectedEvent(false)} /> : null}
       </section>
     </>
   );
