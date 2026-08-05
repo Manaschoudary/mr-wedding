@@ -1,5 +1,6 @@
-import { HomeClient } from "@/components/HomeClient";
+import { redirect } from "next/navigation";
+import { WEDDING_ONLY_BASE_PATH } from "@/lib/data";
 
 export default function HomePage() {
-  return <HomeClient />;
+  redirect(WEDDING_ONLY_BASE_PATH);
 }

@@ -72,19 +72,16 @@ export function Navbar() {
               </div>
 
               <div className="space-y-2">
-                {NAV_LINKS.map((link) => {
-                  const href = link.href === "/" ? "#hero" : `#${link.href.slice(1)}`;
-                  return (
+                {NAV_LINKS.map((link) => (
                     <a
                       key={link.href}
-                      href={href}
+                      href={link.href}
                       onClick={handleNavClick}
                       className="block rounded-xl border px-4 py-3 font-cormorant text-[1.35rem] italic tracking-wide transition border-transparent bg-[#4f5f2f] text-linen/90 hover:border-linen/40"
                     >
                       {link.label}
                     </a>
-                  );
-                })}
+                ))}
               </div>
 
               <p className="mt-8 text-center font-josefin text-[0.68rem] uppercase tracking-[0.26em] text-linen/80">

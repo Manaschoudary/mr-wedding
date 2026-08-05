@@ -1,5 +1,6 @@
-import { InvitationClient } from "@/components/InvitationClient";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { WEDDING_ONLY_BASE_PATH } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Invitation | Manas & Rupa #MR Wedding",
@@ -7,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function InvitationPage() {
-  return <InvitationClient />;
+  redirect(WEDDING_ONLY_BASE_PATH);
 }

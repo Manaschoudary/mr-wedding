@@ -6,7 +6,6 @@ interface MongoClientCache {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var _mongoClientPromise: MongoClientCache | undefined;
 }
 
@@ -35,7 +34,12 @@ async function getClient(): Promise<MongoClient> {
   }
 
   if (!cached.promise) {
-    cached.promise = new MongoClient(getUri()).connect();
+    cached.promise = new MongoClient(getUri(), {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 20000,
+      maxPoolSize: 5,
+    }).connect();
   }
 
   cached.client = await cached.promise;
@@ -44,5 +48,5 @@ async function getClient(): Promise<MongoClient> {
 
 export async function getDb(): Promise<Db> {
   const client = await getClient();
-  return client.db("mr-wedding");
+  return client.db(process.env.MONGODB_DB || "mr-wedding");
 }

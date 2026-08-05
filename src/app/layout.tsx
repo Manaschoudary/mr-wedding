@@ -6,8 +6,7 @@ import {
   Josefin_Sans,
   Pinyon_Script,
 } from "next/font/google";
-import { Footer } from "@/components/Footer";
-import { MusicPlayer } from "@/components/MusicPlayer";
+import { SiteChrome } from "@/components/SiteChrome";
 import "./globals.css";
 
 const josefin = Josefin_Sans({
@@ -49,11 +48,11 @@ const pinyon = Pinyon_Script({
 export const metadata: Metadata = {
   title: "Manas & Rupa | #MR Wedding",
   description:
-    "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4 & 5, 2026.",
+    "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4-6, 2026.",
   openGraph: {
     title: "Manas & Rupa | #MR Wedding",
     description:
-      "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4 & 5, 2026.",
+      "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4-6, 2026.",
     type: "website",
   },
 };
@@ -69,9 +68,7 @@ export default function RootLayout({
       className={`${josefin.variable} ${cormorant.variable} ${cinzel.variable} ${greatVibes.variable} ${pinyon.variable} antialiased`}
     >
       <body className="min-h-[100dvh] flex flex-col overflow-x-hidden wedding-bg text-linen font-josefin">
-        <MusicPlayer />
-        <main className="flex-1 overflow-x-hidden">{children}</main>
-        <Footer />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );
