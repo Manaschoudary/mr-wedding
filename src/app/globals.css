@@ -190,106 +190,629 @@ body {
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--olive) 18%, transparent);
 }
 
-.temple-door-panel {
-  position: relative;
-  height: 100%;
-  width: 100%;
+.reference-door-intro {
+  isolation: isolate;
+  color: var(--linen);
+  background:
+    radial-gradient(circle at 50% 45%, rgba(116, 20, 31, 0.5), transparent 36%),
+    linear-gradient(180deg, #5b121d 0%, #360811 46%, #25050b 100%);
+  transform-style: preserve-3d;
+}
+
+.reference-reveal-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   background:
-    linear-gradient(90deg, rgba(255, 239, 183, 0.12), transparent 18%, rgba(0, 0, 0, 0.2) 52%, rgba(255, 239, 183, 0.08)),
-    linear-gradient(135deg, #5a1a1d 0%, #3d1012 45%, #25080b 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(240, 207, 131, 0.18),
-    inset 0 0 42px rgba(0, 0, 0, 0.42),
-    0 0 38px rgba(0, 0, 0, 0.45);
+    radial-gradient(circle at 50% 44%, rgba(120, 24, 37, 0.64), transparent 38%),
+    linear-gradient(180deg, #641321 0%, #4a0b18 48%, #3a0712 100%);
 }
 
-.temple-door-panel--left {
-  box-shadow:
-    inset -28px 0 34px rgba(0, 0, 0, 0.38),
-    inset 0 0 0 1px rgba(240, 207, 131, 0.18),
-    16px 0 34px rgba(0, 0, 0, 0.35);
-}
-
-.temple-door-panel--right {
-  box-shadow:
-    inset 28px 0 34px rgba(0, 0, 0, 0.38),
-    inset 0 0 0 1px rgba(240, 207, 131, 0.18),
-    -16px 0 34px rgba(0, 0, 0, 0.35);
-}
-
-.temple-door-woodgrain {
+.reference-reveal-scene::before {
+  content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.33;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 221, 147, 0.16) 0,
-      rgba(255, 221, 147, 0.16) 1px,
-      transparent 1px,
-      transparent 34px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0,
-      transparent 22px,
-      rgba(255, 216, 134, 0.08) 22px,
-      rgba(255, 216, 134, 0.08) 24px
-    );
+  opacity: 0.18;
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0 26px, rgba(231, 190, 103, 0.2) 27px, transparent 28px),
+    radial-gradient(circle at 50% 50%, transparent 0 54%, rgba(255, 232, 176, 0.18) 55%, transparent 56%);
+  background-size: 112px 112px, 360px 360px;
 }
 
-.temple-door-panel-glow {
+.reference-reveal-scene::after {
+  content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 34%, rgba(240, 207, 131, 0.17), transparent 28%),
-    radial-gradient(circle at 50% 78%, rgba(0, 0, 0, 0.34), transparent 36%);
+    linear-gradient(90deg, rgba(18, 2, 6, 0.5), transparent 24%, transparent 76%, rgba(18, 2, 6, 0.5)),
+    radial-gradient(circle at 50% 52%, transparent 22%, rgba(18, 2, 6, 0.28) 72%);
 }
 
-.temple-door-seam {
+.reference-reveal-copy {
+  position: relative;
+  z-index: 8;
+  display: grid;
+  justify-items: center;
+  margin-top: -5vh;
+  text-align: center;
+}
+
+.reference-monogram {
+  position: relative;
+  width: 12.5rem;
+  height: 9rem;
+  color: rgba(255, 247, 239, 0.94);
+  filter: drop-shadow(0 10px 16px rgba(18, 2, 6, 0.34));
+}
+
+.reference-monogram span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: var(--font-cormorant), serif;
+  font-size: 9.4rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.8;
+}
+
+.reference-monogram span:first-child {
+  transform: translate(-64%, -48%) rotate(-5deg);
+}
+
+.reference-monogram span:last-child {
+  transform: translate(-35%, -49%) rotate(4deg);
+}
+
+.reference-reveal-names {
+  margin-top: 0.1rem;
+  font-family: var(--font-pinyon), cursive;
+  font-size: 4.8rem;
+  line-height: 1;
+  color: rgba(255, 238, 232, 0.92);
+  text-shadow: 0 8px 22px rgba(18, 2, 6, 0.4);
+}
+
+.reference-reveal-subtitle {
+  margin-top: 0.9rem;
+  font-family: var(--font-josefin), sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: rgba(255, 239, 225, 0.78);
+}
+
+.reference-hanging-decor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9;
+  height: min(27vh, 14rem);
+  min-height: 8.5rem;
+  pointer-events: none;
+}
+
+.reference-hanging-decor::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(0.85rem, 2.2vw, 1.55rem);
+  background:
+    linear-gradient(180deg, rgba(247, 218, 145, 0.94), rgba(143, 91, 39, 0.92)),
+    repeating-linear-gradient(90deg, rgba(82, 44, 23, 0.35) 0 9px, transparent 9px 18px);
+  box-shadow: 0 8px 24px rgba(21, 2, 6, 0.36);
+}
+
+.reference-floral-swag {
+  position: absolute;
+  top: clamp(0.8rem, 2vw, 1.3rem);
+  width: min(42vw, 26rem);
+  height: clamp(3rem, 7vw, 4.6rem);
+  opacity: 0.9;
+  background:
+    radial-gradient(ellipse at 9% 72%, #a8c580 0 7%, transparent 8%),
+    radial-gradient(ellipse at 18% 62%, #78975d 0 9%, transparent 10%),
+    radial-gradient(ellipse at 27% 68%, #d9b450 0 4%, transparent 5%),
+    radial-gradient(ellipse at 36% 54%, #9ebf76 0 8%, transparent 9%),
+    radial-gradient(ellipse at 48% 61%, #f0cc67 0 5%, transparent 6%),
+    radial-gradient(ellipse at 62% 50%, #7c9c61 0 8%, transparent 9%),
+    radial-gradient(ellipse at 77% 56%, #d8b457 0 5%, transparent 6%),
+    radial-gradient(ellipse at 90% 42%, #a7c783 0 8%, transparent 9%);
+  filter: drop-shadow(0 7px 8px rgba(20, 2, 6, 0.24));
+}
+
+.reference-floral-swag--left {
+  left: 0;
+}
+
+.reference-floral-swag--right {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.reference-hanging-string {
+  position: absolute;
+  top: clamp(0.9rem, 2.2vw, 1.5rem);
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(255, 227, 151, 0.9), rgba(191, 133, 51, 0.76));
+  box-shadow: 0 0 8px rgba(255, 222, 142, 0.18);
+}
+
+.reference-hanging-string::before {
+  content: "";
+  position: absolute;
+  top: -0.22rem;
+  left: 50%;
+  width: 0.46rem;
+  height: 0.46rem;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: #ebc96e;
+}
+
+.reference-bell {
+  position: absolute;
+  bottom: -1.2rem;
+  left: 50%;
+  width: 1.55rem;
+  height: 1.45rem;
+  transform: translateX(-50%) scale(var(--bell-scale, 1));
+  transform-origin: top center;
+  border-radius: 48% 48% 18% 18%;
+  background:
+    radial-gradient(circle at 50% 78%, #fff0a7 0 9%, transparent 10%),
+    linear-gradient(180deg, #f4d979 0%, #d19a3f 72%, #805018 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 242, 181, 0.5),
+    0 7px 10px rgba(20, 2, 6, 0.28);
+}
+
+.reference-bell::before {
+  content: "";
+  position: absolute;
+  top: -0.62rem;
+  left: 50%;
+  width: 1.05rem;
+  height: 0.72rem;
+  transform: translateX(-50%);
+  border-radius: 999px 999px 30% 30%;
+  background: linear-gradient(180deg, #ffe792, #b77926);
+}
+
+.reference-bell::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 0.28rem;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, #fff2b5 0 3px, transparent 3px 6px);
+}
+
+.reference-bottom-decor {
+  position: absolute;
+  bottom: -1.7rem;
+  z-index: 7;
+  width: clamp(11rem, 30vw, 20rem);
+  height: clamp(9rem, 24vw, 16rem);
+  pointer-events: none;
+}
+
+.reference-bottom-decor--left {
+  left: -1.1rem;
+}
+
+.reference-bottom-decor--right {
+  right: -1.1rem;
+  transform: scaleX(-1);
+}
+
+.reference-leaf-fan {
+  position: absolute;
+  inset: 0;
+}
+
+.reference-leaf-fan span {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 4rem;
+  width: clamp(1.3rem, 4vw, 2.3rem);
+  height: clamp(4.6rem, 11vw, 7.6rem);
+  border-radius: 90% 0 90% 0;
+  transform-origin: bottom center;
+  background: linear-gradient(135deg, #b7ce88 0%, #4f7d48 72%);
+  box-shadow: inset 8px 0 12px rgba(255, 255, 255, 0.18), 0 8px 10px rgba(17, 3, 6, 0.2);
+}
+
+.reference-leaf-fan span:nth-child(1) {
+  transform: rotate(-48deg);
+}
+
+.reference-leaf-fan span:nth-child(2) {
+  transform: rotate(-29deg);
+}
+
+.reference-leaf-fan span:nth-child(3) {
+  transform: rotate(-10deg);
+}
+
+.reference-leaf-fan span:nth-child(4) {
+  transform: rotate(12deg);
+}
+
+.reference-leaf-fan span:nth-child(5) {
+  transform: rotate(33deg);
+}
+
+.reference-leaf-fan span:nth-child(6) {
+  transform: rotate(52deg);
+}
+
+.reference-decor-lattice {
+  position: absolute;
+  right: 1.2rem;
+  bottom: 2rem;
+  width: clamp(4.2rem, 11vw, 7rem);
+  height: clamp(4.8rem, 12vw, 7.6rem);
+  opacity: 0.72;
+  border: 1px solid rgba(231, 188, 87, 0.7);
+  background:
+    repeating-linear-gradient(45deg, transparent 0 12px, rgba(231, 188, 87, 0.8) 13px, transparent 14px),
+    repeating-linear-gradient(-45deg, transparent 0 12px, rgba(231, 188, 87, 0.8) 13px, transparent 14px);
+  clip-path: polygon(0 17%, 82% 0, 100% 100%, 13% 82%);
+}
+
+.reference-kalash {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 3.2rem;
+  width: clamp(5.4rem, 13vw, 8.2rem);
+  height: clamp(6.6rem, 16vw, 9.8rem);
+}
+
+.reference-kalash-neck,
+.reference-kalash-pot,
+.reference-kalash-base {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #f1c779 0%, #bb7f43 52%, #744217 100%);
+  box-shadow: inset 10px 0 12px rgba(255, 240, 169, 0.24), inset -10px 0 16px rgba(55, 18, 6, 0.22);
+}
+
+.reference-kalash-neck {
+  top: 0;
+  width: 26%;
+  height: 38%;
+  border-radius: 45% 45% 16% 16%;
+}
+
+.reference-kalash-pot {
+  bottom: 16%;
+  width: 72%;
+  height: 56%;
+  border-radius: 52% 52% 42% 42%;
+}
+
+.reference-kalash-base {
+  bottom: 7%;
+  width: 86%;
+  height: 15%;
+  border-radius: 999px;
+}
+
+.reference-door-leaves {
+  position: absolute;
+  inset: 0;
+  z-index: 14;
+  display: flex;
+  transform-style: preserve-3d;
+}
+
+.reference-door-leaf {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.reference-door-leaf--left {
+  transform-origin: left center;
+}
+
+.reference-door-leaf--right {
+  transform-origin: right center;
+}
+
+.reference-door-panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform: translateZ(0);
+  border: 1px solid rgba(245, 216, 139, 0.42);
+  background:
+    linear-gradient(90deg, rgba(255, 234, 158, 0.1), transparent 15%, rgba(12, 2, 5, 0.2) 54%, rgba(255, 236, 168, 0.08)),
+    linear-gradient(180deg, #5f1420 0%, #430a14 48%, #2b060b 100%);
+  box-shadow:
+    inset 0 0 0 2px rgba(116, 68, 27, 0.45),
+    inset 0 0 42px rgba(12, 2, 5, 0.58),
+    0 16px 36px rgba(13, 2, 5, 0.42);
+}
+
+.reference-door-panel--left {
+  box-shadow:
+    inset -32px 0 34px rgba(10, 1, 4, 0.45),
+    inset 0 0 0 2px rgba(116, 68, 27, 0.45),
+    18px 0 34px rgba(13, 2, 5, 0.42);
+}
+
+.reference-door-panel--right {
+  box-shadow:
+    inset 32px 0 34px rgba(10, 1, 4, 0.45),
+    inset 0 0 0 2px rgba(116, 68, 27, 0.45),
+    -18px 0 34px rgba(13, 2, 5, 0.42);
+}
+
+.reference-door-panel--left::after,
+.reference-door-panel--right::after {
+  content: "";
   position: absolute;
   top: 0;
   bottom: 0;
-  z-index: 18;
-  width: 12px;
-  background: linear-gradient(90deg, rgba(8, 2, 3, 0.7), rgba(240, 207, 131, 0.24), rgba(8, 2, 3, 0.72));
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.5);
-}
-
-.temple-door-inner-panel {
-  position: absolute;
-  top: 4.5rem;
-  bottom: 4.5rem;
   z-index: 1;
-  border: 1px solid rgba(240, 207, 131, 0.22);
-  border-radius: 1.1rem;
-  background: rgba(10, 2, 4, 0.08);
-  box-shadow:
-    inset 0 0 0 8px rgba(240, 207, 131, 0.05),
-    inset 0 0 30px rgba(0, 0, 0, 0.22);
+  width: 22px;
+  background: linear-gradient(90deg, #180306, #6a1d25 40%, #1d0508);
 }
 
-.temple-door-frame {
+.reference-door-panel--left::after {
+  left: 0;
+  transform: translateZ(-14px) rotateY(-90deg);
+  transform-origin: left center;
+}
+
+.reference-door-panel--right::after {
+  right: 0;
+  transform: translateZ(-14px) rotateY(90deg);
+  transform-origin: right center;
+}
+
+.reference-door-grain,
+.reference-door-sheen {
   position: absolute;
   inset: 0;
-  z-index: 5;
   pointer-events: none;
-  border: 16px solid rgba(32, 8, 10, 0.72);
-  box-shadow:
-    inset 0 0 0 2px rgba(240, 207, 131, 0.22),
-    inset 0 0 44px rgba(0, 0, 0, 0.48);
 }
 
-.temple-door-light {
+.reference-door-grain {
+  z-index: 1;
+  opacity: 0.32;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 216, 127, 0.16) 0 1px, transparent 1px 27px),
+    repeating-linear-gradient(0deg, transparent 0 25px, rgba(235, 182, 78, 0.1) 25px 27px);
+}
+
+.reference-door-sheen {
+  z-index: 2;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255, 231, 151, 0.13), transparent 24%),
+    linear-gradient(90deg, rgba(255, 244, 187, 0.12), transparent 18%, transparent 80%, rgba(255, 220, 145, 0.1));
+}
+
+.reference-door-grid {
+  position: absolute;
+  inset: clamp(3.3rem, 6.2vh, 5.2rem) clamp(0.65rem, 1.7vw, 1.35rem);
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(10, minmax(0, 1fr));
+  border-top: 1.5px solid rgba(244, 205, 107, 0.76);
+  border-left: 1.5px solid rgba(244, 205, 107, 0.76);
+  box-shadow:
+    0 0 18px rgba(238, 191, 89, 0.14),
+    inset 0 0 18px rgba(8, 1, 4, 0.3);
+}
+
+.reference-door-cell {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1.5px solid rgba(244, 205, 107, 0.76);
+  border-bottom: 1.5px solid rgba(244, 205, 107, 0.76);
+  box-shadow: inset 0 0 11px rgba(10, 1, 4, 0.22);
+}
+
+.reference-door-cell span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(0.56rem, 1.8vw, 1.2rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 32% 28%, #fff5bd 0 16%, #e8bf5b 38%, #a06c21 72%, #563012 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 238, 158, 0.36),
+    0 5px 8px rgba(13, 2, 5, 0.42),
+    inset -3px -4px 6px rgba(80, 41, 9, 0.38);
+}
+
+.reference-door-outer-rail,
+.reference-door-center-rail,
+.reference-door-top-rail,
+.reference-door-bottom-rail {
+  position: absolute;
+  z-index: 8;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 232, 152, 0.82), rgba(158, 94, 30, 0.88), rgba(255, 228, 139, 0.76));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 238, 164, 0.35),
+    0 0 18px rgba(24, 4, 7, 0.4);
+}
+
+.reference-door-outer-rail,
+.reference-door-center-rail {
+  top: 0;
+  bottom: 0;
+  width: clamp(0.72rem, 2vw, 1.3rem);
+}
+
+.reference-door-panel--left .reference-door-outer-rail,
+.reference-door-center-rail--right {
+  left: 0;
+}
+
+.reference-door-panel--right .reference-door-outer-rail,
+.reference-door-center-rail--left {
+  right: 0;
+}
+
+.reference-door-top-rail,
+.reference-door-bottom-rail {
+  left: 0;
+  right: 0;
+  height: clamp(0.72rem, 2vw, 1.3rem);
+}
+
+.reference-door-top-rail {
+  top: clamp(2.35rem, 4.6vh, 3.75rem);
+}
+
+.reference-door-bottom-rail {
+  bottom: clamp(2.35rem, 4.6vh, 3.75rem);
+}
+
+.reference-door-pull {
+  position: absolute;
+  top: 47%;
+  z-index: 12;
+  display: grid;
+  gap: 0.42rem;
+  transform: translateY(-50%);
+}
+
+.reference-door-pull--left {
+  right: clamp(0.38rem, 1.3vw, 0.9rem);
+}
+
+.reference-door-pull--right {
+  left: clamp(0.38rem, 1.3vw, 0.9rem);
+}
+
+.reference-door-pull span {
+  width: clamp(0.42rem, 1vw, 0.58rem);
+  height: clamp(2.1rem, 5vw, 3.5rem);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff4bb, #ddb35a 54%, #84561b);
+  box-shadow:
+    0 0 0 1px rgba(255, 245, 189, 0.48),
+    0 5px 8px rgba(13, 2, 5, 0.34);
+}
+
+.reference-door-frame {
   position: absolute;
   inset: 0;
-  transform-origin: center;
+  z-index: 18;
+  pointer-events: none;
+}
+
+.reference-door-frame span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(2.4rem, 5.5vh, 4rem);
   background:
-    radial-gradient(circle at 50% 48%, rgba(255, 237, 181, 0.52), transparent 22%),
-    radial-gradient(circle at 50% 42%, rgba(255, 184, 105, 0.26), transparent 42%),
-    linear-gradient(90deg, transparent, rgba(255, 235, 175, 0.34), transparent);
-  filter: blur(0.2px);
+    linear-gradient(180deg, rgba(247, 223, 160, 0.96), rgba(142, 93, 43, 0.95)),
+    repeating-linear-gradient(90deg, rgba(59, 35, 18, 0.18) 0 8px, transparent 8px 16px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 199, 0.72),
+    inset 0 -1px 0 rgba(71, 38, 15, 0.48),
+    0 8px 22px rgba(13, 2, 5, 0.4);
+}
+
+.reference-door-frame span:first-child {
+  top: 0;
+}
+
+.reference-door-frame span:last-child {
+  bottom: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 199, 0.72),
+    inset 0 -1px 0 rgba(71, 38, 15, 0.48),
+    0 -8px 22px rgba(13, 2, 5, 0.4);
+}
+
+.reference-door-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 60px rgba(9, 1, 3, 0.56),
+    inset 0 0 150px rgba(9, 1, 3, 0.34);
+}
+
+.reference-intro-petal {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 5px rgba(18, 2, 6, 0.18));
+}
+
+@media (max-width: 640px) {
+  .reference-door-grid {
+    inset: clamp(3.1rem, 6vh, 4.5rem) 0.58rem;
+  }
+
+  .reference-reveal-copy {
+    margin-top: -8vh;
+  }
+
+  .reference-monogram {
+    width: 7rem;
+    height: 5.8rem;
+  }
+
+  .reference-monogram span {
+    font-size: 5.2rem;
+  }
+
+  .reference-reveal-names {
+    font-size: 2.65rem;
+  }
+
+  .reference-reveal-subtitle {
+    font-size: 0.56rem;
+  }
+
+  .reference-hanging-string:nth-of-type(5),
+  .reference-hanging-string:nth-of-type(6) {
+    display: none;
+  }
+
+  .reference-bottom-decor {
+    bottom: -1rem;
+    width: 11rem;
+    height: 9rem;
+  }
+
+  .reference-bottom-decor--left {
+    left: -2.4rem;
+  }
+
+  .reference-bottom-decor--right {
+    right: -2.4rem;
+  }
 }
 
 .action-button {
