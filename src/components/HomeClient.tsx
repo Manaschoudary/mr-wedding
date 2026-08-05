@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { KolamDivider } from "@/components/KolamDivider";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
+import { DoorIntro } from "@/components/DoorIntro";
 import { Timeline } from "@/components/Timeline";
 import { addGoogleCalendarInvite, downloadCalendarInvite, getGoogleCalendarUrl } from "@/lib/calendar";
 import { FAMILY, getInvitationConfig, type InvitationMode, WEDDING, WEDDING_EVENT } from "@/lib/data";
@@ -285,7 +285,6 @@ export function HomeClient({ invitationMode }: HomeClientProps) {
   return (
     <div onClickCapture={handleTrackedClick}>
       <DoorIntro />
-      <FallingPetals />
 
       <Hero invitationMode={invitationMode} />
       <section id="countdown" data-analytics-section="Countdown" className="section-tight text-center">

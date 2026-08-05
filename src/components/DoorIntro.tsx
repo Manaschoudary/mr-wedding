@@ -3,19 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-type PetalSpec = {
-  readonly delay: number;
-  readonly startX: number;
-  readonly duration: number;
-  readonly size: number;
-  readonly rotationStart: number;
-  readonly rotationMid: number;
-  readonly rotationEnd: number;
-  readonly driftA: number;
-  readonly driftB: number;
-  readonly repeatDelay: number;
-};
-
 type IntroPetalSpec = {
   readonly delay: number;
   readonly startX: number;
@@ -28,6 +15,9 @@ type IntroPetalSpec = {
   readonly rotationEnd: number;
 };
 
+const CLOSED_HOLD_MS = 420;
+const DOOR_OPEN_DURATION_SECONDS = 3.08;
+const INTRO_DURATION_MS = CLOSED_HOLD_MS + DOOR_OPEN_DURATION_SECONDS * 1000;
 const DOOR_CELLS = Array.from({ length: 40 }, (_, index) => index);
 
 const INTRO_PETALS: readonly IntroPetalSpec[] = [
@@ -41,29 +31,6 @@ const INTRO_PETALS: readonly IntroPetalSpec[] = [
   { delay: 1.76, startX: 5, startY: 8, endX: 27, endY: 96, duration: 3.8, size: 18, rotationStart: 18, rotationEnd: -210 },
   { delay: 2.0, startX: 74, startY: -6, endX: 51, endY: 54, duration: 2.7, size: 15, rotationStart: -50, rotationEnd: 190 },
 ];
-
-function randomFromRange(min: number, max: number): number {
-  return Math.random() * (max - min) + min;
-}
-
-function createRandomPetals(count: number): readonly PetalSpec[] {
-  return Array.from({ length: count }, () => {
-    const rotationStart = randomFromRange(-150, 150);
-    const rotationMid = randomFromRange(-300, 300);
-    return {
-      delay: randomFromRange(0, 5.4),
-      startX: randomFromRange(4, 96),
-      duration: randomFromRange(4.8, 8.9),
-      size: randomFromRange(14, 36),
-      rotationStart,
-      rotationMid,
-      rotationEnd: randomFromRange(rotationMid - 110, rotationMid + 130),
-      driftA: randomFromRange(-7, 8),
-      driftB: randomFromRange(-8, 8),
-      repeatDelay: randomFromRange(0.1, 2.4),
-    };
-  });
-}
 
 function DoorStudGrid() {
   return (
@@ -143,47 +110,14 @@ function IntroPetals({ active }: { active: boolean }) {
   );
 }
 
-function RandomizedFallingPetal({ petal }: { petal: PetalSpec }) {
-  return (
-    <motion.div
-      className="absolute pointer-events-none"
-      style={{ width: `${petal.size}px`, height: `${petal.size + 4}px` }}
-      initial={{ opacity: 0, x: `${petal.startX}vw`, y: "-16vh", rotate: petal.rotationStart }}
-      animate={{
-        opacity: [0, 0.92, 0.88, 0],
-        x: [
-          `${petal.startX}vw`,
-          `${petal.startX + petal.driftA}vw`,
-          `${petal.startX + petal.driftB}vw`,
-          `${petal.startX + petal.driftA * 0.35}vw`,
-        ],
-        y: ["-16vh", "35vh", "76vh", "114vh"],
-        rotate: [petal.rotationStart, petal.rotationMid, petal.rotationEnd, petal.rotationEnd + petal.driftB * 10],
-      }}
-      transition={{
-        duration: petal.duration,
-        delay: 3.5 + petal.delay,
-        ease: "easeInOut",
-        repeat: Infinity,
-        repeatDelay: petal.repeatDelay,
-      }}
-    >
-      <svg width="100%" height="100%" viewBox="0 0 24 28" fill="none">
-        <ellipse cx="12" cy="14" rx="9" ry="12" fill="#e8b4c0" opacity="0.9" />
-        <ellipse cx="11" cy="12" rx="6.5" ry="8" fill="#f3d1db" opacity="0.72" />
-      </svg>
-    </motion.div>
-  );
-}
-
 export function DoorIntro() {
   const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
 
   useEffect(() => {
-    const openTimer = setTimeout(() => setPhase("opening"), 280);
+    const openTimer = setTimeout(() => setPhase("opening"), CLOSED_HOLD_MS);
     const doneTimer = setTimeout(() => {
       setPhase("done");
-    }, 2750);
+    }, INTRO_DURATION_MS);
 
     return () => {
       clearTimeout(openTimer);
@@ -197,7 +131,7 @@ export function DoorIntro() {
         <motion.div
           className="reference-door-intro fixed inset-0 z-[100] overflow-hidden"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.35 }}
+          transition={{ duration: 0 }}
           style={{ perspective: "1800px" }}
         >
           <DoorBackdrop active={phase === "opening"} />
@@ -211,7 +145,7 @@ export function DoorIntro() {
               className="reference-door-leaf reference-door-leaf--left"
               initial={{ rotateY: 0, x: 0 }}
               animate={phase === "opening" ? { rotateY: -108, x: -18, z: -6 } : { rotateY: 0, x: 0, z: 0 }}
-              transition={{ duration: 2.05, ease: [0.16, 0.78, 0.24, 1] }}
+              transition={{ duration: DOOR_OPEN_DURATION_SECONDS, ease: [0.16, 0.78, 0.24, 1] }}
               style={{ transformStyle: "preserve-3d" }}
             >
               <DoorPanel side="left" />
@@ -221,7 +155,7 @@ export function DoorIntro() {
               className="reference-door-leaf reference-door-leaf--right"
               initial={{ rotateY: 0, x: 0 }}
               animate={phase === "opening" ? { rotateY: 108, x: 18, z: -6 } : { rotateY: 0, x: 0, z: 0 }}
-              transition={{ duration: 2.05, ease: [0.16, 0.78, 0.24, 1] }}
+              transition={{ duration: DOOR_OPEN_DURATION_SECONDS, ease: [0.16, 0.78, 0.24, 1] }}
               style={{ transformStyle: "preserve-3d" }}
             >
               <DoorPanel side="right" />
@@ -231,22 +165,5 @@ export function DoorIntro() {
         </motion.div>
       )}
     </AnimatePresence>
-  );
-}
-
-export function FallingPetals() {
-  const [petals, setPetals] = useState<readonly PetalSpec[]>([]);
-
-  useEffect(() => {
-    const petalTimer = window.setTimeout(() => setPetals(createRandomPetals(14)), 0);
-    return () => window.clearTimeout(petalTimer);
-  }, []);
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-[40] overflow-hidden" aria-hidden>
-      {petals.map((petal, index) => (
-        <RandomizedFallingPetal key={`${petal.startX}-${petal.delay}-${index}`} petal={petal} />
-      ))}
-    </div>
   );
 }
