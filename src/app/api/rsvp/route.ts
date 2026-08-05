@@ -1,103 +1,111 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/mongodb";
 
-interface RSVPEventResponse {
-  readonly eventId: string;
-  readonly status: "attending" | "tentative" | "decline";
+let indexesReady: Promise<string> | null = null;
+
+interface RSVPGuest {
+  readonly firstName?: unknown;
+  readonly lastName?: unknown;
+  readonly attending?: unknown;
 }
 
-interface RSVPRequest {
-  readonly name: string;
-  readonly email?: string;
-  readonly phone?: string;
-  readonly note?: string;
-  readonly events: readonly RSVPEventResponse[];
+interface RSVPBody {
+  readonly clientSubmissionId?: unknown;
+  readonly submittedAt?: unknown;
+  readonly primaryGuest?: RSVPGuest & Record<string, unknown>;
+  readonly eventAttendance?: unknown;
+  readonly [key: string]: unknown;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function parseRequest(value: unknown): RSVPRequest | null {
-  if (!isRecord(value)) {
+function parseBody(value: unknown): RSVPBody | null {
+  if (!isRecord(value)) return null;
+
+  const primaryGuest = value.primaryGuest;
+  if (!isRecord(primaryGuest)) return null;
+
+  if (typeof primaryGuest.firstName !== "string" || primaryGuest.firstName.trim().length === 0) {
     return null;
   }
 
-  const name = value.name;
-  const email = value.email;
-  const phone = value.phone;
-  const note = value.note;
-  const events = value.events;
-
-  if (typeof name !== "string" || name.trim().length === 0 || !Array.isArray(events) || events.length === 0) {
+  if (typeof primaryGuest.lastName !== "string" || primaryGuest.lastName.trim().length === 0) {
     return null;
   }
 
-  const validStatuses = new Set(["attending", "tentative", "decline"] as const);
-  const parsedEvents: RSVPEventResponse[] = [];
-
-  for (const item of events) {
-    if (!isRecord(item)) {
-      return null;
-    }
-    const eventId = item.eventId;
-    const status = item.status;
-    if (typeof eventId !== "string" || typeof status !== "string" || !validStatuses.has(status as RSVPEventResponse["status"])) {
-      return null;
-    }
-    parsedEvents.push({ eventId, status: status as RSVPEventResponse["status"] });
+  if (primaryGuest.attending !== "yes" && primaryGuest.attending !== "no") {
+    return null;
   }
 
-  return {
-    name,
-    email: typeof email === "string" ? email : undefined,
-    phone: typeof phone === "string" ? phone : undefined,
-    note: typeof note === "string" ? note : undefined,
-    events: parsedEvents,
-  };
+  return value as RSVPBody;
+}
+
+function ensureIndexes() {
+  if (!indexesReady) {
+    indexesReady = getDb()
+      .then((db) => db.collection("rsvps").createIndex(
+        { clientSubmissionId: 1 },
+        { unique: true, sparse: true }
+      ))
+      .catch((error) => {
+        indexesReady = null;
+        throw error;
+      });
+  }
+
+  return indexesReady;
 }
 
 export async function POST(request: Request) {
   try {
-    const parsed = parseRequest(await request.json());
+    const parsed = parseBody(await request.json());
 
     if (parsed === null) {
-      return NextResponse.json({ error: "Invalid RSVP payload" }, { status: 400 });
+      return NextResponse.json({ error: "First name, last name, and attendance response are required" }, { status: 400 });
     }
 
     const db = await getDb();
     const collection = db.collection("rsvps");
-
-    const rsvpDoc = {
-      name: parsed.name.trim(),
-      email: parsed.email?.trim() || null,
-      phone: parsed.phone?.trim() || null,
-      note: parsed.note?.trim() || null,
-      events: parsed.events.map((e) => ({
-        eventId: e.eventId,
-        status: e.status,
-      })),
-      submittedAt: new Date(),
-      updatedAt: new Date(),
+    const doc = {
+      ...parsed,
+      submittedAt: typeof parsed.submittedAt === "string" ? parsed.submittedAt : new Date().toISOString(),
+      createdAt: new Date(),
     };
 
-    await collection.updateOne(
-      { name: rsvpDoc.name },
-      {
-        $set: {
-          ...rsvpDoc,
-          updatedAt: new Date(),
-        },
-        $setOnInsert: {
-          submittedAt: new Date(),
-        },
-      },
-      { upsert: true }
-    );
+    if (typeof parsed.clientSubmissionId === "string" && parsed.clientSubmissionId.trim().length > 0) {
+      await ensureIndexes();
+      try {
+        const result = await collection.updateOne(
+          { clientSubmissionId: parsed.clientSubmissionId },
+          { $setOnInsert: doc },
+          { upsert: true }
+        );
+        return NextResponse.json({
+          success: true,
+          id: result.upsertedId?.toString?.() || parsed.clientSubmissionId,
+          duplicate: !result.upsertedId,
+        }, { status: result.upsertedId ? 201 : 200 });
+      } catch (error) {
+        if (isRecord(error) && error.code === 11000) {
+          return NextResponse.json({
+            success: true,
+            id: parsed.clientSubmissionId,
+            duplicate: true,
+          });
+        }
+        throw error;
+      }
+    }
 
-    return NextResponse.json({ message: "RSVP submitted successfully" }, { status: 200 });
+    const result = await collection.insertOne(doc);
+    return NextResponse.json({ success: true, id: result.insertedId.toString() }, { status: 201 });
   } catch (error) {
     console.error("RSVP submission error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    if (error instanceof Error && error.message.includes("MONGODB_URI")) {
+      return NextResponse.json({ error: "RSVP storage requires MONGODB_URI to be configured." }, { status: 503 });
+    }
+    return NextResponse.json({ error: "Failed to save RSVP. Please try again." }, { status: 500 });
   }
 }

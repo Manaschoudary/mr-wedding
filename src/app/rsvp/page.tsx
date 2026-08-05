@@ -1,11 +1,6 @@
-import { RSVPClient } from "@/components/RSVPClient";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "RSVP | Manas & Rupa #MR Wedding",
-  description: "RSVP for the #MR Wedding — September 4 & 5, 2026.",
-};
+import { redirect } from "next/navigation";
+import { WEDDING_ONLY_BASE_PATH } from "@/lib/data";
 
 export default function RSVPPage() {
-  return <RSVPClient />;
+  redirect(`${WEDDING_ONLY_BASE_PATH}/rsvp`);
 }

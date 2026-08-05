@@ -1,5 +1,6 @@
-import { EventsClient } from "@/components/EventsClient";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { WEDDING_ONLY_BASE_PATH } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Events | Manas & Rupa #MR Wedding",
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function EventsPage() {
-  return <EventsClient />;
+  redirect(WEDDING_ONLY_BASE_PATH);
 }
