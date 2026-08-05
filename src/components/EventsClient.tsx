@@ -15,9 +15,10 @@ export function EventModal({ event, onClose }: EventModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const mountTimer = window.setTimeout(() => setMounted(true), 0);
     document.body.style.overflow = "hidden";
     return () => {
+      window.clearTimeout(mountTimer);
       document.body.style.overflow = "";
     };
   }, []);
