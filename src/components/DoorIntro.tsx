@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type PetalSpec = {
@@ -29,16 +29,6 @@ type IntroPetalSpec = {
 };
 
 const DOOR_CELLS = Array.from({ length: 40 }, (_, index) => index);
-
-const HANGING_DECOR = [
-  { left: 6, height: 82, scale: 0.9 },
-  { left: 12, height: 116, scale: 1.1 },
-  { left: 19, height: 72, scale: 0.74 },
-  { left: 70, height: 94, scale: 0.86 },
-  { left: 78, height: 132, scale: 1.16 },
-  { left: 86, height: 84, scale: 0.8 },
-  { left: 93, height: 112, scale: 1.02 },
-];
 
 const INTRO_PETALS: readonly IntroPetalSpec[] = [
   { delay: 0.45, startX: 86, startY: -8, endX: 62, endY: 60, duration: 3.4, size: 22, rotationStart: -30, rotationEnd: 250 },
@@ -105,74 +95,15 @@ function DoorPanel({ side }: { side: "left" | "right" }) {
   );
 }
 
-function HangingDecor() {
-  return (
-    <div className="reference-hanging-decor" aria-hidden>
-      <div className="reference-floral-swag reference-floral-swag--left" />
-      <div className="reference-floral-swag reference-floral-swag--right" />
-      {HANGING_DECOR.map((decor) => (
-        <span
-          key={`${decor.left}-${decor.height}`}
-          className="reference-hanging-string"
-          style={
-            {
-              left: `${decor.left}%`,
-              height: `${decor.height}px`,
-              "--bell-scale": String(decor.scale),
-            } as CSSProperties
-          }
-        >
-          <span className="reference-bell" />
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function BottomDecor({ side }: { side: "left" | "right" }) {
-  return (
-    <div className={`reference-bottom-decor reference-bottom-decor--${side}`} aria-hidden>
-      <div className="reference-leaf-fan">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <span key={index} />
-        ))}
-      </div>
-      <div className="reference-decor-lattice" />
-      <div className="reference-kalash">
-        <span className="reference-kalash-neck" />
-        <span className="reference-kalash-pot" />
-        <span className="reference-kalash-base" />
-      </div>
-    </div>
-  );
-}
-
-function RevealScene({ active }: { active: boolean }) {
+function DoorBackdrop({ active }: { active: boolean }) {
   return (
     <motion.div
-      className="reference-reveal-scene"
-      initial={{ opacity: 0.38, scale: 1.05 }}
-      animate={active ? { opacity: 1, scale: 1 } : { opacity: 0.38, scale: 1.05 }}
-      transition={{ duration: 1.7, delay: active ? 0.45 : 0, ease: "easeOut" }}
+      className="reference-door-backdrop"
+      initial={{ opacity: 0.96, scale: 1.02 }}
+      animate={active ? { opacity: 1, scale: 1 } : { opacity: 0.96, scale: 1.02 }}
+      transition={{ duration: 1.1, ease: "easeOut" }}
       aria-hidden
-    >
-      <HangingDecor />
-      <BottomDecor side="left" />
-      <BottomDecor side="right" />
-      <motion.div
-        className="reference-reveal-copy"
-        initial={{ opacity: 0, y: 18, scale: 0.94 }}
-        animate={active ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 18, scale: 0.94 }}
-        transition={{ duration: 1.45, delay: 1.15, ease: "easeOut" }}
-      >
-        <div className="reference-monogram">
-          <span>M</span>
-          <span>R</span>
-        </div>
-        <p className="reference-reveal-names">Manas &amp; Rupa Sree</p>
-        <p className="reference-reveal-subtitle">The Beginning of Forever</p>
-      </motion.div>
-    </motion.div>
+    />
   );
 }
 
@@ -249,10 +180,10 @@ export function DoorIntro() {
   const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
 
   useEffect(() => {
-    const openTimer = setTimeout(() => setPhase("opening"), 560);
+    const openTimer = setTimeout(() => setPhase("opening"), 280);
     const doneTimer = setTimeout(() => {
       setPhase("done");
-    }, 5200);
+    }, 2750);
 
     return () => {
       clearTimeout(openTimer);
@@ -266,10 +197,10 @@ export function DoorIntro() {
         <motion.div
           className="reference-door-intro fixed inset-0 z-[100] overflow-hidden"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.75 }}
+          transition={{ duration: 0.35 }}
           style={{ perspective: "1800px" }}
         >
-          <RevealScene active={phase === "opening"} />
+          <DoorBackdrop active={phase === "opening"} />
           <IntroPetals active={phase === "opening"} />
           <div className="reference-door-frame" aria-hidden>
             <span />
@@ -279,8 +210,8 @@ export function DoorIntro() {
             <motion.div
               className="reference-door-leaf reference-door-leaf--left"
               initial={{ rotateY: 0, x: 0 }}
-              animate={phase === "opening" ? { rotateY: -116, x: -28, z: -8 } : { rotateY: 0, x: 0, z: 0 }}
-              transition={{ duration: 3.15, ease: [0.16, 0.78, 0.24, 1] }}
+              animate={phase === "opening" ? { rotateY: -108, x: -18, z: -6 } : { rotateY: 0, x: 0, z: 0 }}
+              transition={{ duration: 2.05, ease: [0.16, 0.78, 0.24, 1] }}
               style={{ transformStyle: "preserve-3d" }}
             >
               <DoorPanel side="left" />
@@ -289,8 +220,8 @@ export function DoorIntro() {
             <motion.div
               className="reference-door-leaf reference-door-leaf--right"
               initial={{ rotateY: 0, x: 0 }}
-              animate={phase === "opening" ? { rotateY: 116, x: 28, z: -8 } : { rotateY: 0, x: 0, z: 0 }}
-              transition={{ duration: 3.15, ease: [0.16, 0.78, 0.24, 1] }}
+              animate={phase === "opening" ? { rotateY: 108, x: 18, z: -6 } : { rotateY: 0, x: 0, z: 0 }}
+              transition={{ duration: 2.05, ease: [0.16, 0.78, 0.24, 1] }}
               style={{ transformStyle: "preserve-3d" }}
             >
               <DoorPanel side="right" />
