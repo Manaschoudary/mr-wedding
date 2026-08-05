@@ -89,40 +89,42 @@ function DiyaPattern() {
 
 function DoorPanel({ side }: { side: "left" | "right" }) {
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#3d1012]">
-      {/* Decorative border on outer edge */}
+    <div className={`temple-door-panel temple-door-panel--${side}`}>
+      <div className="temple-door-woodgrain" />
+      <div className="temple-door-panel-glow" />
       <div
-        className={`absolute top-0 bottom-0 w-6 bg-[#c4a35a]/30 ${
+        className={`absolute top-0 bottom-0 z-10 w-7 bg-[#caa356]/35 shadow-[inset_0_0_12px_rgba(0,0,0,0.38)] ${
           side === "left" ? "left-0" : "right-0"
         }`}
       >
-        <div className="h-full w-full bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%222%22%20fill%3D%22%23c4a35a40%22%2F%3E%3C%2Fsvg%3E')] opacity-60" />
+        <div className="h-full w-full bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%222%22%20fill%3D%22%23c4a35a55%22%2F%3E%3C%2Fsvg%3E')] opacity-80" />
       </div>
-      {/* Repeating diya pattern grid */}
+      <div className={`temple-door-seam ${side === "left" ? "right-0" : "left-0"}`} />
       <div
-        className={`absolute inset-0 grid grid-cols-4 gap-0 ${
+        className={`absolute inset-0 z-[2] grid grid-cols-3 gap-1 py-8 ${
           side === "left" ? "pl-6" : "pr-6"
         }`}
         style={{ color: "#c4a35a" }}
       >
-        {Array.from({ length: 24 }).map((_, i) => (
-          <div key={i} className="flex items-center justify-center">
+        {Array.from({ length: 18 }).map((_, i) => (
+          <div key={i} className="flex items-center justify-center opacity-85">
             <DiyaPattern />
           </div>
         ))}
       </div>
-      {/* Door handle */}
+      <div className={`temple-door-inner-panel ${side === "left" ? "left-10 right-8" : "left-8 right-10"}`} />
       <div
-        className={`absolute top-1/2 -translate-y-1/2 ${
-          side === "left" ? "right-3" : "left-3"
+        className={`absolute top-1/2 z-20 -translate-y-1/2 ${
+          side === "left" ? "right-4" : "left-4"
         }`}
       >
-        <div className="h-14 w-3 rounded-full bg-[#c4a35a]/70 shadow-lg" />
-        <div className="mx-auto mt-1 h-3 w-3 rounded-full bg-[#8b6914]/80" />
+        <div className="grid h-16 w-16 place-items-center rounded-full border border-[#f0cf83]/70 bg-[#8b6914]/75 shadow-[0_0_22px_rgba(240,207,131,0.28),inset_0_0_10px_rgba(0,0,0,0.28)]">
+          <div className="h-8 w-8 rounded-full border-4 border-[#f3d48c]/85 shadow-inner" />
+        </div>
+        <div className="mx-auto mt-2 h-9 w-2 rounded-full bg-[#f0cf83]/75 shadow-lg" />
       </div>
-      {/* Inner border */}
       <div
-        className={`absolute top-2 bottom-2 w-[1px] bg-[#c4a35a]/25 ${
+        className={`absolute top-4 bottom-4 z-10 w-[2px] bg-[#e1bd6f]/35 ${
           side === "left" ? "right-8" : "left-8"
         }`}
       />
@@ -167,12 +169,10 @@ export function DoorIntro() {
   const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
 
   useEffect(() => {
-    // Brief pause then start opening
-    const openTimer = setTimeout(() => setPhase("opening"), 800);
-    // Complete after doors fully open
+    const openTimer = setTimeout(() => setPhase("opening"), 650);
     const doneTimer = setTimeout(() => {
       setPhase("done");
-    }, 3200);
+    }, 3400);
 
     return () => {
       clearTimeout(openTimer);
@@ -184,31 +184,41 @@ export function DoorIntro() {
     <AnimatePresence>
       {phase !== "done" && (
         <motion.div
-          className="fixed inset-0 z-[100] flex"
+          className="fixed inset-0 z-[100] overflow-hidden bg-[#140507]"
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
+          style={{ perspective: "1600px" }}
         >
-          {/* Left door */}
           <motion.div
-            className="h-full w-1/2 origin-left"
-            initial={{ rotateY: 0 }}
-            animate={phase === "opening" ? { rotateY: -95 } : { rotateY: 0 }}
-            transition={{ duration: 2.2, ease: [0.4, 0, 0.2, 1] }}
-            style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
-          >
-            <DoorPanel side="left" />
-          </motion.div>
+            className="temple-door-light"
+            initial={{ opacity: 0, scaleX: 0.05 }}
+            animate={phase === "opening" ? { opacity: 1, scaleX: 1 } : { opacity: 0, scaleX: 0.05 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
+          <div className="temple-door-frame" aria-hidden />
+          <div className="flex h-full w-full">
+            {/* Left door */}
+            <motion.div
+              className="h-full w-1/2 origin-left"
+              initial={{ rotateY: 0, x: 0 }}
+              animate={phase === "opening" ? { rotateY: -112, x: -18 } : { rotateY: 0, x: 0 }}
+              transition={{ duration: 2.35, ease: [0.18, 0.82, 0.24, 1] }}
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              <DoorPanel side="left" />
+            </motion.div>
 
-          {/* Right door */}
-          <motion.div
-            className="h-full w-1/2 origin-right"
-            initial={{ rotateY: 0 }}
-            animate={phase === "opening" ? { rotateY: 95 } : { rotateY: 0 }}
-            transition={{ duration: 2.2, ease: [0.4, 0, 0.2, 1] }}
-            style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
-          >
-            <DoorPanel side="right" />
-          </motion.div>
+            {/* Right door */}
+            <motion.div
+              className="h-full w-1/2 origin-right"
+              initial={{ rotateY: 0, x: 0 }}
+              animate={phase === "opening" ? { rotateY: 112, x: 18 } : { rotateY: 0, x: 0 }}
+              transition={{ duration: 2.35, ease: [0.18, 0.82, 0.24, 1] }}
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              <DoorPanel side="right" />
+            </motion.div>
+          </div>
 
           {/* Scroll down text visible during closed state */}
           <motion.div
