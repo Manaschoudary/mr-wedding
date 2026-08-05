@@ -505,7 +505,7 @@ export function RSVPClient({ invitationMode }: RSVPClientProps) {
                           trackCalendarAction("google", attendingCalendarEvents);
                           addGoogleCalendarInvite(attendingCalendarEvents, {
                             filename: "manas-rupa-my-rsvp-events-google.ics",
-                            calendarName: "Manas & Rupa - My RSVP Events",
+                            calendarName: "Manas & Rupa Sree - My RSVP Events",
                           });
                         }}
                         className="inline-flex items-center justify-center gap-2 rounded-xl bg-olive px-5 py-3 font-josefin text-xs uppercase tracking-[0.18em] text-linen"
@@ -519,7 +519,7 @@ export function RSVPClient({ invitationMode }: RSVPClientProps) {
                           trackCalendarAction("apple_outlook", attendingCalendarEvents);
                           downloadCalendarInvite(attendingCalendarEvents, {
                             filename: "manas-rupa-my-rsvp-events.ics",
-                            calendarName: "Manas & Rupa - My RSVP Events",
+                            calendarName: "Manas & Rupa Sree - My RSVP Events",
                           });
                         }}
                         className="inline-flex items-center justify-center gap-2 rounded-xl border border-ink/20 px-5 py-3 font-josefin text-xs uppercase tracking-[0.18em] text-ink"

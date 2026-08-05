@@ -17,6 +17,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid owner code" }, { status: 401 });
   }
 
-  await setOwnerAccessCookie();
-  return NextResponse.json({ success: true });
+  const response = NextResponse.json({ success: true });
+  setOwnerAccessCookie(response, request);
+  return response;
 }
