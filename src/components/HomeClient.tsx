@@ -118,7 +118,7 @@ function InvitationPreview() {
             <div className="mt-6 border-t border-dashed border-linen/40 pt-4 sm:mt-7 sm:pt-5">
               <p className="cinzel-title text-[0.64rem] text-linen/86 sm:text-[0.72rem]">Sumuhurtham</p>
               <p className="mt-2 font-script text-[1.6rem] leading-none text-linen sm:text-[2rem]">September 5, 2026</p>
-              <p className="font-script-alt text-2xl leading-none text-gold-dark sm:text-3xl">9:30 PM</p>
+              <p className="font-script-alt text-2xl leading-none text-gold-dark sm:text-3xl">9:31 PM</p>
             </div>
           </div>
         </div>

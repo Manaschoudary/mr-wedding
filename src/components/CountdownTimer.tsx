@@ -27,53 +27,42 @@ interface CountdownTimerProps {
 }
 
 export function CountdownTimer({ targetDate }: CountdownTimerProps) {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
-    calculateTimeLeft(targetDate)
-  );
-  const [mounted, setMounted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft(targetDate));
-    }, 1000);
+    const updateTimeLeft = () => setTimeLeft(calculateTimeLeft(targetDate));
+    const firstTick = window.setTimeout(updateTimeLeft, 0);
+    const timer = window.setInterval(updateTimeLeft, 1000);
 
-    return () => clearInterval(timer);
+    return () => {
+      window.clearTimeout(firstTick);
+      window.clearInterval(timer);
+    };
   }, [targetDate]);
 
   const blocks = [
-    { value: timeLeft.days, label: "Days" },
-    { value: timeLeft.hours, label: "Hours" },
-    { value: timeLeft.minutes, label: "Minutes" },
-    { value: timeLeft.seconds, label: "Seconds" },
+    { value: timeLeft?.days, label: "Days" },
+    { value: timeLeft?.hours, label: "Hours" },
+    { value: timeLeft?.minutes, label: "Minutes" },
+    { value: timeLeft?.seconds, label: "Seconds" },
   ];
 
-  if (!mounted) {
-    return (
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-        {blocks.map((block) => (
-          <div key={block.label} className="rounded-xl border border-olive/35 bg-linen-soft p-4 text-center">
-            <p className="font-cinzel text-3xl text-ink">--</p>
-            <p className="mt-1 font-josefin text-[0.62rem] uppercase tracking-[0.25em] text-ink/75">
-              {block.label}
-            </p>
-          </div>
-        ))}
-      </div>
-    );
-  }
+  const valueClass = "font-cinzel text-[1.35rem] leading-none text-ink tabular-nums sm:text-3xl";
+  const labelClass = "mt-1 font-josefin text-[0.48rem] uppercase tracking-[0.14em] text-ink/70 sm:text-[0.58rem] sm:tracking-[0.22em]";
+  const blockClass =
+    "min-w-0 rounded-lg border border-gold-dark/35 bg-linen-soft px-1.5 py-2 text-center shadow-[0_8px_18px_rgba(0,0,0,0.14)] sm:rounded-xl sm:px-3 sm:py-3";
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+    <div className="mx-auto grid max-w-xl grid-cols-4 gap-1.5 rounded-2xl border border-linen/25 bg-burgundy-deep p-2 shadow-[0_18px_36px_rgba(0,0,0,0.2)] sm:gap-2 sm:p-3">
       {blocks.map((block) => (
         <div
           key={block.label}
-          className="rounded-xl border border-olive/40 bg-linen-soft p-4 text-center shadow-[0_10px_20px_rgba(0,0,0,0.16)]"
+          className={blockClass}
         >
-          <p className="font-cinzel text-3xl text-ink sm:text-[2.15rem]">
-            {String(block.value).padStart(2, "0")}
+          <p className={valueClass}>
+            {block.value === undefined ? "--" : String(block.value).padStart(2, "0")}
           </p>
-          <p className="mt-1 font-josefin text-[0.62rem] uppercase tracking-[0.25em] text-ink/75">
+          <p className={labelClass}>
             {block.label}
           </p>
         </div>

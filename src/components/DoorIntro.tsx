@@ -234,7 +234,8 @@ export function FallingPetals() {
   const [petals, setPetals] = useState<readonly PetalSpec[]>([]);
 
   useEffect(() => {
-    setPetals(createRandomPetals(14));
+    const petalTimer = window.setTimeout(() => setPetals(createRandomPetals(14)), 0);
+    return () => window.clearTimeout(petalTimer);
   }, []);
 
   return (

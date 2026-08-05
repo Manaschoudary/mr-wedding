@@ -1,15 +1,51 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
-  const [mounted, setMounted] = useState(false);
+
+  const playMusic = useCallback(async (): Promise<boolean> => {
+    const audio = audioRef.current;
+    if (!audio) return false;
+
+    try {
+      await audio.play();
+      return true;
+    } catch {
+      return false;
+    }
+  }, []);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    let cleanedUp = false;
+
+    function removeRetryListeners() {
+      window.removeEventListener("pointerdown", retryPlay);
+      window.removeEventListener("keydown", retryPlay);
+    }
+
+    function retryPlay() {
+      void playMusic().then((started) => {
+        if (started) {
+          removeRetryListeners();
+        }
+      });
+    }
+
+    void playMusic().then((started) => {
+      if (started || cleanedUp) return;
+
+      window.addEventListener("pointerdown", retryPlay, { once: true });
+      window.addEventListener("keydown", retryPlay, { once: true });
+    });
+
+    return () => {
+      cleanedUp = true;
+      removeRetryListeners();
+    };
+  }, [playMusic]);
 
   function toggle() {
     const audio = audioRef.current;
@@ -19,15 +55,21 @@ export function MusicPlayer() {
       audio.pause();
       setPlaying(false);
     } else {
-      audio.play().then(() => setPlaying(true)).catch(() => {});
+      void playMusic();
     }
   }
 
-  if (!mounted) return null;
-
   return (
     <>
-      <audio ref={audioRef} src="/wedding-song.mp3" loop preload="none" />
+      <audio
+        ref={audioRef}
+        src="/wedding-song.mp3"
+        loop
+        preload="auto"
+        autoPlay
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+      />
       <button
         type="button"
         onClick={toggle}
