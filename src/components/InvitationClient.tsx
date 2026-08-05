@@ -55,7 +55,7 @@ export function InvitationClient() {
               </div>
 
               <div className="mt-8 border-t border-dashed border-linen/45 pt-6 text-center">
-                <p className="cinzel-title text-[0.75rem] text-linen/9">SUMUHURTHAM</p>
+                <p className="cinzel-title text-[0.75rem] text-linen/90">SUMUHURTHAM</p>
                 <p className="mt-3 font-script text-[2.4rem] leading-none text-linen">September 5, 2026</p>
                 <p className="font-script-alt text-[2rem] leading-none text-gold-dark">9:31 PM</p>
               </div>

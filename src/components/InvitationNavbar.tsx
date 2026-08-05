@@ -19,10 +19,17 @@ export function InvitationNavbar() {
   ];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => {
+      const revealAfter = Math.max(420, window.innerHeight * 0.68);
+      setScrolled(window.scrollY > revealAfter);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -67,7 +74,7 @@ export function InvitationNavbar() {
                 className={`rounded-full px-4 py-2 font-josefin text-[0.66rem] uppercase tracking-[0.22em] transition ${
                   isActive(link.href)
                     ? "bg-linen text-ink"
-                    : "text-linen/82 hover:bg-linen/10 hover:text-linen"
+                    : "text-linen/92 hover:bg-linen/12 hover:text-linen"
                 }`}
               >
                 {link.label}
@@ -117,7 +124,7 @@ export function InvitationNavbar() {
                 tabIndex={menuOpen ? 0 : -1}
                 onClick={() => trackNavigation(link.label, link.href)}
                 className={`rounded-xl px-4 py-3 font-cormorant text-xl italic ${
-                  isActive(link.href) ? "bg-linen text-ink" : "text-linen/86"
+                  isActive(link.href) ? "bg-linen text-ink" : "text-linen/92"
                 }`}
               >
                 {link.label}
