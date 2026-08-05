@@ -1,13 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { CalendarPlus, MapPin } from "lucide-react";
+import { CalendarPlus, ChevronRight, Clock, MapPin, Shirt, Utensils } from "lucide-react";
 import { motion } from "framer-motion";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { KolamDivider } from "@/components/KolamDivider";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
 import { Timeline } from "@/components/Timeline";
+import { EventModal } from "@/components/EventsClient";
 import { addGoogleCalendarInvite, downloadCalendarInvite, getGoogleCalendarUrl } from "@/lib/calendar";
 import { FAMILY, getInvitationConfig, type InvitationMode, WEDDING, WEDDING_EVENT } from "@/lib/data";
 import { useVisitAnalytics } from "@/lib/analytics";
@@ -29,7 +31,7 @@ function Hero({ invitationMode }: HomeClientProps) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.02, duration: 0.7 }}
-        className="relative z-10 font-josefin text-[0.66rem] uppercase tracking-[0.32em] text-linen/82"
+        className="relative z-10 font-josefin text-[0.66rem] font-semibold uppercase tracking-[0.32em] text-linen/92"
       >
         {invitation.showAllEvents ? "Wedding Celebrations" : "Marriage Ceremony"}
       </motion.p>
@@ -47,7 +49,7 @@ function Hero({ invitationMode }: HomeClientProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.35, duration: 0.8 }}
-        className="relative z-10 mt-5 font-josefin text-[0.72rem] uppercase tracking-[0.32em] text-linen/82 sm:text-[0.8rem]"
+        className="relative z-10 mt-5 font-josefin text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-linen/92 sm:text-[0.8rem]"
       >
         {WEDDING.line}
       </motion.p>
@@ -60,13 +62,13 @@ function Hero({ invitationMode }: HomeClientProps) {
       >
         <Link
           href={invitation.rsvpPath}
-          className="rounded-full border border-linen/50 px-8 py-3 font-josefin text-[0.7rem] uppercase tracking-[0.28em] text-linen transition hover:border-olive hover:bg-olive"
+          className="action-button action-button--primary"
         >
           RSVP
         </Link>
         <a
           href="#countdown"
-          className="rounded-full border border-linen/25 px-8 py-3 font-josefin text-[0.7rem] uppercase tracking-[0.28em] text-linen/82 transition hover:border-linen/45 hover:text-linen"
+          className="action-button action-button--ghost"
         >
           Details
         </a>
@@ -81,7 +83,7 @@ function InvitationPreview() {
       <ScrollReveal>
         <div className="rounded-2xl border border-dashed border-linen/50 bg-burgundy-deep p-4 sm:p-6">
           <div className="olive-card p-5 sm:p-9">
-            <p className="text-center font-josefin text-[0.66rem] uppercase tracking-[0.32em] text-linen/86">
+            <p className="text-center font-josefin text-[0.66rem] font-semibold uppercase tracking-[0.32em] text-linen/92">
               {WEDDING.invitationTagline}
             </p>
 
@@ -92,13 +94,13 @@ function InvitationPreview() {
             <div className="mt-7 grid grid-cols-1 gap-5 sm:mt-8 sm:gap-7 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
               <div className="text-center md:text-left">
                 <p className="font-script text-6xl leading-none text-linen sm:text-7xl">{WEDDING.couple.bride.firstName}</p>
-                <p className="mt-2 font-josefin text-[0.7rem] uppercase tracking-[0.2em] text-linen/88">
+                <p className="mt-2 font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-linen/92">
                   {WEDDING.couple.bride.fullName}
                 </p>
                 <div className="mt-4 space-y-1.5 font-cormorant text-lg italic text-linen/95">
                   {FAMILY.bride.map((line) => (
                     <p key={`${line.role}-${line.name}`}>
-                      <span className="font-josefin text-[0.7rem] uppercase tracking-[0.15em] text-linen/75">{line.role}</span>{" "}
+                      <span className="font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-linen/88">{line.role}</span>{" "}
                       {line.name} {line.relation}
                     </p>
                   ))}
@@ -109,13 +111,13 @@ function InvitationPreview() {
 
               <div className="text-center md:text-right">
                 <p className="font-script text-6xl leading-none text-linen sm:text-7xl">{WEDDING.couple.groom.firstName}</p>
-                <p className="mt-2 font-josefin text-[0.7rem] uppercase tracking-[0.2em] text-linen/88">
+                <p className="mt-2 font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-linen/92">
                   {WEDDING.couple.groom.fullName}
                 </p>
                 <div className="mt-4 space-y-1.5 font-cormorant text-lg italic text-linen/95">
                   {FAMILY.groom.map((line) => (
                     <p key={`${line.role}-${line.name}`}>
-                      <span className="font-josefin text-[0.7rem] uppercase tracking-[0.15em] text-linen/75">{line.role}</span>{" "}
+                      <span className="font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.15em] text-linen/88">{line.role}</span>{" "}
                       {line.name} {line.relation}
                     </p>
                   ))}
@@ -124,12 +126,12 @@ function InvitationPreview() {
             </div>
 
             <div className="mt-8 border-t border-dashed border-linen/45 pt-6 text-center">
-              <p className="cinzel-title text-[0.75rem] text-linen/9">SUMUHURTHAM</p>
+              <p className="cinzel-title text-[0.75rem] text-linen/90">SUMUHURTHAM</p>
               <p className="mt-3 font-script text-[2.4rem] leading-none text-linen">September 5, 2026</p>
               <p className="font-script-alt text-[2rem] leading-none text-gold-dark">9:31 PM</p>
             </div>
 
-            <p className="mt-7 text-center font-josefin text-[0.7rem] uppercase tracking-[0.32em] text-linen/82">
+            <p className="mt-7 text-center font-josefin text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-linen/92">
               {WEDDING.hashtag}
             </p>
           </div>
@@ -146,7 +148,7 @@ function CalendarActions({ invitationMode }: HomeClientProps) {
   return (
     <section data-analytics-section="Calendar Links" className="section-tight text-center">
       <ScrollReveal>
-        <p className="font-josefin text-[0.66rem] uppercase tracking-[0.3em] text-linen/82">
+        <p className="font-josefin text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-linen/92">
           Save {invitation.showAllEvents ? "the dates" : "the date"}
         </p>
         <h2 className="mt-2 font-script text-5xl leading-none text-linen sm:text-6xl">
@@ -158,7 +160,7 @@ function CalendarActions({ invitationMode }: HomeClientProps) {
               href={getGoogleCalendarUrl(events[0])}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-olive px-5 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.2em] text-linen transition hover:bg-olive-strong"
+              className="action-button action-button--primary"
             >
               <CalendarPlus className="h-4 w-4" />
               Google Calendar
@@ -170,7 +172,7 @@ function CalendarActions({ invitationMode }: HomeClientProps) {
                 filename: "manas-rupa-full-celebration-google.ics",
                 calendarName: "Manas & Rupa Sree Full Celebration",
               })}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-olive px-5 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.2em] text-linen transition hover:bg-olive-strong"
+              className="action-button action-button--primary"
             >
               <CalendarPlus className="h-4 w-4" />
               Google Calendar
@@ -182,7 +184,7 @@ function CalendarActions({ invitationMode }: HomeClientProps) {
               filename: invitation.showAllEvents ? "manas-rupa-full-celebration.ics" : "manas-rupa-wedding.ics",
               calendarName: invitation.showAllEvents ? "Manas & Rupa Sree Full Celebration" : "Manas & Rupa Sree Wedding",
             })}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-linen/40 px-5 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.2em] text-linen transition hover:bg-linen/10"
+            className="action-button action-button--ghost"
           >
             Apple / Outlook
           </button>
@@ -193,45 +195,83 @@ function CalendarActions({ invitationMode }: HomeClientProps) {
 }
 
 function WeddingOnlyDetails() {
+  const [selectedEvent, setSelectedEvent] = useState(false);
+
   return (
     <>
       <KolamDivider />
-      <section id="wedding-venue" data-analytics-section="Venue Details" className="section-wide">
+      <section id="wedding-venue" data-analytics-section="Venue Details" className="event-timeline wedding-spotlight">
         <ScrollReveal>
-          <div className="mx-auto max-w-4xl rounded-2xl border border-dashed border-linen/45 bg-burgundy-deep p-4 sm:p-6">
-            <div className="olive-card p-6 text-center sm:p-8">
-              <p className="font-josefin text-[0.66rem] uppercase tracking-[0.3em] text-linen/82">Marriage Ceremony</p>
-              <p className="mt-2 font-script text-5xl leading-none text-linen sm:text-6xl">{WEDDING_EVENT.name}</p>
-              <p className="mx-auto mt-4 max-w-xl font-cormorant text-xl italic text-linen/92">
-                {WEDDING_EVENT.dateLabel} · {WEDDING_EVENT.timeLabel}
-              </p>
-              <a
-                href={WEDDING_EVENT.mapUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mx-auto mt-5 inline-flex items-center justify-center gap-2 rounded-full border border-linen/35 px-5 py-2 font-josefin text-[0.66rem] uppercase tracking-[0.2em] text-linen/90 transition hover:bg-linen/10"
-              >
-                <MapPin className="h-4 w-4" />
-                {WEDDING_EVENT.venue}
-              </a>
-            </div>
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-josefin text-[0.68rem] font-semibold uppercase tracking-[0.32em] text-linen/92">Wedding Ceremony</p>
+            <h2 className="mt-2 font-script text-5xl leading-none text-linen sm:text-6xl">Kalyana Mahotsavam</h2>
+            <p className="mx-auto mt-3 max-w-2xl font-cormorant text-xl italic text-linen/94">
+              Sumuhurtham, venue, meal, and attire details for the marriage ceremony.
+            </p>
           </div>
         </ScrollReveal>
 
-        <div className="mx-auto mt-7 grid max-w-4xl gap-4 md:grid-cols-3">
-          {[
-            ["Address", WEDDING_EVENT.address],
-            ["Meal", WEDDING_EVENT.meal],
-            ["Attire", WEDDING_EVENT.dressCode || "Traditional Indian Attire"],
-          ].map(([label, value]) => (
-            <ScrollReveal key={label}>
-              <article className="rounded-2xl border border-dashed border-linen/42 bg-linen-soft p-5 text-center text-ink">
-                <p className="font-josefin text-[0.62rem] uppercase tracking-[0.22em] text-ink/62">{label}</p>
-                <p className="mt-2 font-cormorant text-[1.45rem] leading-tight italic text-ink">{value}</p>
-              </article>
-            </ScrollReveal>
-          ))}
-        </div>
+        <ScrollReveal>
+          <div className="wedding-spotlight-card">
+            <button
+              type="button"
+              className="timeline-event timeline-event--has-image wedding-ceremony-card"
+              onClick={() => setSelectedEvent(true)}
+              aria-label={`View details for ${WEDDING_EVENT.name}`}
+            >
+              <div className="timeline-event__text">
+                <p className="timeline-event__time">{WEDDING_EVENT.time}</p>
+                <p className="timeline-event__name">{WEDDING_EVENT.name}</p>
+                <p className="timeline-event__venue">{WEDDING_EVENT.dateLabel} · {WEDDING_EVENT.venue}</p>
+                <a
+                  href={WEDDING_EVENT.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="timeline-event__address"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <MapPin className="h-4 w-4" />
+                  <span>{WEDDING_EVENT.address}</span>
+                </a>
+                <div className="wedding-detail-chips" aria-label="Wedding ceremony details">
+                  <span><Clock className="h-3.5 w-3.5" /> 9:31 PM</span>
+                  <span><Utensils className="h-3.5 w-3.5" /> {WEDDING_EVENT.meal}</span>
+                  <span><Shirt className="h-3.5 w-3.5" /> {WEDDING_EVENT.dressCode}</span>
+                </div>
+                <p className="timeline-event__tap">
+                  <span>View full details</span>
+                  <ChevronRight className="h-4 w-4" />
+                </p>
+              </div>
+              {WEDDING_EVENT.image ? (
+                <img src={WEDDING_EVENT.image} alt={WEDDING_EVENT.name} className="timeline-event__thumb" />
+              ) : null}
+            </button>
+          </div>
+        </ScrollReveal>
+
+        {selectedEvent ? <EventModal event={WEDDING_EVENT} onClose={() => setSelectedEvent(false)} /> : null}
+      </section>
+    </>
+  );
+}
+
+function CouplePhoto() {
+  return (
+    <>
+      <KolamDivider />
+      <section className="py-6 text-center">
+        <ScrollReveal>
+          <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/45 bg-gradient-to-br from-[#7c4832] via-[#522324] to-[#273318] p-2.5 px-4 shadow-[0_22px_52px_rgba(0,0,0,0.3)] sm:px-6">
+            <div className="overflow-hidden rounded-xl border border-linen/18">
+              <img
+                src="/couple-mr.jpg"
+                alt="Manas and Rupa Sree"
+                className="h-auto w-full object-cover"
+              />
+            </div>
+          </div>
+        </ScrollReveal>
       </section>
     </>
   );
@@ -245,7 +285,7 @@ export function HomeClient({ invitationMode }: HomeClientProps) {
       "Countdown",
       invitation.showAllEvents ? "Events Timeline" : "Venue Details",
       "Calendar Links",
-      ...(invitation.showAllEvents ? ["Invitation Preview"] : []),
+      "Invitation Preview",
     ],
     metadata: {
       invitationMode: invitation.mode,
@@ -262,7 +302,7 @@ export function HomeClient({ invitationMode }: HomeClientProps) {
       <Hero invitationMode={invitationMode} />
       <section id="countdown" data-analytics-section="Countdown" className="section-tight text-center">
         <ScrollReveal>
-          <p className="font-josefin text-[0.66rem] uppercase tracking-[0.3em] text-linen/82">
+          <p className="font-josefin text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-linen/92">
             The countdown begins
           </p>
           <h2 className="mt-2 font-script text-5xl leading-none text-linen sm:text-6xl">September 5, 2026</h2>
@@ -280,26 +320,22 @@ export function HomeClient({ invitationMode }: HomeClientProps) {
           </section>
           <KolamDivider />
           <InvitationPreview />
-          <KolamDivider />
-          <section className="py-6 text-center">
-            <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2 px-4 sm:px-6">
-              <img
-                src="/couple-mr.jpg"
-                alt="Manas and Rupa Sree"
-                className="h-auto w-full rounded-xl object-cover"
-              />
-            </div>
-          </section>
+          <CouplePhoto />
         </>
       ) : (
-        <WeddingOnlyDetails />
+        <>
+          <WeddingOnlyDetails />
+          <KolamDivider />
+          <InvitationPreview />
+          <CouplePhoto />
+        </>
       )}
 
       <CalendarActions invitationMode={invitationMode} />
       <section className="section-tight pt-0 text-center">
         <Link
           href={invitation.rsvpPath}
-          className="inline-flex rounded-full bg-olive px-8 py-3 font-josefin text-[0.72rem] uppercase tracking-[0.26em] text-linen transition hover:bg-olive-strong"
+          className="action-button action-button--primary"
         >
           RSVP Now
         </Link>
