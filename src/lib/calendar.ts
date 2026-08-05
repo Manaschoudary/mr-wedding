@@ -1,7 +1,7 @@
 import { WEDDING_EVENT, type WeddingEvent } from "@/lib/data";
 
 const CALENDAR_TIMEZONE = "America/Chicago";
-const DEFAULT_CALENDAR_NAME = "Manas & Rupa Wedding Celebrations";
+const DEFAULT_CALENDAR_NAME = "Manas & Rupa Sree Wedding Celebrations";
 const DEFAULT_FILENAME = "manas-rupa-marriage.ics";
 
 function normalizeEvents(events?: WeddingEvent | readonly WeddingEvent[] | Event): readonly WeddingEvent[] {
@@ -40,7 +40,7 @@ function foldIcsLine(line: string): string {
 }
 
 function titleForEvent(event: WeddingEvent): string {
-  return `Manas & Rupa - ${event.name}`;
+  return `Manas & Rupa Sree - ${event.name}`;
 }
 
 function locationForEvent(event: WeddingEvent): string {
@@ -67,7 +67,7 @@ function createCalendarInvite(events?: WeddingEvent | readonly WeddingEvent[], o
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Manas & Rupa Wedding//EN",
+    "PRODID:-//Manas & Rupa Sree Wedding//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     `X-WR-CALNAME:${escapeIcsText(calendarName)}`,

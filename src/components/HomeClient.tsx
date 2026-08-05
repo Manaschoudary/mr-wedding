@@ -9,7 +9,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { DoorIntro, FallingPetals } from "@/components/DoorIntro";
 import { Timeline } from "@/components/Timeline";
 import { addGoogleCalendarInvite, downloadCalendarInvite, getGoogleCalendarUrl } from "@/lib/calendar";
-import { getInvitationConfig, type InvitationMode, WEDDING, WEDDING_EVENT } from "@/lib/data";
+import { FAMILY, getInvitationConfig, type InvitationMode, WEDDING, WEDDING_EVENT } from "@/lib/data";
 import { useVisitAnalytics } from "@/lib/analytics";
 
 interface HomeClientProps {
@@ -79,15 +79,59 @@ function InvitationPreview() {
   return (
     <section className="section-tight" data-analytics-section="Invitation Preview">
       <ScrollReveal>
-        <div className="rounded-2xl border border-linen/20 bg-burgundy-deep p-3 sm:p-6">
-          <div className="olive-card p-4 text-center sm:p-8">
-            <p className="caps-label text-[0.58rem] sm:text-[0.66rem]">{WEDDING.invitationTagline}</p>
-            <p className="mt-3 serif-invite text-base leading-relaxed text-linen/95 sm:mt-4 sm:text-xl">{WEDDING.invitationText}</p>
-            <div className="mt-6 border-t border-dashed border-linen/40 pt-4 sm:mt-7 sm:pt-5">
-              <p className="cinzel-title text-[0.64rem] text-linen/86 sm:text-[0.72rem]">Sumuhurtham</p>
-              <p className="mt-2 font-script text-[1.6rem] leading-none text-linen sm:text-[2rem]">September 5, 2026</p>
-              <p className="font-script-alt text-2xl leading-none text-gold-dark sm:text-3xl">9:31 PM</p>
+        <div className="rounded-2xl border border-dashed border-linen/50 bg-burgundy-deep p-4 sm:p-6">
+          <div className="olive-card p-5 sm:p-9">
+            <p className="text-center font-josefin text-[0.66rem] uppercase tracking-[0.32em] text-linen/86">
+              {WEDDING.invitationTagline}
+            </p>
+
+            <p className="mt-6 text-center font-cormorant text-2xl italic leading-relaxed text-linen/96 sm:text-[1.75rem]">
+              {WEDDING.invitationText}
+            </p>
+
+            <div className="mt-7 grid grid-cols-1 gap-5 sm:mt-8 sm:gap-7 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
+              <div className="text-center md:text-left">
+                <p className="font-script text-6xl leading-none text-linen sm:text-7xl">{WEDDING.couple.bride.firstName}</p>
+                <p className="mt-2 font-josefin text-[0.7rem] uppercase tracking-[0.2em] text-linen/88">
+                  {WEDDING.couple.bride.fullName}
+                </p>
+                <div className="mt-4 space-y-1.5 font-cormorant text-lg italic text-linen/95">
+                  {FAMILY.bride.map((line) => (
+                    <p key={`${line.role}-${line.name}`}>
+                      <span className="font-josefin text-[0.7rem] uppercase tracking-[0.15em] text-linen/75">{line.role}</span>{" "}
+                      {line.name} {line.relation}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              <p className="text-center font-script-alt text-5xl leading-none text-gold-dark">and</p>
+
+              <div className="text-center md:text-right">
+                <p className="font-script text-6xl leading-none text-linen sm:text-7xl">{WEDDING.couple.groom.firstName}</p>
+                <p className="mt-2 font-josefin text-[0.7rem] uppercase tracking-[0.2em] text-linen/88">
+                  {WEDDING.couple.groom.fullName}
+                </p>
+                <div className="mt-4 space-y-1.5 font-cormorant text-lg italic text-linen/95">
+                  {FAMILY.groom.map((line) => (
+                    <p key={`${line.role}-${line.name}`}>
+                      <span className="font-josefin text-[0.7rem] uppercase tracking-[0.15em] text-linen/75">{line.role}</span>{" "}
+                      {line.name} {line.relation}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
+
+            <div className="mt-8 border-t border-dashed border-linen/45 pt-6 text-center">
+              <p className="cinzel-title text-[0.75rem] text-linen/9">SUMUHURTHAM</p>
+              <p className="mt-3 font-script text-[2.4rem] leading-none text-linen">September 5, 2026</p>
+              <p className="font-script-alt text-[2rem] leading-none text-gold-dark">9:31 PM</p>
+            </div>
+
+            <p className="mt-7 text-center font-josefin text-[0.7rem] uppercase tracking-[0.32em] text-linen/82">
+              {WEDDING.hashtag}
+            </p>
           </div>
         </div>
       </ScrollReveal>
@@ -124,7 +168,7 @@ function CalendarActions({ invitationMode }: HomeClientProps) {
               type="button"
               onClick={() => addGoogleCalendarInvite(events, {
                 filename: "manas-rupa-full-celebration-google.ics",
-                calendarName: "Manas & Rupa Full Celebration",
+                calendarName: "Manas & Rupa Sree Full Celebration",
               })}
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-olive px-5 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.2em] text-linen transition hover:bg-olive-strong"
             >
@@ -136,7 +180,7 @@ function CalendarActions({ invitationMode }: HomeClientProps) {
             type="button"
             onClick={() => downloadCalendarInvite(events, {
               filename: invitation.showAllEvents ? "manas-rupa-full-celebration.ics" : "manas-rupa-wedding.ics",
-              calendarName: invitation.showAllEvents ? "Manas & Rupa Full Celebration" : "Manas & Rupa Wedding",
+              calendarName: invitation.showAllEvents ? "Manas & Rupa Sree Full Celebration" : "Manas & Rupa Sree Wedding",
             })}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-linen/40 px-5 py-3 font-josefin text-[0.68rem] uppercase tracking-[0.2em] text-linen transition hover:bg-linen/10"
           >
@@ -241,7 +285,7 @@ export function HomeClient({ invitationMode }: HomeClientProps) {
             <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-linen/35 bg-gradient-to-br from-[#6f3832] to-[#402022] p-2 px-4 sm:px-6">
               <img
                 src="/couple-mr.jpg"
-                alt="Manas and Rupa"
+                alt="Manas and Rupa Sree"
                 className="h-auto w-full rounded-xl object-cover"
               />
             </div>

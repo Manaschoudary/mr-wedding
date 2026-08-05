@@ -96,14 +96,14 @@ export const NAV_LINKS = [
 
 export const WEDDING = {
   couple: {
-    short: "Manas & Rupa",
+    short: "Manas & Rupa Sree",
     monogram: "M&R",
     groom: {
       firstName: "Manas",
       fullName: "Manas Adusumilli",
     },
     bride: {
-      firstName: "Rupa",
+      firstName: "Rupa Sree",
       fullName: "Rupa Sree Pamulapati",
     },
   },

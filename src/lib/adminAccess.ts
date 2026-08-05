@@ -1,6 +1,8 @@
 import crypto from "crypto";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
+const ADMIN_ACCESS_CODE = "manasrupa";
 const COOKIE_NAME = "mr_owner_access";
 const TOKEN_TTL_SECONDS = 60 * 60 * 24 * 30;
 
@@ -23,39 +25,21 @@ function timingSafeStringEqual(a: string, b: string): boolean {
   return left.length === right.length && crypto.timingSafeEqual(left, right);
 }
 
-function getOwnerAccessCode(): string {
-  return String(process.env.OWNER_ACCESS_CODE || "").trim();
-}
-
-function getSigningSecret(): string {
-  return String(process.env.SITE_ACCESS_SECRET || getOwnerAccessCode()).trim();
-}
-
 function signPayload(payload: string): string {
-  const signingSecret = getSigningSecret();
-  if (!signingSecret) {
-    throw new Error("SITE_ACCESS_SECRET or OWNER_ACCESS_CODE is required");
-  }
-
   return base64Url(
     crypto
-      .createHmac("sha256", signingSecret)
+      .createHmac("sha256", ADMIN_ACCESS_CODE)
       .update(payload)
       .digest()
   );
 }
 
 export function isValidOwnerCode(code: unknown): boolean {
-  const configuredCode = getOwnerAccessCode();
   const submittedCode = String(code || "").trim();
-  return Boolean(
-    configuredCode &&
-    submittedCode &&
-    timingSafeStringEqual(submittedCode, configuredCode)
-  );
+  return Boolean(submittedCode && timingSafeStringEqual(submittedCode, ADMIN_ACCESS_CODE));
 }
 
-export function createOwnerToken(): string {
+function createOwnerToken(): string {
   const payload = base64Url(JSON.stringify({
     scope: "owner",
     exp: Date.now() + TOKEN_TTL_SECONDS * 1000,
@@ -64,10 +48,9 @@ export function createOwnerToken(): string {
   return `${payload}.${signPayload(payload)}`;
 }
 
-export function isValidOwnerToken(token: unknown): boolean {
+function isValidOwnerToken(token: unknown): boolean {
   const [payload, signature] = String(token || "").split(".");
   if (!payload || !signature) return false;
-  if (!getSigningSecret()) return false;
 
   if (!timingSafeStringEqual(signature, signPayload(payload))) {
     return false;
@@ -86,17 +69,12 @@ export async function isOwnerRequest(): Promise<boolean> {
   return isValidOwnerToken(cookieStore.get(COOKIE_NAME)?.value);
 }
 
-export async function setOwnerAccessCookie() {
-  const cookieStore = await cookies();
-  const headerStore = await headers();
-  const token = createOwnerToken();
-  const isSecure = headerStore.get("x-forwarded-proto") === "https" || process.env.VERCEL === "1";
-
-  cookieStore.set(COOKIE_NAME, token, {
+export function setOwnerAccessCookie(response: NextResponse, request: Request) {
+  response.cookies.set(COOKIE_NAME, createOwnerToken(), {
     path: "/",
     httpOnly: true,
     sameSite: "lax",
     maxAge: TOKEN_TTL_SECONDS,
-    secure: isSecure,
+    secure: request.headers.get("x-forwarded-proto") === "https" || process.env.VERCEL === "1",
   });
 }

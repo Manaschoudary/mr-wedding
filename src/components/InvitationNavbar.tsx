@@ -11,13 +11,15 @@ export function InvitationNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const invitation = getInvitationConfig(getInvitationModeFromPath(pathname));
+  const isInviteHomePage = pathname === invitation.homePath;
+  const visible = !isInviteHomePage || scrolled;
   const links = [
     { href: invitation.homePath, label: "Home" },
     { href: invitation.rsvpPath, label: "RSVP" },
   ];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    const onScroll = () => setScrolled(window.scrollY > 80);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -45,7 +47,7 @@ export function InvitationNavbar() {
   );
 
   return (
-    <header className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${scrolled ? "pt-2" : "pt-4"}`}>
+    <header className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${scrolled ? "pt-2" : "pt-4"} ${visible ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"}`}>
       <div className="mx-auto max-w-5xl px-3 sm:px-6">
         <div className="flex items-center justify-between rounded-full border border-linen/25 bg-burgundy-deep/90 px-4 py-3 text-linen shadow-[0_12px_28px_rgba(0,0,0,0.22)] backdrop-blur-md">
           <Link
