@@ -49,11 +49,16 @@ export const metadata: Metadata = {
   title: "Manas & Rupa Sree | #MR Wedding",
   description:
     "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4-6, 2026.",
+  icons: {
+    icon: "/ganesh-icon.png",
+    apple: "/ganesh-icon.png",
+  },
   openGraph: {
     title: "Manas & Rupa Sree | #MR Wedding",
     description:
       "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4-6, 2026.",
     type: "website",
+    images: [{ url: "/ganesh-icon.png" }],
   },
 };
 

@@ -62,10 +62,6 @@ export function DoorIntro() {
           transition={{ duration: 0 }}
           style={{ perspective: "1800px" }}
         >
-          <div className="reference-door-frame" aria-hidden>
-            <span />
-            <span />
-          </div>
           <div className="reference-door-leaves">
             <motion.div
               className="reference-door-leaf reference-door-leaf--left"
