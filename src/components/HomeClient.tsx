@@ -302,18 +302,18 @@ export function HomeClient({ invitationMode }: HomeClientProps) {
       {invitation.showAllEvents ? (
         <>
           <KolamDivider />
+          <InvitationPreview />
+          <KolamDivider />
           <section id="events" data-analytics-section="Events Timeline">
             <Timeline events={invitation.events} />
           </section>
-          <KolamDivider />
-          <InvitationPreview />
           <CouplePhoto />
         </>
       ) : (
         <>
-          <WeddingOnlyDetails />
           <KolamDivider />
           <InvitationPreview />
+          <WeddingOnlyDetails />
           <CouplePhoto />
         </>
       )}
