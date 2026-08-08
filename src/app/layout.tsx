@@ -45,23 +45,26 @@ const pinyon = Pinyon_Script({
   weight: ["400"],
 });
 
+const shareImageUrl = "https://www.manaswedsrupa.com/mr-share-preview-ganesh.jpg";
+const shareImageAlt = "Lord Ganesh wedding artwork";
+const shareDescription =
+  "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati - September 4-6, 2026.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.manaswedsrupa.com"),
   title: "Manas & Rupa Sree | #MR Wedding",
-  description:
-    "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4-6, 2026.",
+  description: shareDescription,
   openGraph: {
     title: "Manas & Rupa Sree | #MR Wedding",
-    description:
-      "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4-6, 2026.",
+    description: shareDescription,
     url: "https://www.manaswedsrupa.com",
     siteName: "Manas & Rupa Sree Wedding",
     images: [
       {
-        url: "/mr-share-preview.jpg",
+        url: shareImageUrl,
         width: 1200,
         height: 630,
-        alt: "Lord Ganesh wedding artwork",
+        alt: shareImageAlt,
       },
     ],
     type: "website",
@@ -69,9 +72,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Manas & Rupa Sree | #MR Wedding",
-    description:
-      "Join us in celebrating the wedding of Manas Adusumilli and Rupa Sree Pamulapati — September 4-6, 2026.",
-    images: ["/mr-share-preview.jpg"],
+    description: shareDescription,
+    images: [shareImageUrl],
   },
 };
 

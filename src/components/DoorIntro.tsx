@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const CLOSED_HOLD_MS = 420;
-const DOOR_OPEN_DURATION_SECONDS = 5;
+const DOOR_OPEN_DURATION_SECONDS = 7;
 const INTRO_DURATION_MS = CLOSED_HOLD_MS + DOOR_OPEN_DURATION_SECONDS * 1000;
 const DOOR_CELLS = Array.from({ length: 40 }, (_, index) => index);
 
