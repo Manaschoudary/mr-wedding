@@ -1,1 +1,3 @@
-<!-- auto-deploy test -->
+# Keep pages crawlable so search engines can see the noindex directive.
+User-agent: *
+Allow: /

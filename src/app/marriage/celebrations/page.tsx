@@ -2,16 +2,14 @@ import { HomeClient } from "@/components/HomeClient";
 import type { Metadata } from "next";
 
 const title = "Celebrations | Manas & Rupa Sree #MR Wedding";
-const description =
-  "Full celebration invitation for Manas and Rupa Sree's wedding events.";
 const shareImageUrl = "https://www.manaswedsrupa.com/mr-share-preview-ganesh-v4.jpg";
 
 export const metadata: Metadata = {
   title,
-  description,
+  description: "",
   openGraph: {
     title,
-    description,
+    description: "",
     url: "https://www.manaswedsrupa.com/marriage/celebrations",
     siteName: "Manas & Rupa Sree Wedding",
     images: [
@@ -27,7 +25,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title,
-    description,
+    description: "",
     images: [shareImageUrl],
   },
 };
