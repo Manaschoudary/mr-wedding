@@ -45,7 +45,6 @@ const pinyon = Pinyon_Script({
   weight: ["400"],
 });
 
-const shareVersion = "v4";
 const shareImageUrl = "https://www.manaswedsrupa.com/mr-share-preview-ganesh-v4.jpg";
 const shareImageAlt = "Lord Ganesh wedding artwork";
 const shareDescription =
@@ -58,7 +57,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Manas & Rupa Sree | #MR Wedding",
     description: shareDescription,
-    url: `https://www.manaswedsrupa.com/?v=${shareVersion}`,
+    url: "https://www.manaswedsrupa.com",
     siteName: "Manas & Rupa Sree Wedding",
     images: [
       {
