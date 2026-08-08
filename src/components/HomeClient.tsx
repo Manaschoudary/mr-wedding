@@ -92,12 +92,12 @@ function InvitationPreview() {
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:mt-7 sm:gap-6 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
               <div className="text-center md:text-left">
-                <p className="font-script text-5xl leading-none text-linen sm:text-6xl">{WEDDING.couple.bride.firstName}</p>
+                <p className="font-script text-5xl leading-none text-linen sm:text-6xl">{WEDDING.couple.groom.firstName}</p>
                 <p className="mt-2 font-josefin text-[0.64rem] font-semibold uppercase tracking-[0.2em] text-linen/92">
-                  {WEDDING.couple.bride.fullName}
+                  {WEDDING.couple.groom.fullName}
                 </p>
                 <div className="mt-3 space-y-1.5 font-cormorant text-base italic text-linen/95 sm:text-[1.05rem]">
-                  {FAMILY.bride.map((line) => (
+                  {FAMILY.groom.map((line) => (
                     <p key={`${line.role}-${line.name}`}>
                       <span className="font-josefin text-[0.64rem] font-semibold uppercase tracking-[0.15em] text-linen/88">{line.role}</span>{" "}
                       {line.name} {line.relation}
@@ -109,12 +109,12 @@ function InvitationPreview() {
               <p className="text-center font-script-alt text-4xl leading-none text-gold-dark sm:text-5xl">and</p>
 
               <div className="text-center md:text-right">
-                <p className="font-script text-5xl leading-none text-linen sm:text-6xl">{WEDDING.couple.groom.firstName}</p>
+                <p className="font-script text-5xl leading-none text-linen sm:text-6xl">{WEDDING.couple.bride.firstName}</p>
                 <p className="mt-2 font-josefin text-[0.64rem] font-semibold uppercase tracking-[0.2em] text-linen/92">
-                  {WEDDING.couple.groom.fullName}
+                  {WEDDING.couple.bride.fullName}
                 </p>
                 <div className="mt-3 space-y-1.5 font-cormorant text-base italic text-linen/95 sm:text-[1.05rem]">
-                  {FAMILY.groom.map((line) => (
+                  {FAMILY.bride.map((line) => (
                     <p key={`${line.role}-${line.name}`}>
                       <span className="font-josefin text-[0.64rem] font-semibold uppercase tracking-[0.15em] text-linen/88">{line.role}</span>{" "}
                       {line.name} {line.relation}
@@ -302,18 +302,18 @@ export function HomeClient({ invitationMode }: HomeClientProps) {
       {invitation.showAllEvents ? (
         <>
           <KolamDivider />
+          <InvitationPreview />
+          <KolamDivider />
           <section id="events" data-analytics-section="Events Timeline">
             <Timeline events={invitation.events} />
           </section>
-          <KolamDivider />
-          <InvitationPreview />
           <CouplePhoto />
         </>
       ) : (
         <>
-          <WeddingOnlyDetails />
           <KolamDivider />
           <InvitationPreview />
+          <WeddingOnlyDetails />
           <CouplePhoto />
         </>
       )}
