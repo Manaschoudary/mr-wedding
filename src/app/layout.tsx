@@ -68,7 +68,6 @@ export const metadata: Metadata = {
       },
     ],
     type: "website",
-    images: [{ url: "/ganesh-icon.png" }],
   },
   twitter: {
     card: "summary_large_image",
