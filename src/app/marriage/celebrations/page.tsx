@@ -4,7 +4,8 @@ import type { Metadata } from "next";
 const title = "Celebrations | Manas & Rupa Sree #MR Wedding";
 const description =
   "Full celebration invitation for Manas and Rupa Sree's wedding events.";
-const shareImageUrl = "https://www.manaswedsrupa.com/mr-share-preview-ganesh.jpg";
+const shareVersion = "v4";
+const shareImageUrl = "https://www.manaswedsrupa.com/mr-share-preview-ganesh-v4.jpg";
 
 export const metadata: Metadata = {
   title,
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    url: "https://www.manaswedsrupa.com/marriage/celebrations",
+    url: `https://www.manaswedsrupa.com/marriage/celebrations?v=${shareVersion}`,
     siteName: "Manas & Rupa Sree Wedding",
     images: [
       {
