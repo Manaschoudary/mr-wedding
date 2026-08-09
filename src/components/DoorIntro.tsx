@@ -57,7 +57,7 @@ export function DoorIntro() {
     <AnimatePresence>
       {phase !== "done" && (
         <motion.div
-          className="reference-door-intro fixed inset-0 z-[100] overflow-hidden"
+          className={`reference-door-intro fixed inset-0 z-[100] overflow-hidden ${phase === "opening" ? "pointer-events-none" : ""}`}
           exit={{ opacity: 0 }}
           transition={{ duration: 0 }}
           style={{ perspective: "1800px" }}

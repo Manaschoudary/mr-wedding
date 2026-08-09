@@ -297,7 +297,7 @@ export function RSVPClient({ invitationMode }: RSVPClientProps) {
   };
 
   const handleContinue = () => {
-    if (!invitation.showAllEvents && attending === "yes" && additionalNum === 0 && !confirmedSolo) {
+    if (additionalGuestSectionActive() && additionalNum === 0 && !confirmedSolo) {
       trackAction("rsvp_guest_confirmation_shown", "Asked to confirm no additional guests");
       setShowGuestConfirm(true);
       return;
@@ -309,7 +309,7 @@ export function RSVPClient({ invitationMode }: RSVPClientProps) {
   const confirmSoloAttendance = () => {
     setConfirmedSolo(true);
     setShowGuestConfirm(false);
-    trackAction("rsvp_solo_confirmed", "Confirmed attending without additional guests");
+    trackAction("rsvp_solo_confirmed", "Confirmed no additional guests");
     completeStepOne();
   };
 
@@ -580,7 +580,9 @@ export function RSVPClient({ invitationMode }: RSVPClientProps) {
               No additional guests?
             </h2>
             <p id="guest-confirm-description" className="mb-6 mt-2 font-josefin text-sm text-ink/60">
-              Submit RSVP on the next screen.
+              {invitation.showAllEvents
+                ? "Continue to event RSVPs on the next screen."
+                : "Submit RSVP on the next screen."}
             </p>
             <div className="flex flex-col gap-3">
               <button type="button" onClick={addGuestFromConfirmation} className="rounded-xl bg-olive px-5 py-3 font-josefin text-xs uppercase tracking-[0.2em] text-linen" autoFocus>
