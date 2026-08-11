@@ -16,7 +16,6 @@ interface TimelineGroup {
 const TIMELINE_ORDER = [
   { key: "Friday, September 4, 2026", label: "Sept 4" },
   { key: "Saturday, September 5, 2026", label: "Sept 5" },
-  { key: "Sunday, September 6, 2026", label: "Sept 6" },
 ] as const;
 
 function getTimelineGroups(events: readonly WeddingEvent[]): readonly TimelineGroup[] {

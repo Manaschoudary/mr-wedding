@@ -111,7 +111,6 @@ export const WEDDING = {
   dates: {
     day1: "September 4, 2026",
     day2: "September 5, 2026",
-    day3: "September 6, 2026",
     weddingDate: new Date("2026-09-05T21:31:00"),
   },
   line: "SEPTEMBER 5, 2026 · 9:31 PM",
@@ -238,27 +237,6 @@ export const EVENTS = [
     accent: "from-[#9a7b4f] to-[#5a6b35]",
     image: "/events/kalyana-mahotsavam.jpg",
   },
-  {
-    id: "vratham",
-    name: "Vratham",
-    shortName: "Vratham",
-    category: "Post-wedding",
-    date: "Sunday, September 6, 2026",
-    dateLabel: "Sunday, September 6, 2026",
-    dateTime: "2026-09-06T10:30:00",
-    endDateTime: "2026-09-06T13:30:00",
-    time: "10:30 AM",
-    timeLabel: "10:30 AM",
-    venue: "House",
-    address: "2845 Hale Rd, Celina, TX 75009",
-    mapsUrl: "https://maps.google.com/?q=2845+Hale+Rd+Celina+TX+75009",
-    mapUrl: "https://maps.google.com/?q=2845+Hale+Rd+Celina+TX+75009",
-    city: "Celina, Texas",
-    description: "Post-wedding ritual and blessings at the groom's home.",
-    meal: "Breakfast and Lunch",
-    accent: "from-[#754329] to-[#5a6b35]",
-    image: "/events/vratham.jpg",
-  },
 ] satisfies readonly WeddingEvent[];
 
 export const WEDDING_EVENT = EVENTS.find((event) => event.id === WEDDING_EVENT_ID) ?? EVENTS[0];
@@ -335,13 +313,6 @@ export const VENUES = [
     address: "9060 Independence Pkwy, Plano, TX 75025",
     mapsUrl: "https://maps.google.com/?q=9060+Independence+Pkwy+Plano+TX+75025",
     note: "For Kalyana Mahotsavam",
-  },
-  {
-    id: "venue-day3",
-    name: "House",
-    address: "2845 Hale Rd, Celina, TX 75009",
-    mapsUrl: "https://maps.google.com/?q=2845+Hale+Rd+Celina+TX+75009",
-    note: "For Vratham",
   },
 ] satisfies readonly Venue[];
 

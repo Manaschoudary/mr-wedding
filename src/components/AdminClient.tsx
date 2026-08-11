@@ -34,7 +34,6 @@ import {
   type RSVPEventAttendance,
   type RSVPGuestResponse,
   type RSVPRecordLike,
-  type WeddingEvent,
 } from "@/lib/data";
 import { getLocalRsvps as readLocalRsvps } from "@/lib/offlineOutbox";
 
@@ -59,6 +58,10 @@ interface RSVPRecord extends RSVPRecordLike {
   readonly primaryGuest?: PrimaryGuest;
   readonly additionalGuests?: readonly RSVPGuestResponse[];
 }
+
+type AdminEditableEvent = Pick<RSVPEventAttendance, "id" | "name" | "dateLabel" | "timeLabel" | "venue"> & {
+  readonly shortName?: string;
+};
 
 interface VisitorAction {
   readonly id?: string;
@@ -245,7 +248,13 @@ function EditModal({ rsvp, onSave, onClose }: { readonly rsvp: RSVPRecord; reado
   const normalizedEvents = normalizeEventAttendance(rsvp);
   const savedEventsById = new Map(normalizedEvents.map((event) => [event.id, event]));
   const editsFullInvite = rsvp.invitationMode === "full" || normalizedEvents.length > 1;
-  const editableEvents = editsFullInvite ? FULL_EVENT_DETAILS : normalizedEvents.map((event) => FULL_EVENT_DETAILS.find((item) => item.id === event.id)).filter(Boolean) as readonly WeddingEvent[];
+  const activeEventIds = new Set(FULL_EVENT_DETAILS.map((event) => event.id));
+  const legacySavedEvents = normalizedEvents
+    .filter((event) => !activeEventIds.has(event.id))
+    .map((event) => ({ ...event, shortName: event.name }));
+  const editableEvents: readonly AdminEditableEvent[] = editsFullInvite
+    ? [...FULL_EVENT_DETAILS, ...legacySavedEvents]
+    : normalizedEvents.map((event) => FULL_EVENT_DETAILS.find((item) => item.id === event.id) ?? event);
   const originalAdditionals = rsvp.additionalGuests || [];
   const createInitialEventResponses = () => (
     Object.fromEntries(editableEvents.map((event) => {
@@ -848,10 +857,26 @@ export function AdminClient() {
   const totalPrimary = rsvps.length;
   const attending = rsvps.filter((rsvp) => getWeddingAttendance(rsvp) === "yes");
   const declined = rsvps.filter((rsvp) => getWeddingAttendance(rsvp) === "no");
-  const eventStats = FULL_EVENT_DETAILS.map((event) => ({
+  const activeEventIds = new Set(FULL_EVENT_DETAILS.map((event) => event.id));
+  const activeEventStats = FULL_EVENT_DETAILS.map((event) => ({
     ...event,
     guestCount: rsvps.reduce((acc, rsvp) => acc + getEventGuestCount(rsvp, event.id), 0),
   }));
+  const legacyEventStats = Array.from(rsvps.reduce((legacyEvents, rsvp) => {
+    normalizeEventAttendance(rsvp).forEach((event) => {
+      if (activeEventIds.has(event.id)) return;
+
+      const current = legacyEvents.get(event.id);
+      legacyEvents.set(event.id, {
+        id: event.id,
+        shortName: event.name,
+        guestCount: (current?.guestCount || 0) + (Number(event.guestCount) || 0),
+      });
+    });
+
+    return legacyEvents;
+  }, new Map<string, { id: string; shortName: string; guestCount: number }>()).values());
+  const eventStats = [...activeEventStats, ...legacyEventStats];
 
   const filtered = rsvps
     .filter((rsvp) => {
