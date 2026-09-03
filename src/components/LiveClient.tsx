@@ -2,11 +2,23 @@
 
 import { CalendarDays, Clock, ExternalLink, MapPin, Radio } from "lucide-react";
 import { useVisitAnalytics } from "@/lib/analytics";
-import { EVENTS, LIVE_STREAMS, WEDDING, type WeddingEvent } from "@/lib/data";
+import {
+  EVENTS,
+  LIVE_STREAMS,
+  WEDDING,
+  WEDDING_EVENT_ID,
+  getInvitationConfig,
+  type InvitationMode,
+  type WeddingEvent,
+} from "@/lib/data";
 
 type StreamWithEvent = (typeof LIVE_STREAMS)[number] & {
   readonly event: WeddingEvent;
 };
+
+interface LiveClientProps {
+  readonly invitationMode: InvitationMode;
+}
 
 function getStreamEvent(eventId: string): WeddingEvent | undefined {
   return EVENTS.find((event) => event.id === eventId);
@@ -20,8 +32,10 @@ function getEmbedUrl(videoId: string): string {
   return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
 }
 
-export function LiveClient() {
+export function LiveClient({ invitationMode }: LiveClientProps) {
+  const invitation = getInvitationConfig(invitationMode);
   const streams = LIVE_STREAMS
+    .filter((stream) => invitation.showAllEvents || stream.eventId === WEDDING_EVENT_ID)
     .map((stream) => {
       const event = getStreamEvent(stream.eventId);
       return event ? { ...stream, event } : null;
@@ -32,8 +46,18 @@ export function LiveClient() {
     sections: ["Live Header", "Live Streams"],
     metadata: {
       page: "live",
+      invitationMode: invitation.mode,
+      invitationLabel: invitation.label,
     },
   });
+  const eyebrow = invitation.showAllEvents ? "Wedding Livestreams" : "Marriage Livestream";
+  const title = invitation.showAllEvents ? "Watch Live" : "Wedding Live";
+  const intro = invitation.showAllEvents
+    ? `Join ${WEDDING.couple.short} for the ceremonies from wherever you are.`
+    : `Join ${WEDDING.couple.short} for the marriage ceremony from wherever you are.`;
+  const streamGridClassName = invitation.showAllEvents
+    ? "mx-auto grid max-w-5xl gap-5 lg:grid-cols-3"
+    : "mx-auto grid max-w-xl gap-5";
 
   return (
     <div className="min-h-screen pb-14 pt-28" onClickCapture={handleTrackedClick}>
@@ -42,16 +66,16 @@ export function LiveClient() {
           <Radio className="h-7 w-7" />
         </div>
         <p className="font-josefin text-[0.68rem] font-semibold uppercase tracking-[0.32em] text-linen/92">
-          Wedding Livestreams
+          {eyebrow}
         </p>
-        <h1 className="mt-2 font-script text-6xl leading-none text-linen sm:text-7xl">Watch Live</h1>
+        <h1 className="mt-2 font-script text-6xl leading-none text-linen sm:text-7xl">{title}</h1>
         <p className="mx-auto mt-3 max-w-xl font-cormorant text-xl italic text-linen/90">
-          Join {WEDDING.couple.short} for the ceremonies from wherever you are.
+          {intro}
         </p>
       </section>
 
       <section data-analytics-section="Live Streams" className="event-timeline pt-4">
-        <div className="mx-auto grid max-w-5xl gap-5 lg:grid-cols-3">
+        <div className={streamGridClassName}>
           {streams.map((stream) => (
             <article
               key={stream.id}

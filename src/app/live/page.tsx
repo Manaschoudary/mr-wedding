@@ -31,5 +31,5 @@ export const metadata: Metadata = {
 };
 
 export default function LivePage() {
-  return <LiveClient />;
+  return <LiveClient invitationMode="full" />;
 }

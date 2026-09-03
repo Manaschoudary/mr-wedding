@@ -88,12 +88,13 @@ export const INVITATION_MODES = {
 export const FULL_INVITE_BASE_PATH = "/marriage/celebrations";
 export const WEDDING_ONLY_BASE_PATH = "/wedding";
 export const LIVE_BASE_PATH = "/live";
+export const WEDDING_LIVE_BASE_PATH = `${WEDDING_ONLY_BASE_PATH}/live`;
 export const WEDDING_EVENT_ID = "kalyana-mahotsavam";
 
 export const NAV_LINKS = [
   { href: WEDDING_ONLY_BASE_PATH, label: "Home" },
   { href: `${WEDDING_ONLY_BASE_PATH}/rsvp`, label: "RSVP" },
-  { href: LIVE_BASE_PATH, label: "Live" },
+  { href: WEDDING_LIVE_BASE_PATH, label: "Live" },
 ] as const;
 
 export const WEDDING = {
@@ -266,12 +267,15 @@ export const LIVE_STREAMS = [
   },
 ] as const;
 
-export function getLivePath(): string {
-  return LIVE_BASE_PATH;
+export function getLivePath(mode: InvitationMode = INVITATION_MODES.FULL): string {
+  return mode === INVITATION_MODES.WEDDING_ONLY ? WEDDING_LIVE_BASE_PATH : LIVE_BASE_PATH;
 }
 
 export function getInvitationModeFromPath(pathname = ""): InvitationMode {
-  return pathname === FULL_INVITE_BASE_PATH || pathname.startsWith(`${FULL_INVITE_BASE_PATH}/`)
+  return pathname === FULL_INVITE_BASE_PATH ||
+    pathname.startsWith(`${FULL_INVITE_BASE_PATH}/`) ||
+    pathname === LIVE_BASE_PATH ||
+    pathname.startsWith(`${LIVE_BASE_PATH}/`)
     ? INVITATION_MODES.FULL
     : INVITATION_MODES.WEDDING_ONLY;
 }

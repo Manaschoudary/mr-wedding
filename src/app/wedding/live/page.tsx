@@ -1,0 +1,35 @@
+import { LiveClient } from "@/components/LiveClient";
+import type { Metadata } from "next";
+
+const title = "Wedding Live | Manas & Rupa Sree #MR Wedding";
+const shareImageUrl = "https://www.manaswedsrupa.com/mr-share-preview-ganesh-v4.jpg";
+
+export const metadata: Metadata = {
+  title,
+  description: "",
+  openGraph: {
+    title,
+    description: "",
+    url: "https://www.manaswedsrupa.com/wedding/live",
+    siteName: "Manas & Rupa Sree Wedding",
+    images: [
+      {
+        url: shareImageUrl,
+        width: 1200,
+        height: 630,
+        alt: "Lord Ganesh wedding artwork",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description: "",
+    images: [shareImageUrl],
+  },
+};
+
+export default function WeddingLivePage() {
+  return <LiveClient invitationMode="wedding-only" />;
+}

@@ -19,7 +19,7 @@ interface HomeClientProps {
 function Hero({ invitationMode }: HomeClientProps) {
   const invitation = getInvitationConfig(invitationMode);
   const detailsHref = invitation.showAllEvents ? "#events" : "#wedding-venue";
-  const liveHref = getLivePath();
+  const liveHref = getLivePath(invitation.mode);
 
   return (
     <section
@@ -275,7 +275,7 @@ function CouplePhoto() {
 
 export function HomeClient({ invitationMode }: HomeClientProps) {
   const invitation = getInvitationConfig(invitationMode);
-  const liveHref = getLivePath();
+  const liveHref = getLivePath(invitation.mode);
   const { handleTrackedClick } = useVisitAnalytics({
     sections: [
       "Hero",

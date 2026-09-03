@@ -22,7 +22,7 @@ export function InvitationNavbar() {
   const links = [
     { href: invitation.homePath, label: "Home" },
     { href: invitation.rsvpPath, label: "RSVP" },
-    { href: getLivePath(), label: "Live" },
+    { href: getLivePath(invitation.mode), label: "Live" },
   ];
 
   useEffect(() => {
