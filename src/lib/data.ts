@@ -251,18 +251,21 @@ export const LIVE_STREAMS = [
     id: "haldi",
     eventId: "pasupu-jathara",
     name: "Haldi",
+    startDateTimeUtc: "2026-09-04T14:00:00Z",
     youtubeVideoId: "XAZ5Jbf1gN0",
   },
   {
     id: "dj-night-sangeet",
     eventId: "dj-night",
     name: "DJ Night / Sangeet",
+    startDateTimeUtc: "2026-09-05T01:00:00Z",
     youtubeVideoId: "tN1n4DDkXx0",
   },
   {
     id: "marriage",
     eventId: WEDDING_EVENT_ID,
     name: "Marriage",
+    startDateTimeUtc: "2026-09-06T02:31:00Z",
     youtubeVideoId: "fA23x0-tkcA",
   },
 ] as const;

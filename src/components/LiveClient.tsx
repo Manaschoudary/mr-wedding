@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarDays, Clock, ExternalLink, MapPin, Radio } from "lucide-react";
+import { useSyncExternalStore } from "react";
 import { useVisitAnalytics } from "@/lib/analytics";
 import {
   EVENTS,
@@ -15,6 +16,8 @@ import {
 type StreamWithEvent = (typeof LIVE_STREAMS)[number] & {
   readonly event: WeddingEvent;
 };
+
+const EVENT_TIME_ZONE = "America/Chicago";
 
 interface LiveClientProps {
   readonly invitationMode: InvitationMode;
@@ -32,7 +35,39 @@ function getEmbedUrl(videoId: string): string {
   return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
 }
 
+function subscribeToTimeZone() {
+  return () => {};
+}
+
+function getBrowserTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || EVENT_TIME_ZONE;
+}
+
+function getServerTimeZone(): string {
+  return EVENT_TIME_ZONE;
+}
+
+function formatLocalDate(utcDateTime: string, timeZone: string): string {
+  return new Intl.DateTimeFormat(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone,
+  }).format(new Date(utcDateTime));
+}
+
+function formatLocalTime(utcDateTime: string, timeZone: string): string {
+  return new Intl.DateTimeFormat(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone,
+    timeZoneName: "short",
+  }).format(new Date(utcDateTime));
+}
+
 export function LiveClient({ invitationMode }: LiveClientProps) {
+  const viewerTimeZone = useSyncExternalStore(subscribeToTimeZone, getBrowserTimeZone, getServerTimeZone);
   const invitation = getInvitationConfig(invitationMode);
   const streams = LIVE_STREAMS
     .filter((stream) => invitation.showAllEvents || stream.eventId === WEDDING_EVENT_ID)
@@ -42,7 +77,7 @@ export function LiveClient({ invitationMode }: LiveClientProps) {
     })
     .filter((stream): stream is StreamWithEvent => Boolean(stream));
 
-  const { handleTrackedClick } = useVisitAnalytics({
+  const { trackAction, handleTrackedClick } = useVisitAnalytics({
     sections: ["Live Header", "Live Streams"],
     metadata: {
       page: "live",
@@ -76,59 +111,73 @@ export function LiveClient({ invitationMode }: LiveClientProps) {
 
       <section data-analytics-section="Live Streams" className="event-timeline pt-4">
         <div className={streamGridClassName}>
-          {streams.map((stream) => (
-            <article
-              key={stream.id}
-              className="rounded-2xl border border-dashed border-linen/45 bg-burgundy-deep p-3 shadow-[0_22px_52px_rgba(0,0,0,0.3)]"
-            >
-              <div className="overflow-hidden rounded-xl border border-linen/18 bg-linen-soft text-ink">
-                <div className="relative aspect-video bg-black">
-                  <iframe
-                    className="absolute inset-0 h-full w-full"
-                    src={getEmbedUrl(stream.youtubeVideoId)}
-                    title={`${stream.name} livestream`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </div>
+          {streams.map((stream) => {
+            const dateLabel = formatLocalDate(stream.startDateTimeUtc, viewerTimeZone);
+            const timeLabel = formatLocalTime(stream.startDateTimeUtc, viewerTimeZone);
 
-                <div className="p-4 sm:p-5">
-                  <p className="font-josefin text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-ink/48">
-                    {stream.event.name}
-                  </p>
-                  <h2 className="mt-1 font-cormorant text-3xl italic leading-none text-ink">
-                    {stream.name}
-                  </h2>
-
-                  <div className="mt-4 space-y-2 font-josefin text-sm text-ink/68">
-                    <p className="flex items-center gap-2">
-                      <CalendarDays className="h-4 w-4 flex-shrink-0 text-olive" />
-                      <span>{stream.event.dateLabel}</span>
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 flex-shrink-0 text-olive" />
-                      <span>{stream.event.timeLabel}</span>
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 flex-shrink-0 text-olive" />
-                      <span>{stream.event.venue}</span>
-                    </p>
+            return (
+              <article
+                key={stream.id}
+                className="rounded-2xl border border-dashed border-linen/45 bg-burgundy-deep p-3 shadow-[0_22px_52px_rgba(0,0,0,0.3)]"
+              >
+                <div className="overflow-hidden rounded-xl border border-linen/18 bg-linen-soft text-ink">
+                  <div className="relative aspect-video bg-black">
+                    <iframe
+                      className="absolute inset-0 h-full w-full"
+                      src={getEmbedUrl(stream.youtubeVideoId)}
+                      title={`${stream.name} livestream`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
                   </div>
 
-                  <a
-                    href={getWatchUrl(stream.youtubeVideoId)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-olive px-5 py-3 font-josefin text-xs font-semibold uppercase tracking-[0.18em] text-linen transition hover:bg-olive-strong"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    Open Stream
-                  </a>
+                  <div className="p-4 sm:p-5">
+                    <p className="font-josefin text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-ink/48">
+                      {stream.event.name}
+                    </p>
+                    <h2 className="mt-1 font-cormorant text-3xl italic leading-none text-ink">
+                      {stream.name}
+                    </h2>
+
+                    <div className="mt-4 space-y-2 font-josefin text-sm text-ink/68">
+                      <p className="flex items-center gap-2">
+                        <CalendarDays className="h-4 w-4 flex-shrink-0 text-olive" />
+                        <span>{dateLabel}</span>
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 flex-shrink-0 text-olive" />
+                        <span>{timeLabel}</span>
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 flex-shrink-0 text-olive" />
+                        <span>{stream.event.venue}</span>
+                      </p>
+                    </div>
+
+                    <a
+                      href={getWatchUrl(stream.youtubeVideoId)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => {
+                        trackAction("open_live_stream", stream.name, {
+                          streamId: stream.id,
+                          streamName: stream.name,
+                          eventId: stream.eventId,
+                          eventName: stream.event.name,
+                          href: getWatchUrl(stream.youtubeVideoId),
+                        }, { beacon: true });
+                      }}
+                      className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-olive px-5 py-3 font-josefin text-xs font-semibold uppercase tracking-[0.18em] text-linen transition hover:bg-olive-strong"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Open Stream
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </section>
     </div>
