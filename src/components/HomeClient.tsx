@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarPlus, Clock, MapPin, Shirt, Utensils } from "lucide-react";
+import { CalendarPlus, Clock, MapPin, Radio, Shirt, Utensils } from "lucide-react";
 import { motion } from "framer-motion";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { KolamDivider } from "@/components/KolamDivider";
@@ -9,7 +9,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { DoorIntro } from "@/components/DoorIntro";
 import { Timeline } from "@/components/Timeline";
 import { addGoogleCalendarInvite, downloadCalendarInvite, getGoogleCalendarUrl } from "@/lib/calendar";
-import { FAMILY, getInvitationConfig, type InvitationMode, WEDDING, WEDDING_EVENT } from "@/lib/data";
+import { FAMILY, getInvitationConfig, getLivePath, type InvitationMode, WEDDING, WEDDING_EVENT } from "@/lib/data";
 import { useVisitAnalytics } from "@/lib/analytics";
 
 interface HomeClientProps {
@@ -19,6 +19,7 @@ interface HomeClientProps {
 function Hero({ invitationMode }: HomeClientProps) {
   const invitation = getInvitationConfig(invitationMode);
   const detailsHref = invitation.showAllEvents ? "#events" : "#wedding-venue";
+  const liveHref = getLivePath();
 
   return (
     <section
@@ -64,6 +65,13 @@ function Hero({ invitationMode }: HomeClientProps) {
           className="action-button action-button--primary"
         >
           RSVP
+        </Link>
+        <Link
+          href={liveHref}
+          className="action-button action-button--ghost"
+        >
+          <Radio className="h-4 w-4" />
+          Watch Live
         </Link>
         <a
           href={detailsHref}
@@ -267,6 +275,7 @@ function CouplePhoto() {
 
 export function HomeClient({ invitationMode }: HomeClientProps) {
   const invitation = getInvitationConfig(invitationMode);
+  const liveHref = getLivePath();
   const { handleTrackedClick } = useVisitAnalytics({
     sections: [
       "Hero",
@@ -320,12 +329,21 @@ export function HomeClient({ invitationMode }: HomeClientProps) {
 
       <CalendarActions invitationMode={invitationMode} />
       <section className="section-tight pt-0 text-center">
-        <Link
-          href={invitation.rsvpPath}
-          className="action-button action-button--primary"
-        >
-          RSVP Now
-        </Link>
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Link
+            href={invitation.rsvpPath}
+            className="action-button action-button--primary"
+          >
+            RSVP Now
+          </Link>
+          <Link
+            href={liveHref}
+            className="action-button action-button--ghost"
+          >
+            <Radio className="h-4 w-4" />
+            Watch Live
+          </Link>
+        </div>
       </section>
     </div>
   );

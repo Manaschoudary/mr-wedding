@@ -6,14 +6,16 @@ import { InvitationNavbar } from "@/components/InvitationNavbar";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { flushLocalRsvps } from "@/lib/offlineOutbox";
 import { flushQueuedAnalytics } from "@/lib/analytics";
-import { FULL_INVITE_BASE_PATH, WEDDING_ONLY_BASE_PATH } from "@/lib/data";
+import { FULL_INVITE_BASE_PATH, LIVE_BASE_PATH, WEDDING_ONLY_BASE_PATH } from "@/lib/data";
 import { useEffect, type ReactNode } from "react";
 
 function isInvitationPath(pathname: string): boolean {
   return pathname === WEDDING_ONLY_BASE_PATH ||
     pathname.startsWith(`${WEDDING_ONLY_BASE_PATH}/`) ||
     pathname === FULL_INVITE_BASE_PATH ||
-    pathname.startsWith(`${FULL_INVITE_BASE_PATH}/`);
+    pathname.startsWith(`${FULL_INVITE_BASE_PATH}/`) ||
+    pathname === LIVE_BASE_PATH ||
+    pathname.startsWith(`${LIVE_BASE_PATH}/`);
 }
 
 function isAdminPath(pathname: string): boolean {

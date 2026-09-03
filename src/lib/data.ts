@@ -87,11 +87,13 @@ export const INVITATION_MODES = {
 
 export const FULL_INVITE_BASE_PATH = "/marriage/celebrations";
 export const WEDDING_ONLY_BASE_PATH = "/wedding";
+export const LIVE_BASE_PATH = "/live";
 export const WEDDING_EVENT_ID = "kalyana-mahotsavam";
 
 export const NAV_LINKS = [
   { href: WEDDING_ONLY_BASE_PATH, label: "Home" },
   { href: `${WEDDING_ONLY_BASE_PATH}/rsvp`, label: "RSVP" },
+  { href: LIVE_BASE_PATH, label: "Live" },
 ] as const;
 
 export const WEDDING = {
@@ -242,6 +244,31 @@ export const EVENTS = [
 export const WEDDING_EVENT = EVENTS.find((event) => event.id === WEDDING_EVENT_ID) ?? EVENTS[0];
 export const ADDITIONAL_EVENT_DETAILS = EVENTS.filter((event) => event.id !== WEDDING_EVENT_ID);
 export const FULL_EVENT_DETAILS = EVENTS;
+
+export const LIVE_STREAMS = [
+  {
+    id: "haldi",
+    eventId: "pasupu-jathara",
+    name: "Haldi",
+    youtubeVideoId: "XAZ5Jbf1gN0",
+  },
+  {
+    id: "dj-night-sangeet",
+    eventId: "dj-night",
+    name: "DJ Night / Sangeet",
+    youtubeVideoId: "tN1n4DDkXx0",
+  },
+  {
+    id: "marriage",
+    eventId: WEDDING_EVENT_ID,
+    name: "Marriage",
+    youtubeVideoId: "fA23x0-tkcA",
+  },
+] as const;
+
+export function getLivePath(): string {
+  return LIVE_BASE_PATH;
+}
 
 export function getInvitationModeFromPath(pathname = ""): InvitationMode {
   return pathname === FULL_INVITE_BASE_PATH || pathname.startsWith(`${FULL_INVITE_BASE_PATH}/`)

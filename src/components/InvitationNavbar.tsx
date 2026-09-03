@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getInvitationConfig, getInvitationModeFromPath, WEDDING } from "@/lib/data";
+import {
+  getInvitationConfig,
+  getInvitationModeFromPath,
+  getLivePath,
+  LIVE_BASE_PATH,
+  WEDDING,
+} from "@/lib/data";
 import { trackEvent } from "@/lib/analytics";
 
 export function InvitationNavbar() {
@@ -16,6 +22,7 @@ export function InvitationNavbar() {
   const links = [
     { href: invitation.homePath, label: "Home" },
     { href: invitation.rsvpPath, label: "RSVP" },
+    { href: getLivePath(), label: "Live" },
   ];
 
   useEffect(() => {
@@ -49,9 +56,13 @@ export function InvitationNavbar() {
     }, { beacon: true });
   };
 
-  const isActive = (href: string) => (
-    href === invitation.homePath ? pathname === invitation.homePath : pathname.startsWith(href)
-  );
+  const isActive = (href: string) => {
+    const hrefPath = href.split("?")[0];
+
+    if (hrefPath === LIVE_BASE_PATH) return pathname === LIVE_BASE_PATH;
+    if (hrefPath === invitation.homePath) return pathname === invitation.homePath;
+    return pathname.startsWith(hrefPath);
+  };
 
   return (
     <header className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${scrolled ? "pt-2" : "pt-4"} ${visible ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"}`}>
@@ -112,7 +123,7 @@ export function InvitationNavbar() {
         <div
           id="mobile-invitation-navigation"
           className={`mx-3 overflow-hidden rounded-2xl border border-linen/20 bg-burgundy-deep/95 text-linen shadow-xl backdrop-blur-md transition-all md:hidden ${
-            menuOpen ? "mt-2 max-h-48 opacity-100" : "max-h-0 opacity-0"
+            menuOpen ? "mt-2 max-h-64 opacity-100" : "max-h-0 opacity-0"
           }`}
           aria-hidden={!menuOpen}
         >
