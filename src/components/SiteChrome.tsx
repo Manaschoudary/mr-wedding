@@ -22,10 +22,15 @@ function isAdminPath(pathname: string): boolean {
   return pathname === "/admin-mr-2026" || pathname.startsWith("/admin-mr-2026/");
 }
 
+function isStandaloneLivePath(pathname: string): boolean {
+  return pathname === LIVE_BASE_PATH || pathname.startsWith(`${LIVE_BASE_PATH}/`);
+}
+
 export function SiteChrome({ children }: { readonly children: ReactNode }) {
   const pathname = usePathname();
   const admin = isAdminPath(pathname);
   const invitation = isInvitationPath(pathname);
+  const standaloneLive = isStandaloneLivePath(pathname);
 
   useEffect(() => {
     if (admin) return;
@@ -53,7 +58,7 @@ export function SiteChrome({ children }: { readonly children: ReactNode }) {
   return (
     <>
       {!admin ? <MusicPlayer /> : null}
-      {invitation ? <InvitationNavbar /> : null}
+      {invitation && !standaloneLive ? <InvitationNavbar /> : null}
       <main className="flex-1 overflow-x-hidden">{children}</main>
       {!admin ? <Footer /> : null}
     </>
