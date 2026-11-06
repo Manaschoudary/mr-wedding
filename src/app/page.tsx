@@ -1,6 +1,11 @@
-import { redirect } from "next/navigation";
-import { WEDDING_ONLY_BASE_PATH } from "@/lib/data";
+import { ConcludedClient } from "@/components/ConcludedClient";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Thank You | Manas & Rupa Sree",
+  description: "The wedding celebration of Manas and Rupa Sree has concluded.",
+};
 
 export default function HomePage() {
-  redirect(WEDDING_ONLY_BASE_PATH);
+  return <ConcludedClient />;
 }

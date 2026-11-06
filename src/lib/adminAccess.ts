@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 const ADMIN_ACCESS_CODE = "manasrupa";
-const COOKIE_NAME = "mr_owner_access";
+export const OWNER_ACCESS_COOKIE_NAME = "mr_owner_access";
 const TOKEN_TTL_SECONDS = 60 * 60 * 24 * 30;
 
 function base64Url(input: string | Buffer): string {
@@ -48,7 +48,7 @@ function createOwnerToken(): string {
   return `${payload}.${signPayload(payload)}`;
 }
 
-function isValidOwnerToken(token: unknown): boolean {
+export function isValidOwnerToken(token: unknown): boolean {
   const [payload, signature] = String(token || "").split(".");
   if (!payload || !signature) return false;
 
@@ -66,11 +66,11 @@ function isValidOwnerToken(token: unknown): boolean {
 
 export async function isOwnerRequest(): Promise<boolean> {
   const cookieStore = await cookies();
-  return isValidOwnerToken(cookieStore.get(COOKIE_NAME)?.value);
+  return isValidOwnerToken(cookieStore.get(OWNER_ACCESS_COOKIE_NAME)?.value);
 }
 
 export function setOwnerAccessCookie(response: NextResponse, request: Request) {
-  response.cookies.set(COOKIE_NAME, createOwnerToken(), {
+  response.cookies.set(OWNER_ACCESS_COOKIE_NAME, createOwnerToken(), {
     path: "/",
     httpOnly: true,
     sameSite: "lax",

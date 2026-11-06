@@ -31,6 +31,7 @@ export function SiteChrome({ children }: { readonly children: ReactNode }) {
   const admin = isAdminPath(pathname);
   const invitation = isInvitationPath(pathname);
   const standaloneLive = isStandaloneLivePath(pathname);
+  const concludedLanding = pathname === "/";
 
   useEffect(() => {
     if (admin) return;
@@ -57,7 +58,7 @@ export function SiteChrome({ children }: { readonly children: ReactNode }) {
 
   return (
     <>
-      {!admin ? <MusicPlayer /> : null}
+      {!admin && !concludedLanding ? <MusicPlayer /> : null}
       {invitation && !standaloneLive ? <InvitationNavbar /> : null}
       <main className="flex-1 overflow-x-hidden">{children}</main>
       {!admin ? <Footer /> : null}
